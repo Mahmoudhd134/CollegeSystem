@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Application\Application.csproj" />
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="wwwroot\assets\card.6ee664fd.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.107df3cc.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.14b69c16.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.20f0ace2.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.30c8f01e.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.33140f8c.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.64081f23.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.6c2d8e97.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.72df8b9e.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.73eab41d.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.88db4d85.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.a0527568.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.a4435462.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.a7b48d61.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.b7a51895.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.bdc65572.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.befc935b.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.cb14fdc1.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.dcb494c2.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.e75492b5.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index.ffe5d7c5.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\SubjectMaterials" />
+    </ItemGroup>
+
+</Project>

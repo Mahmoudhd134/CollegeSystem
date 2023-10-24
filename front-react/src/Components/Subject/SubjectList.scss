@@ -1,0 +1,40 @@
+.input-group {
+  border-radius: 30px;
+
+}
+
+
+.input-group .input-group-text {
+  border-radius: 30px;
+  border: none;
+  background-size: 400%;
+  background-position: 0% 0%;
+  font-family: 'Roboto';
+  font-size: 1.3rem;
+  color: #fff;
+  background-image: linear-gradient(90deg, rgb(124, 208, 247, 1), rgb(109, 170, 223, 1), rgb(54, 142, 225, 1), rgb(55, 117, 197, 1), rgb(34, 77, 142, 1));
+}
+
+.txt {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2.5rem;
+  padding: 20px;
+  color: #000082;
+}
+
+.row .btn {
+  font-family: Roboto;
+  font-size: 20px;
+  color: blue;
+  border: none;
+  align-items: center;
+  cursor: pointer; //78b9f2  008cff
+  border-radius: 30px;
+}
+
+.row .btn:hover {
+  color: #fff;
+  box-shadow: 0 12px 16px 0 #78b9f2, 0 17px 50px 0 #000082;
+  background-image: linear-gradient(90deg, rgba(135, 241, 252, 1), rgba(127, 212, 251, 1), rgba(127, 212, 251, 1), rgba(116, 174, 250, 1), rgba(115, 169, 250, 1));
+
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Microsoft SQL Server LocalDB (JetBrains)" uuid="c5622be9-3973-4d97-a5ee-a2cf29ff55da">
+      <driver-ref>sqlserver.localdb.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Data Source=SQL5110.site4now.net;Initial Catalog=db_a992a9_qualityms;User Id=db_a992a9_qualityms_admin;Password=Smarterasp2320030@;</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="Microsoft SQL Server LocalDB (JetBrains) [2]" uuid="23f1e603-b900-4346-b2b1-7784a710b4b2">
+      <driver-ref>sqlserver.localdb.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Data Source=SQL8005.site4now.net;Initial Catalog=db_a994b8_qualitymsdb;User Id=db_a994b8_qualitymsdb_admin;Password=$.8jtnbnd.6eDQ!</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

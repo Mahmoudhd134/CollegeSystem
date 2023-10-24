@@ -1,0 +1,51 @@
+﻿.doctor-not-fount-responsive-container {
+    @apply w-5/6 h-5/6 sm:w-1/2 sm:h-1/2 md:w-1/4 md:w-1/4 mx-auto mt-12 bg-red-300 text-red-900 p-5 bg-opacity-50 rounded-2xl flex flex-col
+}
+
+.add-doctor-input {
+    @apply border-2 border-blue-500 bg-blue-50 p-2 focus:border-blue-600 focus:ring-blue-700 rounded-2xl mt-1 w-full
+}
+
+.add-doctor-add-button {
+    @apply w-1/2 bg-blue-300 hover:bg-blue-400 focus:bg-blue-500 border border-blue-600 rounded-2xl p-3 transition-all hover:shadow-xl hover:shadow-blue-200
+}
+
+.doctor-list-search-input {
+    @apply w-4/5 text-2xl bg-blue-50 rounded-2xl rounded-r-none border-2 border-r-0 border-solid border-blue-500 focus:border-blue-500 focus:outline-blue-500
+}
+
+.doctor-list-search-button {
+    @apply w-1/5 h-full bg-blue-500 rounded-2xl border border-blue-300 rounded-l-none hover:bg-blue-600 focus:bg-blue-700
+}
+
+.doctor-list-select-menu {
+    @apply w-full p-2.5 text-blue-500 bg-blue-50 border rounded-xl shadow-sm outline-none focus:border-blue-600
+}
+
+.doctor-list-card-more-button {
+    @apply w-1/2 hover:bg-blue-400 focus:bg-blue-500 rounded-bl-2xl transition-all text-2xl sm:text-xl text-blue-900 focus:bg-opacity-50
+}
+
+.doctor-list-card-remove-button {
+    @apply w-1/2 hover:bg-red-400 focus:bg-red-500 rounded-br-2xl transition-all text-2xl sm:text-xl text-red-900 focus:bg-opacity-50
+}
+
+.doctor-list-remove-doctor-window {
+    @apply fixed w-screen h-screen top-0 left-0 bg-gray-900 bg-opacity-90 flex justify-center items-center origin-center animate-open-menu
+}
+
+.doctor-list-remove-doctor-inner-window {
+    @apply border-2 border-blue-200 bg-blue-100 flex flex-col justify-evenly items-center rounded-lg w-5/6 sm:w-1/2 lg:w-1/3 gap-1 h-5/6 sm:h-2/3 text-3xl sm:text-2xl text-center relative
+}
+
+.doctor-list-remove-card-return-back-button {
+    @apply w-1/2 hover:bg-blue-400 focus:bg-blue-500 rounded-l-lg transition-all text-2xl sm:text-xl text-blue-900 focus:bg-opacity-50
+}
+
+.doctor-list-remove-card-remove-button {
+    @apply w-1/2 hover:bg-red-400 focus:bg-red-500 rounded-r-lg transition-all text-2xl sm:text-xl text-red-900 focus:bg-opacity-50 text-center
+}
+
+.doctor-list-add-doctor-button {
+    @apply bg-blue-200 border border-blue-500 hover:bg-blue-300 focus:bg-blue-400 transition-all p-4 rounded-xl text-2xl sm:text-xl mx-auto my-2
+}

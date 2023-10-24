@@ -1,0 +1,15 @@
+﻿.nav-bar {
+    @apply h-16 sticky z-50 top-0 w-screen bg-blue-400 text-white
+}
+
+.nav-bar-mobile-link {
+    @apply text-3xl flex justify-center items-center p-1 py-3 hover:bg-gray-900 hover:bg-opacity-70 transition-all
+}
+
+.nav-bar-non-mobile-link {
+    @apply ml-auto text-2xl sm:text-xl hover:text-blue-900 transition-all mx-1
+}
+
+.nav-bar-mobile-menu {
+    @apply absolute top-0 left-0 w-full h-screen flex flex-col bg-gray-800 bg-opacity-90 origin-top animate-open-menu
+}
