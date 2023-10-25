@@ -1,6 +1,5 @@
 using Application.Dtos.Message;
 using AutoMapper;
-using Domain.Messages;
 
 namespace Application.MappingProfiles;
 

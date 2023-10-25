@@ -1,7 +1,5 @@
 ﻿using Application.Dtos.Doctor;
-using Application.Dtos.Subject;
 using AutoMapper;
-using Domain.Doctor;
 using Domain.Subject;
 
 namespace Application.MappingProfiles;
@@ -14,7 +12,7 @@ public class Doctor : Profile
         CreateMap<EditDoctorDto, Domain.Doctor.Doctor>().ReverseMap();
         CreateMap<Domain.Doctor.Doctor, DoctorDto>()
             .ForMember(dest => dest.Subjects, opt =>
-                opt.MapFrom(src => src.DoctorSubjects.Select(ds => new SubjectForPageDto
+                opt.MapFrom(src => src.DoctorSubjects.Select(ds => new DoctorSubjectForPageDto
                 {
                     Id = ds.SubjectId,
                     Department = ds.Subject.Department,

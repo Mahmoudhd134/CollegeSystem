@@ -1,6 +1,4 @@
-﻿using Application.Dtos.Subject;
-
-namespace Application.Dtos.Doctor;
+﻿namespace Application.Dtos.Doctor;
 
 public class DoctorDto
 {
@@ -12,7 +10,7 @@ public class DoctorDto
     public string PhoneNumber { get; set; }
     public string NationalNumber { get; set; }
     public bool IsOwner { get; set; }
-    public IList<SubjectForPageDto> Subjects { get; set; }
+    public IList<DoctorSubjectForPageDto> Subjects { get; set; }
     public bool IsComplete { get; set; }
     public string ProfilePhoto { get; set; }
 }

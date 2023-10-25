@@ -10,6 +10,16 @@ public class Student : Profile
         CreateMap<AddStudentDto, Domain.Student.Student>();
         CreateMap<Domain.Student.Student, StudentForPageDto>();
         CreateMap<EditStudentDto, Domain.Student.Student>();
-        CreateMap<Domain.Student.Student, StudentDto>();
+        CreateMap<Domain.Student.Student, StudentDto>()
+            .ForMember(dest => dest.Subjects, opt =>
+                opt.MapFrom(src => src.StudentSubjects
+                    .Select(x => x.Subject)
+                    .Select(x => new StudentSubjectForPageDto()
+                    {
+                        Id = x.Id,
+                        Code = x.Code,
+                        Department = x.Department,
+                        Name = x.Name
+                    })));
     }
 }

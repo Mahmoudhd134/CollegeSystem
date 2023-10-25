@@ -1,6 +1,5 @@
 ﻿using Application.Dtos.Auth;
 using AutoMapper;
-using Domain.Identity;
 
 namespace Application.MappingProfiles;
 

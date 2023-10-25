@@ -1,5 +1,4 @@
 ﻿using Application.Dtos.Student;
-using Application.Dtos.Subject;
 using Application.ErrorHandlers.Errors;
 using Application.MediatR.Queries.Student;
 using AutoMapper;

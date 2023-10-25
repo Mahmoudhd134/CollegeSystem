@@ -1,6 +1,5 @@
 ﻿using Application.ErrorHandlers.Errors;
 using Application.MediatR.Commands.Student;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
