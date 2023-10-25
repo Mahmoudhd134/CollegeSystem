@@ -1,6 +1,6 @@
 ﻿using Application.Dtos.SubjectMaterial;
-using Application.MediatR.Commands.SubjectMaterial;
-using Application.MediatR.Queries.SubjectMaterials;
+using Application.MediatR.Commands.Subject;
+using Application.MediatR.Queries.Subject;
 using Domain.Subject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

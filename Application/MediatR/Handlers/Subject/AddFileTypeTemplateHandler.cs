@@ -1,8 +1,8 @@
 ﻿using Application.ErrorHandlers.Errors;
-using Application.MediatR.Commands.SubjectMaterial;
+using Application.MediatR.Commands.Subject;
 using Application.MediatR.Queries.Global;
 
-namespace Application.MediatR.Handlers.SubjectMaterial;
+namespace Application.MediatR.Handlers.Subject;
 
 public class AddFileTypeTemplateHandler : IRequestHandler<AddFileTypeTemplateCommand, Response<bool>>
 {

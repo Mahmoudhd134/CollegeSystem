@@ -1,10 +1,10 @@
 ﻿using Application.ErrorHandlers.Errors;
-using Application.MediatR.Commands.SubjectMaterial;
+using Application.MediatR.Commands.Subject;
 using Application.MediatR.Queries.Global;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
-namespace Application.MediatR.Handlers.SubjectMaterial;
+namespace Application.MediatR.Handlers.Subject;
 
 public class DeleteSubjectMaterialHandler : IRequestHandler<DeleteSubjectMaterialCommand, Response<bool>>
 {

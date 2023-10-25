@@ -1,6 +1,5 @@
 ﻿using Application.Dtos.Doctor;
 using Application.MediatR.Commands.Doctor;
-using Application.MediatR.Commands.DoctorSubject;
 using Application.MediatR.Queries.Doctor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

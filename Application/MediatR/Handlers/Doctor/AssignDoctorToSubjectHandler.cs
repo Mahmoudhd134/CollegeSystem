@@ -1,9 +1,9 @@
 ﻿using Application.ErrorHandlers.Errors;
-using Application.MediatR.Commands.DoctorSubject;
+using Application.MediatR.Commands.Doctor;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
-namespace Application.MediatR.Handlers.DoctorSubject;
+namespace Application.MediatR.Handlers.Doctor;
 
 public class AssignDoctorToSubjectHandler : IRequestHandler<AssignDoctorToSubjectCommand, Response<bool>>
 {

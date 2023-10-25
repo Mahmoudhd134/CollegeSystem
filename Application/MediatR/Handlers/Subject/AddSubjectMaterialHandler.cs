@@ -1,11 +1,11 @@
 ﻿using Application.Abstractions;
 using Application.ErrorHandlers.Errors;
-using Application.MediatR.Commands.SubjectMaterial;
+using Application.MediatR.Commands.Subject;
 using Domain.Subject;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
-namespace Application.MediatR.Handlers.SubjectMaterial;
+namespace Application.MediatR.Handlers.Subject;
 
 public class AddSubjectMaterialHandler : IRequestHandler<AddSubjectMaterialCommand, Response<bool>>
 {

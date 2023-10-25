@@ -1,9 +1,9 @@
 ﻿using Application.Abstractions;
 using Application.Dtos.SubjectMaterial;
 using Application.ErrorHandlers.Errors;
-using Application.MediatR.Queries.SubjectMaterials;
+using Application.MediatR.Queries.Subject;
 
-namespace Application.MediatR.Handlers.SubjectMaterial;
+namespace Application.MediatR.Handlers.Subject;
 
 public class GetSubjectMaterialPathAndTypeHandler : IRequestHandler<GetSubjectMaterialPathAndContentQuery,
     Response<GetSubjectMaterialPathAndTypeDto>>

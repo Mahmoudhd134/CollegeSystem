@@ -26,7 +26,13 @@ public class Subject : Profile
             .ForMember(dest => dest.DoctorUsername, opt =>
                 opt.MapFrom(src => src.DoctorSubject.Doctor.UserName))
             .ForMember(dest => dest.DoctorProfilePhoto, opt =>
-                opt.MapFrom(src => src.DoctorSubject.Doctor.ProfilePhoto))
+                opt.MapFrom(src => src.DoctorSubject.Doctor.ProfilePhoto));
+
+        CreateMap<Domain.Subject.Subject, SubjectWithMaterialsDto>()
+            .ForMember(dest => dest.HasADoctor, opt =>
+                opt.MapFrom(src => src.DoctorSubject != null))
+            .ForMember(dest => dest.DoctorId, opt =>
+                opt.MapFrom(src => src.DoctorSubject.DoctorId))
             .ForMember(dest => dest.Files, opt =>
                 opt.MapFrom(src =>
                     src.SubjectFiles.Select(x => new SubjectFileDto

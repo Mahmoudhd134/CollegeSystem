@@ -8,7 +8,7 @@ namespace Api.Controllers;
 
 public class SubjectController : BaseController
 {
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpGet]
     [Route("{pageIndex:int}/{pageSize:int}")]
     public async Task<ActionResult> Page(int pageIndex, int pageSize, string department, int? year,
@@ -18,13 +18,18 @@ public class SubjectController : BaseController
             await Mediator.Send(new GetSubjectForPageQuery(pageIndex, pageSize, department, year, namePrefix)));
     }
 
-    [Authorize(Roles = "Admin,Doctor")]
     [HttpGet]
     [Route("{code:int}")]
     public async Task<ActionResult> Page(int code)
     {
-        return Return(await Mediator.Send(new GetSubjectByCodeQuery(code, Roles, Id)));
+        return Return(await Mediator.Send(new GetSubjectByCodeQuery(code, Id)));
     }
+
+    [Authorize(Roles = "Admin,Doctor")]
+    [HttpGet]
+    [Route("Materials/{code:int}")]
+    public async Task<ActionResult<SubjectWithMaterialsDto>> GetSubjectWithMaterials(int code) =>
+        Return(await Mediator.Send(new GetSubjectWithMaterialsInfoQuery(code, Id)));
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
