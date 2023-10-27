@@ -45,18 +45,39 @@ public class Subject : Profile
                         SubjectId = x.SubjectId
                     })));
 
+        CreateMap<Domain.Subject.Subject, SubjectWithStudentsDto>()
+            .ForMember(dest => dest.HasADoctor, opt =>
+                opt.MapFrom(src => src.DoctorSubject != null))
+            .ForMember(dest => dest.DoctorId, opt =>
+                opt.MapFrom(src => src.DoctorSubject.DoctorId))
+            // .ForMember(dest => dest.NumberOfStudents, opt =>
+            // opt.MapFrom(src => src.StudentSubjects.Count));
+            .ForMember(dest => dest.NumberOfStudentsForEachDepartment, opt =>
+                opt.MapFrom(src => src.StudentSubjects
+                    .GroupBy(x => x.Student.Department)
+                    .Select(x => new x()
+                    {
+                        Department = x.Key,
+                        Count = x.Count()
+                    })
+                ));
+
         CreateMap<Domain.Subject.Subject, SubjectReportDto>()
+            .ForMember(dest => dest.HasADoctor, opt =>
+                opt.MapFrom(src => src.DoctorSubject != null))
             .ForMember(dest => dest.Doctor, opt =>
-                opt.MapFrom(src => new DoctorForSubjectReportDto
-                {
-                    Id = src.DoctorSubject.DoctorId,
-                    Firstname = src.DoctorSubject.Doctor.FirstName,
-                    Lastname = src.DoctorSubject.Doctor.LastName,
-                    Username = src.DoctorSubject.Doctor.UserName,
-                    Email = src.DoctorSubject.Doctor.Email,
-                    PhoneNumber = src.DoctorSubject.Doctor.PhoneNumber,
-                    NationalNumber = src.DoctorSubject.Doctor.NationalNumber
-                }))
+                opt.MapFrom(src => src.DoctorSubject == null
+                    ? null
+                    : new DoctorForSubjectReportDto
+                    {
+                        Id = src.DoctorSubject.DoctorId,
+                        Firstname = src.DoctorSubject.Doctor.FirstName,
+                        Lastname = src.DoctorSubject.Doctor.LastName,
+                        Username = src.DoctorSubject.Doctor.UserName,
+                        Email = src.DoctorSubject.Doctor.Email,
+                        PhoneNumber = src.DoctorSubject.Doctor.PhoneNumber,
+                        NationalNumber = src.DoctorSubject.Doctor.NationalNumber
+                    }))
             .ForMember(dest => dest.Files, opt =>
                 opt.MapFrom(src => src.SubjectFiles.Select(f => new SubjectFileDto
                 {

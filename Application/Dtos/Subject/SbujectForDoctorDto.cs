@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos.Doctor;
 
-public class DoctorSubjectForPageDto
+public class SbujectForDoctorDto
 {
     public int Id { get; set; }
     public string Department { get; set; }

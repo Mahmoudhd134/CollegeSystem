@@ -12,7 +12,7 @@ public class Doctor : Profile
         CreateMap<EditDoctorDto, Domain.Doctor.Doctor>().ReverseMap();
         CreateMap<Domain.Doctor.Doctor, DoctorDto>()
             .ForMember(dest => dest.Subjects, opt =>
-                opt.MapFrom(src => src.DoctorSubjects.Select(ds => new DoctorSubjectForPageDto
+                opt.MapFrom(src => src.DoctorSubjects.Select(ds => new SbujectForDoctorDto
                 {
                     Id = ds.SubjectId,
                     Department = ds.Subject.Department,

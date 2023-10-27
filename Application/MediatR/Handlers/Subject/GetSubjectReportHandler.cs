@@ -24,9 +24,6 @@ public class GetSubjectReportHandler : IRequestHandler<GetSubjectReportQuery, Re
         var id = request.SubjectId;
 
         var subjectDto = await _context.Subjects
-            .Include(s => s.DoctorSubject)
-            .ThenInclude(ds => ds.Doctor)
-            .Include(s => s.SubjectFiles)
             .ProjectTo<SubjectReportDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 

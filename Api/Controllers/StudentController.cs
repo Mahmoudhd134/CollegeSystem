@@ -28,7 +28,7 @@ public class StudentController : BaseController
         Return(await Mediator.Send(new AddStudentCommand(addStudentDto)));
 
     [HttpPost("AssignToSubject")]
-    [Authorize(Roles = "Student")]
+    [Authorize(Roles = "Admin,Student")]
     public async Task<ActionResult<bool>> AssignToSubject(
         [FromBody] AssignStudentToSubjectDto assignStudentToSubjectDto) =>
         Return(await Mediator.Send(new AssignStudentToSubjectCommand(assignStudentToSubjectDto)));
@@ -45,7 +45,7 @@ public class StudentController : BaseController
         Return(await Mediator.Send(new DeleteStudentCommand(id)));
 
     [HttpDelete("DeAssignFromSubject/{subjectId:int}")]
-    [Authorize(Roles = "Student")]
+    [Authorize(Roles = "Admin,Student")]
     public async Task<ActionResult<bool>> DeAssignFromSubject(int subjectId) =>
         Return(await Mediator.Send(new DeAssignStudentFromSubjectCommand(Id, subjectId)));
 }

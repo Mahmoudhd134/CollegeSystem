@@ -8,7 +8,6 @@ namespace Api.Controllers;
 
 public class SubjectController : BaseController
 {
-    // [Authorize(Roles = "Admin")]
     [HttpGet]
     [Route("{pageIndex:int}/{pageSize:int}")]
     public async Task<ActionResult> Page(int pageIndex, int pageSize, string department, int? year,
@@ -20,7 +19,7 @@ public class SubjectController : BaseController
 
     [HttpGet]
     [Route("{code:int}")]
-    public async Task<ActionResult> Page(int code)
+    public async Task<ActionResult> GetByCode(int code)
     {
         return Return(await Mediator.Send(new GetSubjectByCodeQuery(code, Id)));
     }
@@ -30,6 +29,12 @@ public class SubjectController : BaseController
     [Route("Materials/{code:int}")]
     public async Task<ActionResult<SubjectWithMaterialsDto>> GetSubjectWithMaterials(int code) =>
         Return(await Mediator.Send(new GetSubjectWithMaterialsInfoQuery(code, Id)));
+    
+    [Authorize(Roles = "Admin,Doctor")]
+    [HttpGet]
+    [Route("Students/{code:int}")]
+    public async Task<ActionResult<SubjectWithMaterialsDto>> GetSubjectWithStudents(int code) =>
+        Return(await Mediator.Send(new GetSubjectsWithStudentsQuery(code)));
 
     [Authorize(Roles = "Admin")]
     [HttpGet]

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useAddDoctorMutation} from "../../App/Api/DoctorApi";
 import {useFormik} from "formik";
-import useGetAppError from "../../Hookes/useGetAppError";
+import getAppError from "../../Utilites/getAppError";
 import {BASE_URL} from "../../App/Api/axiosApi";
 import {AddDoctorModel} from "../../Models/Doctor/AddDoctorModel";
 import * as Yup from "yup";
@@ -72,7 +72,7 @@ const AddDoctor = () => {
             <form onSubmit={formik.handleSubmit}
                   className={"w-full sm:w-3/4 lg:w-2/3 mx-auto sm:border-2 sm:border-blue-300 sm:rounded-lg p-4"}>
                 {addResult.isError &&
-                    <p className={"text-center text-red-500 text-2xl bg-blue-200 p-2"}>{useGetAppError(addResult.error)?.message}</p>}
+                    <p className={"text-center text-red-500 text-2xl bg-blue-200 p-2"}>{getAppError(addResult.error)?.message}</p>}
                 {addResult.isSuccess &&
                     <p className={"text-center text-blue-600 text-2xl bg-blue-200 p-2"}>Registration Complete
                         Successfully</p>}

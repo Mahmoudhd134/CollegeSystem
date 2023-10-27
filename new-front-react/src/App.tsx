@@ -14,6 +14,9 @@ import {baseApi} from "./App/Api/BaseApi";
 import AddDoctor from "./Pages/DoctorPages/AddDoctor";
 import AdminDashboard from "./Pages/AdminDashboard";
 import DoctorPage from "./Pages/DoctorPages/DoctorPage";
+import EditDoctor from "./Pages/DoctorPages/EditDoctor";
+import ChangePassword from "./Pages/DoctorPages/ChangePassword";
+import DoctorReport from "./Pages/DoctorPages/DoctorReport";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -50,8 +53,14 @@ function App() {
                     <Route path='add' element={<AddDoctor/>}/>
                 </Route>
 
-                <Route path='doctor' element={<RouteProtector allowedRoles={[]}/>}>
+                <Route path='doctor' element={<RouteProtector allowedRoles={['admin','doctor']}/>}>
                     <Route path={':id'} element={<DoctorPage/>}/>
+                    <Route path={'report/:id'} element={<DoctorReport/>}/>
+                </Route>
+                
+                <Route path='doctor' element={<RouteProtector allowedRoles={['doctor']}/>}>
+                    <Route path={'edit/:id'} element={<EditDoctor/>}/>
+                    <Route path={'changePassword'} element={<ChangePassword/>}/>
                 </Route>
 
                 <Route path={'AdminDashboard'} element={<RouteProtector allowedRoles={['admin']}/>}>

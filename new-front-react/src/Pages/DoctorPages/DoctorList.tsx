@@ -1,8 +1,8 @@
 import {useDeleteDoctorMutation, useGetDoctorPageQuery} from "../../App/Api/DoctorApi"
 import {useEffect, useState} from "react";
-import useGetAppError from "../../Hookes/useGetAppError";
+import getAppError from "../../Utilites/getAppError";
 import {BASE_URL} from "../../App/Api/axiosApi";
-import useAppNavigator from "../../Hookes/useAppNavigator";
+import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../Components/Global/Pagination";
@@ -163,7 +163,7 @@ const DoctorList = () => {
 
 
     if (isError)
-        return <h3>Error {useGetAppError(error)?.message}</h3>
+        return <h3>Error {getAppError(error)?.message}</h3>
 
     return (
         <>

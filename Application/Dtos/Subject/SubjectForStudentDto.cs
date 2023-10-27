@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos.Student;
 
-public class StudentSubjectForPageDto
+public class SubjectForStudentDto
 {
     public int Id { get; set; }
     public string Department { get; set; }

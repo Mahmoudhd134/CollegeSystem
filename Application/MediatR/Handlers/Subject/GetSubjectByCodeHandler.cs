@@ -29,8 +29,6 @@ public class GetSubjectByCodeHandler : IRequestHandler<GetSubjectByCodeQuery, Re
         if (subjectDto == null)
             return Response<SubjectDto>.Failure(SubjectErrors.WrongCode);
 
-        subjectDto.IsOwner = subjectDto.DoctorId?.Equals(id) ?? false;
-
         return subjectDto;
     }
 }

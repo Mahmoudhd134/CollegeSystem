@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="27a6be72-2e81-46b0-95f5-5c6fda5b96fe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectForStudentDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectWithStudentsDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectWithStudentsHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/MediatR/Queries/Subject/GetSubjectsWithStudentsQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Persistence/EntityConfigurations/StudentConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new-front-react/src/Components/Form/InputField.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new-front-react/src/Components/Navigation/AppLink.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/ChangePassword.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorReport.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/EditDoctor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Controllers/DoctorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Controllers/DoctorController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Controllers/StudentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Controllers/StudentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Controllers/SubjectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Controllers/SubjectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Dtos/Doctor/DoctorDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Doctor/DoctorDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Dtos/Doctor/DoctorSubjectForPageDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Subject/SbujectForDoctorDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/AddStudentDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Student/AddStudentDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/StudentDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Student/StudentDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/StudentSubjectForPageDto.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/Doctor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MappingProfiles/Doctor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/Student.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MappingProfiles/Student.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/Subject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MappingProfiles/Subject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectByCodeHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectByCodeHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectReportHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectReportHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CoursesToTeachers.sln.DotSettings.user" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/Student/Student.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Student/Student.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Data/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/DoctorConfiguration.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/UserConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/EntityConfigurations/UserConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/ApplicationContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Migrations/ApplicationContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Components/Global/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Components/Global/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Components/Global/navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Components/Global/navbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Hookes/useAppNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Hookes/Navigation/useAppNavigator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Hookes/useGetAppError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Utilites/getAppError.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/AddDoctor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/AddDoctor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2XLAoVy3H6RxGN5AWRNgKXSDRPh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

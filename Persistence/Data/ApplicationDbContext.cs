@@ -27,16 +27,16 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
         builder.ApplyConfiguration(new UserConfiguration());
         builder.ApplyConfiguration(new UserRefreshTokenConfiguration());
         builder.ApplyConfiguration(new RoleConfiguration());
-        builder.ApplyConfiguration(new DoctorConfiguration());
         builder.ApplyConfiguration(new SubjectConfiguration());
         builder.ApplyConfiguration(new DoctorSubjectConfiguration());
         builder.ApplyConfiguration(new SubjectFileConfiguration());
         builder.ApplyConfiguration(new MessageConfiguration());
         builder.ApplyConfiguration(new StudentSubjectConfiguration());
+        builder.ApplyConfiguration(new StudentConfiguration());
         builder.ApplyUtcDateTimeConverter();
-        base.OnModelCreating(builder);
     }
 }

@@ -14,7 +14,7 @@ public class Student : Profile
             .ForMember(dest => dest.Subjects, opt =>
                 opt.MapFrom(src => src.StudentSubjects
                     .Select(x => x.Subject)
-                    .Select(x => new StudentSubjectForPageDto()
+                    .Select(x => new SubjectForStudentDto()
                     {
                         Id = x.Id,
                         Code = x.Code,

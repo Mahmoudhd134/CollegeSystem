@@ -4,16 +4,16 @@ import {useGetDoctorQuery} from "../../App/Api/DoctorApi";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
 import SubjectFileTypes from "../../Models/Subject/SubjectFileTypes";
-import useAppNavigator from "../../Hookes/useAppNavigator";
+import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
 import useAppSelector from "../../Hookes/useAppSelector";
-import useGetAppError from "../../Hookes/useGetAppError";
 import DoctorNotFound from "./DoctorNotFound";
+import AppLink from "../../Components/Navigation/AppLink";
+import getAppError from "../../Utilites/getAppError";
 
 const DoctorPage = () => {
     const {id} = useParams()
-    const {data: doctor, isFetching, isError, error} = useGetDoctorQuery(id ?? '')
+    const {data: doctor, isFetching, isError, error} = useGetDoctorQuery((id?.toLowerCase() ?? '') != 'me' ? id! : '')
     const navigator = useAppNavigator()
-    const isAdmin = useAppSelector(s => s.auth.roles?.some(r => r.toLowerCase() === 'admin'))
 
     const fileTypesCount = Object
         .keys(SubjectFileTypes)
@@ -28,10 +28,10 @@ const DoctorPage = () => {
 
     const per = Math.floor((hasDone ?? 1) / (doctor?.subjects.length ?? 1) * 100)
 
-    const progressBar = <div className="w-full bg-gray-200 rounded-full bg-gray-700">
-        <div
-            className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-1 leading-none rounded-full h-full"
-            style={{width: per + '%'}}> {hasDone}/{doctor?.subjects.length}
+    const progressBar = <div className="w-full rounded-full bg-gray-700 relative">
+        <div className={`bg-blue-600 leading-none rounded-full h-full p-1`}
+             style={{width: per + 50 + '%'}}
+        >{hasDone}/{doctor?.subjects.length}
         </div>
     </div>
 
@@ -69,14 +69,27 @@ const DoctorPage = () => {
     </div>
 
     const docSection = <div className="container mx-auto p-4 flex flex-col items-center">
-        {isAdmin &&
-            <button
-                className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition"
-                onClick={e => navigator('/doctor/report/' + doctor?.id)}
-            >Report</button>}
+        <button
+            className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition"
+            onClick={e => navigator('/doctor/report/' + doctor?.id)}
+        >Report
+        </button>
         {doctor?.isOwner &&
-            <button
-                className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition">Edit</button>}
+            <>
+                <AppLink
+                    className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition flex justify-center items-center"
+                    to={'/doctor/changePassword'}
+                >
+                    Change Password
+                </AppLink>
+                <AppLink
+                    to={'/doctor/edit/' + doctor.id}
+                    className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition flex justify-center items-center mt-1"
+                >
+                    Edit
+                </AppLink>
+            </>
+        }
         <div
             className={`h-52 w-52 border-2 ${doctor ? doctor.isComplete ? 'border-green-500' : 'border-red-500' : 'border-black'} overflow-hidden flex flex-col p-4 my-2 justify-center items-center rounded-lg`}>
             {doctor && (doctor.isComplete ?
@@ -103,7 +116,7 @@ const DoctorPage = () => {
                 that has no doctor and assign it to this doctor</p>
         </div>}
 
-        <div className="grid-1-2-3-4-gap-3">
+        <div className="flex-1-2-3-gap-3 justify-center w-full">
             {doctor?.subjects.map(s => <div key={s.id}
                                             className={`border-2 ${s.numberOfFilesTypes === fileTypesCount ? 'border-green-500' : 'border-red-500'} bg-blue-100 p-5 text-center flex flex-col justify-center items-center gap-3 rounded-xl hover:shadow-xl transition-all hover:cursor-pointer`}
                                             onClick={e => navigator('/subjects/' + s.code)}>
@@ -118,7 +131,7 @@ const DoctorPage = () => {
         return <h3>Loading...</h3>
 
     if (isError)
-        return <DoctorNotFound id={'fasdf'} error={useGetAppError(error)!}/>
+        return <DoctorNotFound id={id ?? 'un known'} error={getAppError(error)!}/>
 
     return (<>
         <div className="bg-gradient-to-b from-blue-300 to-blue-200 min-h-remaining text-gray-900 flex items-center">

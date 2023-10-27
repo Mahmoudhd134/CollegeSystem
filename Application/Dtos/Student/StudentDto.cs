@@ -11,5 +11,5 @@ public class StudentDto
     public string NationalNumber { get; set; }
     public bool IsOwner { get; set; }
     public string ProfilePhoto { get; set; }
-    public IList<StudentSubjectForPageDto> Subjects { get; set; }
+    public IList<SubjectForStudentDto> Subjects { get; set; }
 }

@@ -12,7 +12,12 @@ const Navbar = () => {
     const token = useAppSelector(s => s.auth.token)
     const [showMobMenu, setShowMobMenu] = useState(false)
     const dispatch = useAppDispatch()
-    const isAdmin = useAppSelector(s => s.auth.roles)?.some(r => r.toLowerCase() == 'admin')
+
+    const isInRole = ((roles: string[] | null) => (role: string) =>
+        roles?.some(x => x.toLowerCase() === role.toLowerCase()))(useAppSelector(s => s.auth.roles))
+
+    const isAdmin = isInRole('admin')
+    const isDoctor = isInRole('doctor')
     const mobLink = (link: string, text: string) =>
         <Link to={link} state={{from: loc}} className='nav-bar-mobile-link'>{text}</Link>
     const navBarLink = (link: string, text: string) =>
@@ -33,6 +38,8 @@ const Navbar = () => {
             className={'nav-bar-mobile-link text-red-600 hover:text-red-800 hover:cursor-pointer'}
             onClick={e => dispatch(logout())}
         >SignOut</div> : mobLink('/login', 'Login')}
+        
+        {isDoctor && mobLink('/doctor/me', 'Profile')}
     </div>
 
     const mobMenuButton = <div className="block sm:hidden ml-auto mr-1 text-3xl hover:cursor-pointer">
@@ -52,8 +59,10 @@ const Navbar = () => {
                 {/*Non-Mob Links */}
                 {isAdmin && navBarLink('/AdminDashboard', 'AdminDashboard')}
 
+                {isDoctor && navBarLink('/doctor/me', 'Profile')}
+                
                 {token ? <div
-                    className={'nav-bar-non-mobile-link text-red-600 hover:text-red-800 hover:cursor-pointer'}
+                    className={'nav-bar-non-mobile-link text-red-600 hover:text-red-800 hover:cursor-pointer mx-1'}
                     onClick={e => dispatch(logout())}
                 >SignOut</div> : navBarLink('/login', 'Login')}
             </div>

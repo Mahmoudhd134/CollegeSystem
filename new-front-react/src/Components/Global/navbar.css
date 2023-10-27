@@ -7,7 +7,7 @@
 }
 
 .nav-bar-non-mobile-link {
-    @apply ml-auto text-2xl sm:text-xl hover:text-blue-900 transition-all mx-1
+    @apply ml-auto text-2xl sm:text-xl hover:text-blue-900 transition-all
 }
 
 .nav-bar-mobile-menu {

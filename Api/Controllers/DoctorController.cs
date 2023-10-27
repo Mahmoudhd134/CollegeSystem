@@ -25,7 +25,7 @@ public class DoctorController : BaseController
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,")]
     [Route("Report/{id}")]
     public async Task<ActionResult> GetReport(string id)
     {

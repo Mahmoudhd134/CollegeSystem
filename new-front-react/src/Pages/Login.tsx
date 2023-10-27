@@ -2,11 +2,11 @@ import {useFormik} from 'formik'
 import * as yup from 'yup'
 import LoginModel from '../Models/Auth/LoginModel'
 import {useLoginMutation} from '../App/Api/AuthApi'
-import useGetAppError from '../Hookes/useGetAppError'
 import {MutableRefObject, useEffect, useRef} from 'react'
 import useAppDispatch from '../Hookes/useAppDispatch'
 import {setCredentials} from '../Feutures/Auth/authSlice'
-import useAppNavigator from "../Hookes/useAppNavigator";
+import useAppNavigator from "../Hookes/Navigation/useAppNavigator";
+import getAppError from "../Utilites/getAppError";
 
 const Login = () => {
     const [login, loginResult] = useLoginMutation()
@@ -20,8 +20,8 @@ const Login = () => {
             password: ''
         },
         validationSchema: yup.object({
-            username: yup.string().required('username is requered'),
-            password: yup.string().required('password is requered')
+            username: yup.string().required('username is required'),
+            password: yup.string().required('password is required')
         }),
         onSubmit: (values) => login(values)
     })
@@ -32,8 +32,11 @@ const Login = () => {
 
         dispatch(setCredentials(loginResult.data))
         localStorage.setItem('stayLogin', stayLogin.current.checked ? 'true' : 'false')
-        const isAdmin = loginResult.data.roles?.some(r => r.toLowerCase() == 'admin')
-        if (isAdmin) navigator('/AdminDashboard')
+        const isInRole = ((roles: string[] | null) => (role: string) =>
+            roles?.some(r => r.toLowerCase() === role.toLowerCase()))(loginResult.data.roles)
+
+        if (isInRole('admin')) navigator('/AdminDashboard')
+        if (isInRole('doctor')) navigator('/doctor/me')
 
     }, [loginResult.isSuccess])
 
@@ -44,7 +47,7 @@ const Login = () => {
                       className='border-2 border-blue-500 rounded-xl p-3 w-full mx-auto flex flex-col items-center'>
                     {loginResult.isError &&
                         <div
-                            className="bg-blue-200 w-full text-center text-xl p-3 rounded-2xl text-red-900">{useGetAppError(loginResult.error)?.message}</div>}
+                            className="bg-blue-200 w-full text-center text-xl p-3 rounded-2xl text-red-900">{getAppError(loginResult.error)?.message}</div>}
 
                     <div>
                         <label htmlFor="username" className='block my-1 w-fit'>
