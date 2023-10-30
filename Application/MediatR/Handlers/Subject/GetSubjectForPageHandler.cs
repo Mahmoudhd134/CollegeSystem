@@ -3,6 +3,7 @@ using Application.ErrorHandlers.Errors;
 using Application.MediatR.Queries.Subject;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Subject;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
@@ -23,29 +24,50 @@ public class
     public async Task<Response<IEnumerable<SubjectForPageDto>>> Handle(GetSubjectForPageQuery request,
         CancellationToken cancellationToken)
     {
-        var (pageIndex, pageSize, department, year, namePrefix) = request;
+        var (pageIndex, pageSize, department, year, namePrefix, hasDoctor, completed) = request;
 
         if (year is < 1 or > 9)
             return Response<IEnumerable<SubjectForPageDto>>.Failure(SubjectErrors.InvalidYear);
 
-        var subjectDtos = _context.Subjects
+        var subjects = _context.Subjects
             .Include(s => s.SubjectFiles)
             .AsQueryable();
 
         if (string.IsNullOrWhiteSpace(department) == false)
-            subjectDtos = subjectDtos
+            subjects = subjects
                 .Where(s => s.Department.ToUpper().Equals(department.ToUpper()));
 
         if (string.IsNullOrWhiteSpace(namePrefix) == false)
-            subjectDtos = subjectDtos
+            subjects = subjects
                 .Where(s => s.Name.ToUpper().StartsWith(namePrefix.ToUpper()));
 
         if (year != null)
-            subjectDtos = subjectDtos
+            subjects = subjects
                 .Where(s => s.Code > year * 100 - 1 && s.Code < (year + 1) * 100);
 
+        if (hasDoctor != null)
+            if (hasDoctor ?? false)
+                subjects = subjects
+                    .Include(s => s.DoctorSubject)
+                    .Where(s => s.DoctorSubject.DoctorId != null);
+            else
+                subjects = subjects
+                    .Include(s => s.DoctorSubject)
+                    .Where(s => s.DoctorSubject.DoctorId == null);
+
+        var subjectDtos = subjects.ProjectTo<SubjectForPageDto>(_mapper.ConfigurationProvider)
+            .AsQueryable();
+
+        if (completed != null)
+            if (completed ?? false)
+                subjectDtos = subjectDtos
+                    .Where(s => s.NumberOfFilesTypes == Enum.GetValues<SubjectFileTypes>().Length);
+            else
+                subjectDtos = subjectDtos
+                    .Where(s => s.NumberOfFilesTypes < Enum.GetValues<SubjectFileTypes>().Length);
+
+
         return await subjectDtos
-            .ProjectTo<SubjectForPageDto>(_mapper.ConfigurationProvider)
             .Skip(pageIndex * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

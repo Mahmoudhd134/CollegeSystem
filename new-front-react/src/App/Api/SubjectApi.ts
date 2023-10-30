@@ -12,13 +12,15 @@ export const subjectApi = baseApi.injectEndpoints({
             providesTags: (result) => [{type: 'subject', id: result?.id}]
         }),
         getSubjectPage: builder.query<SubjectForPageModel[],
-            { pageIndex: number, pageSize: number, department: string | undefined, year: number | undefined, namePrefix: string | undefined }>({
+            { pageIndex: number, pageSize: number, department?: string | undefined, year?: number | undefined, namePrefix?: string | undefined, hasDoctor?: boolean | undefined, completed?: boolean | undefined }>({
             query: args => ({
                 url: `subject/${args.pageIndex}/${args.pageSize}`,
                 params: {
                     'department': args.department,
                     'year': args.year,
-                    'namePrefix': args.namePrefix
+                    'namePrefix': args.namePrefix,
+                    'hasDoctor': args.hasDoctor,
+                    'completed':args.completed
                 }
             }),
             providesTags: (result = []) => [

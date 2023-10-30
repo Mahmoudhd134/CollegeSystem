@@ -11,10 +11,10 @@ public class SubjectController : BaseController
     [HttpGet]
     [Route("{pageIndex:int}/{pageSize:int}")]
     public async Task<ActionResult> Page(int pageIndex, int pageSize, string department, int? year,
-        string namePrefix)
+        string namePrefix,bool? hasDoctor, bool? completed)
     {
         return Return(
-            await Mediator.Send(new GetSubjectForPageQuery(pageIndex, pageSize, department, year, namePrefix)));
+            await Mediator.Send(new GetSubjectForPageQuery(pageIndex, pageSize, department, year, namePrefix, hasDoctor, completed)));
     }
 
     [HttpGet]

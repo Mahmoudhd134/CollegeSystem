@@ -17,6 +17,7 @@ import DoctorPage from "./Pages/DoctorPages/DoctorPage";
 import EditDoctor from "./Pages/DoctorPages/EditDoctor";
 import ChangePassword from "./Pages/DoctorPages/ChangePassword";
 import DoctorReport from "./Pages/DoctorPages/DoctorReport";
+import SubjectList from "./Pages/SubjectPages/SubjectList";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -32,7 +33,7 @@ function App() {
                 dispatch(baseApi.util.resetApiState())
                 if (data) {
                     dispatch(setCredentials(data as TokenModel))
-                    navigator(loc.pathname)
+                    navigator(loc)
                 } else {
                     dispatch(logout())
                 }
@@ -61,6 +62,10 @@ function App() {
                 <Route path='doctor' element={<RouteProtector allowedRoles={['doctor']}/>}>
                     <Route path={'edit/:id'} element={<EditDoctor/>}/>
                     <Route path={'changePassword'} element={<ChangePassword/>}/>
+                </Route>
+
+                <Route path='subject' element={<RouteProtector allowedRoles={[]}/>}>
+                    <Route index element={<SubjectList/>}/>
                 </Route>
 
                 <Route path={'AdminDashboard'} element={<RouteProtector allowedRoles={['admin']}/>}>
