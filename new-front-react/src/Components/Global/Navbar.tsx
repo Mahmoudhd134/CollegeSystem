@@ -48,7 +48,7 @@ const Navbar = () => {
         />
     </div>
 
-    return (<nav className={'nav-bar'}>
+    return (<nav className={'nav-bar no-print'}>
         <div className="container mx-auto p-4 flex items-baseline">
             <Link to={'/'} state={{from: loc}}
                   className={'text-3xl sm:text-2xl hover:text-blue-700 transition-all'}>Home</Link>

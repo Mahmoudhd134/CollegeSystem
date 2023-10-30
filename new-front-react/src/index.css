@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@media print {
+    .no-print {
+        display: none;
+    }
+}
+
 .min-h-remaining {
     min-height: calc(100vh - 4em);
 }

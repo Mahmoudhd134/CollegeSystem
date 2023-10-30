@@ -46,5 +46,5 @@ export const baseApi = createApi({
     baseQuery,
     tagTypes: ['user', 'doctor', 'subject', 'message'],
     endpoints: () => ({}),
-    // keepUnusedDataFor: 0
+    keepUnusedDataFor: 0
 })
