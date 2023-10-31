@@ -3,7 +3,7 @@ import {useLocation} from "react-router-dom";
 import {Form, Formik} from "formik";
 import * as Yup from 'yup'
 import ChangePasswordModel from "../../Models/Auth/ChangePasswordModel";
-import InputField from "../../Components/Form/InputField";
+import MyInputField from "../../Components/Form/MyInputField";
 import {useChangePasswordMutation} from "../../App/Api/AuthApi";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
 import getAppError from "../../Utilites/getAppError";
@@ -46,19 +46,19 @@ const ChangePassword = () => {
                         <div>{getAppError(changeResult.error)?.message}</div>
                     </h3>}
                     <div className="w-full sm:w-1/2 mx-auto border border-gray-800 p-3 rounded-xl my-3">
-                        <InputField
+                        <MyInputField
                             name={'oldPassword'}
                             label={'Old Password'}
                             placeholder={'Old Password...'}/>
                     </div>
                     <div className="w-full sm:w-1/2 mx-auto border border-gray-800 p-3 rounded-xl my-3">
-                        <InputField
+                        <MyInputField
                             name={'newPassword'}
                             label={'New Password'}
                             placeholder={'New Password...'}/>
                     </div>
                     <div className="w-full sm:w-1/2 mx-auto border border-gray-800 p-3 rounded-xl my-3">
-                        <InputField
+                        <MyInputField
                             name={'confirmPassword'}
                             label={'Confirm Password'}
                             placeholder={'Confirm Password...'}/>

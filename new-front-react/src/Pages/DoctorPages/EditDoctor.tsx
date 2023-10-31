@@ -2,7 +2,7 @@
 import * as Yup from 'yup'
 import {EditDoctorModel} from "../../Models/Doctor/EditDoctorModel";
 import {useParams} from "react-router-dom";
-import InputField from "../../Components/Form/InputField";
+import MyInputField from "../../Components/Form/MyInputField";
 import {useEditDoctorMutation, useGetDoctorEditInfoQuery} from "../../App/Api/DoctorApi";
 import {useEffect, useState} from "react";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
@@ -48,28 +48,28 @@ const EditDoctor = () => {
                 enableReinitialize={true}>
                 {({handleSubmit}) => <Form onSubmit={handleSubmit}>
                     <div className="w-full sm:w-1/2 mx-auto border border-gray-800 p-3 rounded-xl my-3">
-                        <InputField
+                        <MyInputField
                             name={'firstname'}
                             label={'First Name'}
                             placeholder={'First Name...'}/>
                     </div>
 
                     <div className="w-full sm:w-1/2 mx-auto border border-gray-800 p-3 rounded-xl my-3">
-                        <InputField
+                        <MyInputField
                             name={'lastname'}
                             label={'Last Name'}
                             placeholder={'Last Name...'}/>
                     </div>
 
                     <div className="w-full sm:w-1/2 mx-auto border border-gray-800 p-3 rounded-xl my-3">
-                        <InputField
+                        <MyInputField
                             name={'email'}
                             label={'Email'}
                             placeholder={'Email...'}/>
                     </div>
 
                     <div className="w-full sm:w-1/2 mx-auto border border-gray-800 p-3 rounded-xl my-3">
-                        <InputField
+                        <MyInputField
                             name={'phoneNumber'}
                             label={'Phone Number'}
                             placeholder={'Phone Number...'}/>

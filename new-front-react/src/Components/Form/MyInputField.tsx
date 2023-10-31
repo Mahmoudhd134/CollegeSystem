@@ -5,7 +5,7 @@ type Props = {
     label: string,
     placeholder?: string
 }
-const InputField = (props: Props) => {
+const MyInputField = (props: Props) => {
     const [field, meta] = useField(props.name)
     return (
         <div className={'flex flex-col'}>
@@ -23,4 +23,4 @@ const InputField = (props: Props) => {
 };
 
 
-export default InputField;
+export default MyInputField;

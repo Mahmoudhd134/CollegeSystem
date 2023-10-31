@@ -27,7 +27,6 @@ const RouteProtector = (props: { allowedRoles: string[] }) => {
             text: '-)'
         }
     ]
-
     return token ?
         props.allowedRoles.length > 0 ?
             roles?.some(r => props.allowedRoles.some(ar => ar.trim().toLowerCase() === r.trim().toLowerCase())) ?

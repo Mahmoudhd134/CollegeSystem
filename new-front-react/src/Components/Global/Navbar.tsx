@@ -33,13 +33,13 @@ const Navbar = () => {
 
         {/*Mob Links Here*/}
         {isAdmin && mobLink('/AdminDashboard', 'Admin Dashboard')}
+        {isDoctor && mobLink('/doctor/me', 'Profile')}
+        {mobLink('/Subject', 'Subjects')}
 
         {token ? <div
             className={'nav-bar-mobile-link text-red-600 hover:text-red-800 hover:cursor-pointer'}
             onClick={e => dispatch(logout())}
         >SignOut</div> : mobLink('/login', 'Login')}
-        
-        {isDoctor && mobLink('/doctor/me', 'Profile')}
     </div>
 
     const mobMenuButton = <div className="block sm:hidden ml-auto mr-1 text-3xl hover:cursor-pointer">
@@ -55,12 +55,13 @@ const Navbar = () => {
 
             {showMobMenu ? mobMenu : mobMenuButton}
 
-            <div className="hidden sm:flex ml-auto">
+            <div className="hidden sm:flex ml-auto gap-3">
                 {/*Non-Mob Links */}
                 {isAdmin && navBarLink('/AdminDashboard', 'AdminDashboard')}
 
                 {isDoctor && navBarLink('/doctor/me', 'Profile')}
-                
+                {navBarLink('/Subject', 'Subjects')}
+
                 {token ? <div
                     className={'nav-bar-non-mobile-link text-red-600 hover:text-red-800 hover:cursor-pointer mx-1'}
                     onClick={e => dispatch(logout())}

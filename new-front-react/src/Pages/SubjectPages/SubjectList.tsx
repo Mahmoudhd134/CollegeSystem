@@ -4,6 +4,7 @@ import {useGetSubjectPageQuery} from "../../App/Api/SubjectApi";
 import SubjectFileTypes from "../../Models/Subject/SubjectFileTypes";
 import PaginationWithUrlSearchParams from "../../Components/Global/PaginationWithUrlSearchParams";
 import AppLink from "../../Components/Navigation/AppLink";
+import useIsInRole from "../../Hookes/useIsInRole";
 
 const SubjectList = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -17,6 +18,9 @@ const SubjectList = () => {
     const hasDoctor = searchParams.get('hasDoctor') ? searchParams.get('hasDoctor') == 'true' : undefined
     const completed = searchParams.get('completed') ? searchParams.get('completed') == 'true' : undefined
 
+    const isInRole = useIsInRole()
+    const isAdmin = isInRole('admin')
+
     const {data: subjects, isFetching, isError, error} = useGetSubjectPageQuery({
         pageIndex,
         pageSize: PAGE_SIZE,
@@ -27,8 +31,6 @@ const SubjectList = () => {
         completed
     })
 
-    console.log(searchParams)
-    console.log(department)
     const updateSearchParams = (newParam: any) => {
         const oldParams = [...searchParams.entries()].map(o => ({
             [o[0]]: o[1]
@@ -79,7 +81,7 @@ const SubjectList = () => {
     subjectsContent = (subjects && !isFetching && !isError) ? <div className="bg-blue-300 dark:bg-gray-300 p-3">
         <div className="flex-sm1-md2-lg3-gap-3 justify-around">
             {subjects.map(s => <AppLink to={'/subject/' + s.code} key={s.id}
-                                        className={`border rounded-xl ${maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
+                                        className={`border rounded-xl ${isAdmin ? (maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800') : 'border-gray-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
                 <img
                     src="/subject.jpg"
                     alt="subjectImg"
@@ -88,7 +90,7 @@ const SubjectList = () => {
                 <div className="p-3 text-center">
                     <div className={'text-2xl'}>{s.department.toUpperCase()}{s.code}</div>
                     <div className={'text-xl sm:text-lg'}>{s.name}</div>
-                    <div className={'text-lg sm:text-md'}>{s.numberOfFilesTypes}/{maxFileTypes}</div>
+                    {isAdmin && <div className={'text-lg sm:text-md'}>{s.numberOfFilesTypes}/{maxFileTypes}</div>}
                 </div>
             </AppLink>)}
         </div>
@@ -164,6 +166,7 @@ const SubjectList = () => {
                         </form>
 
                         <hr className={'my-3'}/>
+                        {isInRole('admin') &&
                         <form onSubmit={e => {
                             e.preventDefault()
                             const formData = new FormData(e.currentTarget)
@@ -212,7 +215,7 @@ const SubjectList = () => {
                                 </div>
                             </div>
                             <button>Search</button>
-                        </form>
+                        </form>}
                         <hr className={'my-3'}/>
                         {/*Department Filter*/}
 

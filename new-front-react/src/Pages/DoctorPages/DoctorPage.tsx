@@ -48,11 +48,13 @@ const DoctorPage = () => {
         .filter(s => s === true)
         .length
 
-    const per = Math.floor((hasDone ?? 1) / (doctor?.subjects.length ?? 1) * 100)
+    let per = Math.floor((hasDone ?? 1) / (doctor?.subjects.length ?? 1) * 100) ?? 0
+    if (per == 0)
+        per = 25
 
     const progressBar = <div className="w-full rounded-full bg-gray-700 relative">
         <div className={`bg-blue-600 leading-none rounded-full h-full p-1`}
-             style={{width: per + 50 + '%'}}
+             style={{width: per + '%'}}
         >{hasDone}/{doctor?.subjects.length}
         </div>
     </div>
@@ -156,7 +158,7 @@ const DoctorPage = () => {
         <div className="flex-1-2-3-gap-3 justify-center w-full">
             {doctor?.subjects.map(s => <div key={s.id}
                                             className={`border-2 ${s.numberOfFilesTypes === fileTypesCount ? 'border-green-500' : 'border-red-500'} bg-blue-100 p-5 text-center flex flex-col justify-center items-center gap-3 rounded-xl hover:shadow-xl transition-all hover:cursor-pointer`}
-                                            onClick={e => navigator('/subjects/' + s.code)}>
+                                            onClick={e => navigator('/subject/' + s.code)}>
                 <div className={'text-2xl sm:text-xl justify-start'}>{s.name}</div>
                 <div>{s.department}{s.code}</div>
                 <div>{s.numberOfFilesTypes}/{fileTypesCount}</div>

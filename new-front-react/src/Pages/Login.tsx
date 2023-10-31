@@ -7,12 +7,14 @@ import useAppDispatch from '../Hookes/useAppDispatch'
 import {setCredentials} from '../Feutures/Auth/authSlice'
 import useAppNavigator from "../Hookes/Navigation/useAppNavigator";
 import getAppError from "../Utilites/getAppError";
+import {useLocation} from "react-router-dom";
 
 const Login = () => {
     const [login, loginResult] = useLoginMutation()
     const stayLogin = useRef() as MutableRefObject<HTMLInputElement>
     const dispatch = useAppDispatch()
     const navigator = useAppNavigator()
+    const loc = useLocation()
 
     const loginForm = useFormik<LoginModel>({
         initialValues: {
@@ -35,6 +37,10 @@ const Login = () => {
         const isInRole = ((roles: string[] | null) => (role: string) =>
             roles?.some(r => r.toLowerCase() === role.toLowerCase()))(loginResult.data.roles)
 
+        if (loc.state?.from) {
+            navigator(loc.state.from)
+            return
+        }
         if (isInRole('admin')) navigator('/AdminDashboard')
         if (isInRole('doctor')) navigator('/doctor/me')
 

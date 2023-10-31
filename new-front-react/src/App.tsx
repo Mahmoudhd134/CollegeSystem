@@ -18,6 +18,8 @@ import EditDoctor from "./Pages/DoctorPages/EditDoctor";
 import ChangePassword from "./Pages/DoctorPages/ChangePassword";
 import DoctorReport from "./Pages/DoctorPages/DoctorReport";
 import SubjectList from "./Pages/SubjectPages/SubjectList";
+import {AddSubject} from "./Pages/SubjectPages/AddSubject";
+import {SubjectPage} from "./Pages/SubjectPages/SubjectPage";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -66,6 +68,11 @@ function App() {
 
                 <Route path='subject' element={<RouteProtector allowedRoles={[]}/>}>
                     <Route index element={<SubjectList/>}/>
+                    <Route path={':code'} element={<SubjectPage/>}/>
+
+                    <Route path={'add'} element={<RouteProtector allowedRoles={['admin']}/>}>
+                        <Route index element={<AddSubject/>}/>
+                    </Route>
                 </Route>
 
                 <Route path={'AdminDashboard'} element={<RouteProtector allowedRoles={['admin']}/>}>

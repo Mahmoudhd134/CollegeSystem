@@ -10,7 +10,4 @@ export interface SubjectModel {
     doctorId: string;
     doctorUsername: string;
     doctorProfilePhoto: string,
-    isOwner: boolean;
-    files: SubjectFileModel[];
-    totalNumberOfFilesRequired: number
 }

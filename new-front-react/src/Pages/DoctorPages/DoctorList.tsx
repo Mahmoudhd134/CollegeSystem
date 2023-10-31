@@ -79,7 +79,7 @@ const DoctorList = () => {
     const doctors = data &&
         <div className="grid-1-2-3-4-gap-3 my-3 w-full">
             {data.map(d => <div key={d.id}
-                                className="border border-blue-500 h-80 rounded-2xl bg-blue-50">
+                                className={`border-4 ${d.isComplete ? 'border-green-500' : 'border-red-500'} h-80 rounded-2xl bg-blue-50`}>
                 <div className="h-1/2 p-2 rounded-t-2xl bg-gradient-to-b from-blue-500 to-blue-200">
                     <img
                         className={'object-contain w-full h-full rounded-2xl'}

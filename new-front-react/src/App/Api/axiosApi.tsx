@@ -1,6 +1,7 @@
 ﻿import axios from "axios";
 
 export const BASE_URL = 'http://localhost:5016/api/'
+export const PROFILE_IMAGES_URL = 'http://localhost:5016/ProfileImages/'
 // export const BASE_URL = 'https://qualityms-001-site1.gtempurl.com/api/'
 
 export const axiosApi = axios.create({
