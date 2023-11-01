@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27a6be72-2e81-46b0-95f5-5c6fda5b96fe" name="Changes" comment="Make Subject List Page (frontend &amp; small backend updated).">
+      <change afterPath="$PROJECT_DIR$/new-front-react/public/Images/students.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/public/subject.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/public/Images/subject.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +64,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\University\new-front-react\public" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\University\new-front-react\public\Images" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="new-front-react" type="js.build_tools.npm">
@@ -84,6 +92,7 @@
       <workItem from="1698589892088" duration="299000" />
       <workItem from="1698669391735" duration="4320000" />
       <workItem from="1698683465208" duration="22974000" />
+      <workItem from="1698839603502" duration="3460000" />
     </task>
     <task id="LOCAL-00001" summary="Add SubjectWithStudents Section (backend)">
       <created>1698399201630</created>

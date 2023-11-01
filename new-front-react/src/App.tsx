@@ -1,5 +1,5 @@
 import useAppDispatch from "./Hookes/useAppDispatch";
-import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
 import useRefreshToken from "./Hookes/useRefreshToken";
 import {logout, setCredentials} from "./Feutures/Auth/authSlice";
@@ -56,11 +56,11 @@ function App() {
                     <Route path='add' element={<AddDoctor/>}/>
                 </Route>
 
-                <Route path='doctor' element={<RouteProtector allowedRoles={['admin','doctor']}/>}>
+                <Route path='doctor' element={<RouteProtector allowedRoles={['admin', 'doctor']}/>}>
                     <Route path={':id'} element={<DoctorPage/>}/>
                     <Route path={'report/:id'} element={<DoctorReport/>}/>
                 </Route>
-                
+
                 <Route path='doctor' element={<RouteProtector allowedRoles={['doctor']}/>}>
                     <Route path={'edit/:id'} element={<EditDoctor/>}/>
                     <Route path={'changePassword'} element={<ChangePassword/>}/>
@@ -68,7 +68,15 @@ function App() {
 
                 <Route path='subject' element={<RouteProtector allowedRoles={[]}/>}>
                     <Route index element={<SubjectList/>}/>
-                    <Route path={':code'} element={<SubjectPage/>}/>
+
+                    <Route path={':code'} element={<RouteProtector allowedRoles={[]}/>}>
+                        <Route index element={<SubjectPage/>}/>
+
+                        <Route element={<RouteProtector allowedRoles={['admin', 'doctor']}/>}>
+                            <Route path={'students'} element={<X/>}/>
+                            <Route path={'files'} element={<X/>}/>
+                        </Route>
+                    </Route>
 
                     <Route path={'add'} element={<RouteProtector allowedRoles={['admin']}/>}>
                         <Route index element={<AddSubject/>}/>
@@ -85,3 +93,7 @@ function App() {
 }
 
 export default App
+const X = () => {
+    const {code} = useParams()
+    return <h3>{code}</h3>
+}

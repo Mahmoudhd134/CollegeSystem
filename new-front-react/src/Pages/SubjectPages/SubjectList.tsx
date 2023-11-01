@@ -51,7 +51,7 @@ const SubjectList = () => {
                 {Array.from(Array(Math.floor(PAGE_SIZE / 2)).keys()).map(s => <div key={s}
                                                                                    className={`border rounded-xl`}>
                     <img
-                        src="/subject.jpg"
+                        src="/Images/subject.jpg"
                         alt="subjectImg"
                         className={'rounded-tr-xl rounded-tl-xl w-full'}
                     />
@@ -83,7 +83,7 @@ const SubjectList = () => {
             {subjects.map(s => <AppLink to={'/subject/' + s.code} key={s.id}
                                         className={`border rounded-xl ${isAdmin ? (maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800') : 'border-gray-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
                 <img
-                    src="/subject.jpg"
+                    src="/Images/subject.jpg"
                     alt="subjectImg"
                     className={'rounded-tr-xl rounded-tl-xl w-full'}
                 />
