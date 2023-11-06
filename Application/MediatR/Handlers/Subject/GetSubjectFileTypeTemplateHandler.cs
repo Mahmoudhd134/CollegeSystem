@@ -6,7 +6,7 @@ using Application.MediatR.Queries.Subject;
 namespace Application.MediatR.Handlers.Subject;
 
 public class GetSubjectFileTypeTemplateHandler : IRequestHandler<GetSubjectFileTypeTemplateQuery,
-    Response<GetSubjectMaterialPathAndTypeDto>>
+    Response<SubjectMaterialStreamInfoDto>>
 {
     private readonly IMediator _mediator;
 
@@ -15,22 +15,24 @@ public class GetSubjectFileTypeTemplateHandler : IRequestHandler<GetSubjectFileT
         _mediator = mediator;
     }
 
-    public async Task<Response<GetSubjectMaterialPathAndTypeDto>> Handle(GetSubjectFileTypeTemplateQuery request,
+    public async Task<Response<SubjectMaterialStreamInfoDto>> Handle(GetSubjectFileTypeTemplateQuery request,
         CancellationToken cancellationToken)
     {
         var type = request.Type;
         var wwwroot = await _mediator.Send(new GetWwwrootPathQuery(), cancellationToken);
         var path = Path.Combine(wwwroot, "SubjectFileTemplate", type + ".docx");
+        var info = new FileInfo(path);
         try
         {
-            return new GetSubjectMaterialPathAndTypeDto
+            return new SubjectMaterialStreamInfoDto
             {
-                Bytes = await File.ReadAllBytesAsync(path, cancellationToken)
+                Stream = File.OpenRead(path),
+                Size = info.Length
             };
         }
         catch (FileNotFoundException e)
         {
-            return Response<GetSubjectMaterialPathAndTypeDto>.Failure(SubjectFileTemplateErrors.FileNotFound);
+            return Response<SubjectMaterialStreamInfoDto>.Failure(SubjectFileTemplateErrors.FileNotFound);
         }
     }
 }

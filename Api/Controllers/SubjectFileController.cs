@@ -1,37 +1,74 @@
-﻿using Application.Dtos.SubjectMaterial;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Principal;
+using Application.Dtos.SubjectMaterial;
+using Application.Helpers.Configurations;
 using Application.MediatR.Commands.Subject;
 using Application.MediatR.Queries.Subject;
 using Domain.Subject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Controllers;
 
 [Authorize(Roles = "Admin,Doctor")]
+[RequestSizeLimit(long.MaxValue)]
 public class SubjectFileController : BaseController
 {
-    [HttpGet]
-    [Route("{name}/{returnName?}")]
-    public async Task<ActionResult> Get(string name, string? returnName)
+    private readonly Jwt _jwt;
+
+    public SubjectFileController(IOptions<Jwt> jwt)
     {
-        var response = await Mediator.Send(new GetSubjectMaterialPathAndContentQuery(name));
+        _jwt = jwt.Value;
+    }
+
+    [HttpGet]
+    [Route("{name}")]
+    [AllowAnonymous]
+    public async Task<ActionResult> Get(string name, string token, string returnName = null)
+    {
+        var claimsPrincipal = ValidateToken(token);
+        if (IsInAnyRole(claimsPrincipal, "Admin", "Doctor") == false)
+            return Forbid();
+
+        var response = await Mediator.Send(new GetSubjectMaterialInfoQuery(name));
         if (response.IsSuccess == false)
             return Return(response);
 
-        return File(response.Data.Bytes, "application/octet-stream");
+        Response.Headers.Add("Content-Disposition", "attachment; filename=" + (returnName ?? name));
+        Response.Headers.Add("Content-Type", "application/octet-stream");
+        Response.Headers.Add("Content-Length", response.Data.Size.ToString());
+
+        await response.Data.Stream.CopyToAsync(Response.Body);
+        response.Data.Stream.Close();
+        return new EmptyResult();
     }
 
     [HttpGet]
     [Route("Template/{type}")]
-    public async Task<ActionResult> GetTemplate(SubjectFileTypes type)
+    [AllowAnonymous]
+    public async Task<ActionResult> GetTemplate(SubjectFileTypes type, string token)
     {
+        var claimsPrincipal = ValidateToken(token);
+        if (IsInAnyRole(claimsPrincipal, "Admin", "Doctor") == false)
+            return Forbid();
+
         var response = await Mediator.Send(new GetSubjectFileTypeTemplateQuery(type));
         if (response.IsSuccess == false)
             return Return(response);
 
-        return File(response.Data.Bytes, "application/octet-stream");
+        Response.Headers.Add("Content-Disposition", "attachment; filename=" + type + ".docx");
+        Response.Headers.Add("Content-Type", "application/octet-stream");
+        Response.Headers.Add("Content-Length", response.Data.Size.ToString());
+
+        await response.Data.Stream.CopyToAsync(Response.Body);
+        response.Data.Stream.Close();
+        return new EmptyResult();
     }
 
+//todo upload file in chunks
     [HttpPost]
     [Authorize(Roles = "Admin")]
     [Route("Template")]
@@ -40,6 +77,7 @@ public class SubjectFileController : BaseController
         return Return(await Mediator.Send(new AddFileTypeTemplateCommand(type, file.OpenReadStream(), file.FileName)));
     }
 
+//todo upload file in chunks
     [HttpPost]
     [Authorize(Roles = "Doctor")]
     public async Task<ActionResult> Add([FromForm] IFormFile file,
@@ -55,5 +93,33 @@ public class SubjectFileController : BaseController
     public async Task<ActionResult> Delete(int id)
     {
         return Return(await Mediator.Send(new DeleteSubjectMaterialCommand(id, Id)));
+    }
+
+    private ClaimsPrincipal ValidateToken(string authToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParameters = GetValidationParameters();
+
+        var principal =
+            tokenHandler.ValidateToken(authToken, validationParameters, out var validatedToken);
+        return principal;
+    }
+
+    private TokenValidationParameters GetValidationParameters()
+    {
+        return new TokenValidationParameters()
+        {
+            ValidateLifetime = false, // Because there is no expiration in the generated token
+            ValidateAudience = false, // Because there is no audiance in the generated token
+            ValidateIssuer = false, // Because there is no issuer in the generated token
+            ValidIssuer = "Sample",
+            ValidAudience = "Sample",
+            IssuerSigningKey = _jwt.SecurityKey
+        };
+    }
+
+    private bool IsInAnyRole(ClaimsPrincipal claims, params string[] roles)
+    {
+        return claims.Claims.Any(c => c.Type == ClaimTypes.Role && roles.Contains(c.Value));
     }
 }

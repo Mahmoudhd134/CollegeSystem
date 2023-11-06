@@ -2,7 +2,7 @@
 import {useLocation} from "react-router-dom";
 import {Form, Formik} from "formik";
 import * as Yup from 'yup'
-import ChangePasswordModel from "../../Models/Auth/ChangePasswordModel";
+import ChangePasswordModel from "../../App/Models/Auth/ChangePasswordModel";
 import MyInputField from "../../Components/Form/MyInputField";
 import {useChangePasswordMutation} from "../../App/Api/AuthApi";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";

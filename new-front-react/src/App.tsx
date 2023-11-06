@@ -1,9 +1,9 @@
 import useAppDispatch from "./Hookes/useAppDispatch";
-import {Route, Routes, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import useRefreshToken from "./Hookes/useRefreshToken";
 import {logout, setCredentials} from "./Feutures/Auth/authSlice";
-import TokenModel from "./Models/Auth/TokenModel";
+import TokenModel from "./App/Models/Auth/TokenModel";
 import Home from "./Pages/Home";
 import Layout from "./Pages/Layout";
 import PathNotFound from "./Pages/NotFound/PathNotFound";
@@ -20,6 +20,9 @@ import DoctorReport from "./Pages/DoctorPages/DoctorReport";
 import SubjectList from "./Pages/SubjectPages/SubjectList";
 import {AddSubject} from "./Pages/SubjectPages/AddSubject";
 import {SubjectPage} from "./Pages/SubjectPages/SubjectPage";
+import SubjectWithStudents from "./Pages/SubjectPages/SubjectWithStudents";
+import SubjectWithFiles from "./Pages/SubjectPages/SubjectWithFiles";
+import SubjectReport from "./Pages/SubjectPages/SubjectReport";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -73,8 +76,9 @@ function App() {
                         <Route index element={<SubjectPage/>}/>
 
                         <Route element={<RouteProtector allowedRoles={['admin', 'doctor']}/>}>
-                            <Route path={'students'} element={<X/>}/>
-                            <Route path={'files'} element={<X/>}/>
+                            <Route path={'students'} element={<SubjectWithStudents/>}/>
+                            <Route path={'files'} element={<SubjectWithFiles/>}/>
+                            <Route path={'report'} element={<SubjectReport/>}/>
                         </Route>
                     </Route>
 
@@ -93,7 +97,3 @@ function App() {
 }
 
 export default App
-const X = () => {
-    const {code} = useParams()
-    return <h3>{code}</h3>
-}

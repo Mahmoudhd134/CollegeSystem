@@ -1,4 +1,6 @@
-﻿namespace Application.Dtos.Doctor;
+﻿using Application.Dtos.Subject;
+
+namespace Application.Dtos.Doctor;
 
 public class DoctorDto
 {

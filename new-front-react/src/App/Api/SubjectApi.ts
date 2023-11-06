@@ -1,9 +1,11 @@
 import {baseApi} from "./BaseApi";
-import {SubjectModel} from "../../Models/Subject/SubjectModel";
-import {SubjectForPageModel} from "../../Models/Subject/SubjectForPageModel";
-import {AddSubjectModel} from "../../Models/Subject/AddSubjectModel";
-import {EditSubjectModel} from "../../Models/Subject/EditSubjectModel";
-import {SubjectReportModel} from "../../Models/Subject/SubjectReportModel";
+import {SubjectModel} from "../Models/Subject/SubjectModel";
+import {SubjectForPageModel} from "../Models/Subject/SubjectForPageModel";
+import {AddSubjectModel} from "../Models/Subject/AddSubjectModel";
+import {EditSubjectModel} from "../Models/Subject/EditSubjectModel";
+import {SubjectReportModel} from "../Models/Subject/SubjectReportModel";
+import {SubjectWithMaterialsModel} from "../Models/Subject/SubjectWithMaterialsModel";
+import {SubjectWithStudentsModel} from "../Models/Subject/SubjectWithStudentsModel";
 
 export const subjectApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -20,7 +22,7 @@ export const subjectApi = baseApi.injectEndpoints({
                     'year': args.year,
                     'namePrefix': args.namePrefix,
                     'hasDoctor': args.hasDoctor,
-                    'completed':args.completed
+                    'completed': args.completed
                 }
             }),
             providesTags: (result = []) => [
@@ -32,8 +34,16 @@ export const subjectApi = baseApi.injectEndpoints({
             query: arg => `subject/report/${arg}`,
             providesTags: (result, error, arg) => [
                 {type: 'subject', id: arg},
-                {type: 'doctor', id: result?.doctor.id}
+                {type: 'doctor', id: result?.doctor?.id ?? ''}
             ]
+        }),
+        getSubjectWithMaterials: builder.query<SubjectWithMaterialsModel, number>({
+            query: arg => 'subject/materials/' + arg,
+            providesTags: (result, error, arg) => [{type: 'subject', id: arg}]
+        }),
+        getSubjectWithStudents: builder.query<SubjectWithStudentsModel, number>({
+            query: arg => 'subject/students/' + arg,
+            providesTags: (result, error, arg) => [{type: 'subject', id: arg}]
         }),
         addSubject: builder.mutation<boolean, AddSubjectModel>({
             query: arg => ({
@@ -78,6 +88,8 @@ export const {
     useGetSubjectByCodeQuery,
     useGetSubjectPageQuery,
     useGetSubjectReportQuery,
+    useGetSubjectWithMaterialsQuery,
+    useGetSubjectWithStudentsQuery,
     useAddSubjectMutation,
     useEditSubjectMutation,
     useDeleteSubjectMutation,

@@ -10,6 +10,7 @@ public class SubjectReportDto
     public int Hours { get; set; }
     public string Name { get; set; }
     public bool HasADoctor { get; set; }
+    public bool IsComplete { get; set; }
     public DoctorForSubjectReportDto Doctor { get; set; }
     public IList<SubjectFileDto> Files { get; set; }
 }

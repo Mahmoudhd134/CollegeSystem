@@ -1,6 +1,6 @@
 ﻿import {Formik, Form} from "formik";
 import * as Yup from 'yup'
-import {EditDoctorModel} from "../../Models/Doctor/EditDoctorModel";
+import {EditDoctorModel} from "../../App/Models/Doctor/EditDoctorModel";
 import {useParams} from "react-router-dom";
 import MyInputField from "../../Components/Form/MyInputField";
 import {useEditDoctorMutation, useGetDoctorEditInfoQuery} from "../../App/Api/DoctorApi";

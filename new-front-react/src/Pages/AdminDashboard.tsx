@@ -20,8 +20,8 @@ const AdminDashboard = () => {
                 className="border border-blue-700 p-5 w-full sm:w-5/12 rounded-xl bg-blue-200 hover:shadow hover:shadow-blue-200">
                 <h3 className="text-center text-blue-800 text-3xl sm:text-2xl">Subjects!</h3>
                 <div className="flex justify-between mt-3">
-                    <GroupLink to={'/subject'}>Subjects List</GroupLink>
-                    <GroupLink to={'/subject/add'}>Add New</GroupLink>
+                    <GroupLink to={'/Subject'}>Subjects List</GroupLink>
+                    <GroupLink to={'/Subject/add'}>Add New</GroupLink>
                 </div>
             </div>
         </GroupsContainer>

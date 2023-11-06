@@ -1,4 +1,6 @@
-﻿namespace Application.Abstractions;
+﻿using Application.Dtos.SubjectMaterial;
+
+namespace Application.Abstractions;
 
 public interface IFileAccessor
 {
@@ -7,7 +9,8 @@ public interface IFileAccessor
      */
     Task<string> Add(Stream stream,string extension);
 
-    Task<byte[]> Get(string name);
+    Task<byte[]> GetBytes(string name);
+    Task<SubjectMaterialStreamInfoDto> GetStream(string name);
 
     Task Delete(string name);
 }

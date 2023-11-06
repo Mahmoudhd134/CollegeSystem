@@ -1,8 +1,8 @@
 ﻿import {baseApi} from "./BaseApi";
-import {AddMessageModel} from "../../Models/Message/AddMessageModel";
-import {MessageForSendListModel} from "../../Models/Message/MessageForSendListModel";
-import {MessageModel} from "../../Models/Message/MessageModel";
-import {MessageForReceivedListModel} from "../../Models/Message/MessageForReceivedListModel";
+import {AddMessageModel} from "../Models/Message/AddMessageModel";
+import {MessageForSendListModel} from "../Models/Message/MessageForSendListModel";
+import {MessageModel} from "../Models/Message/MessageModel";
+import {MessageForReceivedListModel} from "../Models/Message/MessageForReceivedListModel";
 
 const MessageApi = baseApi.injectEndpoints({
     endpoints: builder => ({
@@ -18,7 +18,7 @@ const MessageApi = baseApi.injectEndpoints({
                     'pageIndex': arg.pageIndex
                 }
             }),
-            providesTags: (result = [], error, arg) => [
+            providesTags: (result = []) => [
                 'message',
                 ...result.map(({id}) => ({type: 'message' as const, id}))
             ]
@@ -31,7 +31,7 @@ const MessageApi = baseApi.injectEndpoints({
                     'pageIndex': arg.pageIndex
                 }
             }),
-            providesTags: (result = [], error, arg) => [
+            providesTags: (result = []) => [
                 'message',
                 ...result.map(({id}) => ({type: 'message' as const, id}))
             ]

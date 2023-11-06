@@ -1,4 +1,6 @@
-﻿namespace Application.Dtos.Student;
+﻿using Application.Dtos.Subject;
+
+namespace Application.Dtos.Student;
 
 public class StudentDto
 {

@@ -36,12 +36,12 @@ public class SubjectController : BaseController
     public async Task<ActionResult<SubjectWithMaterialsDto>> GetSubjectWithStudents(int code) =>
         Return(await Mediator.Send(new GetSubjectsWithStudentsQuery(code)));
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Doctor")]
     [HttpGet]
-    [Route("Report/{id:int}")]
-    public async Task<ActionResult> GetReport(int id)
+    [Route("Report/{code:int}")]
+    public async Task<ActionResult> GetReport(int code)
     {
-        return Return(await Mediator.Send(new GetSubjectReportQuery(id)));
+        return Return(await Mediator.Send(new GetSubjectReportQuery(code)));
     }
 
     [Authorize(Roles = "Admin")]

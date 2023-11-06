@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import {useParams} from "react-router-dom";
 import {useGetDoctorReportQuery} from "../../App/Api/DoctorApi";
-import SubjectFileTypes from "../../Models/Subject/SubjectFileTypes";
+import SubjectFileTypes from "../../App/Models/Subject/SubjectFileTypes";
 
 const DoctorReport = () => {
     const {id} = useParams()
@@ -28,36 +28,38 @@ const DoctorReport = () => {
         }
 
         return <div className="bg-white p-4 shadow-md rounded-lg">
-                <div className="text-center">
-                    <div className="flex flex-col items-center gap-3 mx-auto w-full sm:w-1/2 md:w-1/3 animate-pulse">
-                        <h3 className="h-4 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></h3>
-                        <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-3/4"></p>
-                        <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-3/4"></p>
-                        <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-3/4"></p>
-                        <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-3/3"></p>
-                        <p className="h-3 bg-gray-300 rounded-full dark:bg-gray-600 w-full mt-2"></p>
-                    </div>
+            <div className="text-center">
+                <div className="flex flex-col items-center gap-3 mx-auto w-full sm:w-1/2 md:w-1/3 animate-pulse">
+                    <h3 className="h-4 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></h3>
+                    <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-3/4"></p>
+                    <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-3/4"></p>
+                    <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-3/4"></p>
+                    <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-3/3"></p>
+                    <p className="h-3 bg-gray-300 rounded-full dark:bg-gray-600 w-full mt-2"></p>
+                </div>
 
-                    <div className="mt-4">
-                        <h3 className="text-2xl text-center font-semibold mb-2">Subjects</h3>
-                        <div className="flex flex-wrap justify-center gap-3">
-                            {tempSubjects.map((x,i) => <div key={i}>{x}</div>)}
-                        </div>
+                <div className="mt-4">
+                    <h3 className="text-2xl text-center font-semibold mb-2">Subjects</h3>
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {tempSubjects.map((x, i) => <div key={i}>{x}</div>)}
                     </div>
                 </div>
             </div>
+        </div>
     }
 
     if (data == undefined)
         return <h3>Error...</h3>
     return (
-        // <div className={'my-container min-h-remaining'}>
-            <div className="dark:bg-gray-100 p-4 shadow-md rounded-lg">
+        <div className={'my-container min-h-remaining'}>
+            <div className="bg-blue-50 dark:bg-gray-100 p-4 shadow-md rounded-lg">
                 <div className="flex">
                     <div className="ml-auto">
-                        <button className={'h-16 w-32 rounded-xl hovel:cursor-pointer bg-blue-100 focus:bg-blue-200 dark:bg-gray-100 dark:focus:bg-gray-200 transition-all no-print'}
-                                onClick={_ => window.print()}
-                        >Print</button>
+                        <button
+                            className={'h-16 w-32 rounded-xl hovel:cursor-pointer bg-blue-100 focus:bg-blue-200 dark:bg-gray-100 dark:focus:bg-gray-200 transition-all no-print'}
+                            onClick={_ => window.print()}
+                        >Print
+                        </button>
                     </div>
                 </div>
 
@@ -104,7 +106,7 @@ const DoctorReport = () => {
                     </div>
                 </div>
             </div>
-        // </div>
+        </div>
     );
 };
 

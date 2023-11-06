@@ -10,10 +10,10 @@ public class SubjectWithStudentsDto
     public bool HasADoctor { get; set; }
     public string DoctorId { get; set; }
     public int NumberOfStudents { get; set; }
-    public List<x> NumberOfStudentsForEachDepartment { get; set; }
+    public List<DepartmentAndCount> NumberOfStudentsForEachDepartment { get; set; }
 }
 
-public class x
+public class DepartmentAndCount
 {
     public string Department { get; set; }
     public int Count { get; set; }

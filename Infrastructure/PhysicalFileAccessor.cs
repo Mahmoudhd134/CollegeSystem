@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Dtos.SubjectMaterial;
 
 namespace Infrastructure;
 
@@ -15,7 +16,19 @@ public class PhysicalFileAccessor : IFileAccessor
         return newFileName;
     }
 
-    public async Task<byte[]> Get(string name)
+    public Task<SubjectMaterialStreamInfoDto> GetStream(string name)
+    {
+        var path = Path.Combine("wwwroot", "subjectMaterials", name);
+        var info = new FileInfo(path);
+        var stream = File.OpenRead(path);
+        return Task.FromResult(new SubjectMaterialStreamInfoDto()
+        {
+            Stream = stream,
+            Size = info.Length
+        });
+    }
+
+    public async Task<byte[]> GetBytes(string name)
     {
         return await File.ReadAllBytesAsync(Path.Combine("wwwroot", "subjectMaterials", name));
     }

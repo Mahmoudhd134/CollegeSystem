@@ -1,13 +1,13 @@
 import React, {ReactNode} from 'react';
-import {useSearchParams} from "react-router-dom";
 import {useGetSubjectPageQuery} from "../../App/Api/SubjectApi";
-import SubjectFileTypes from "../../Models/Subject/SubjectFileTypes";
+import SubjectFileTypes from "../../App/Models/Subject/SubjectFileTypes";
 import PaginationWithUrlSearchParams from "../../Components/Global/PaginationWithUrlSearchParams";
 import AppLink from "../../Components/Navigation/AppLink";
 import useIsInRole from "../../Hookes/useIsInRole";
+import useMySearchParams from "../../Hookes/Navigation/useMySearchParams";
 
 const SubjectList = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const {searchParams, updateSearchParams, clearSearchParams} = useMySearchParams()
     const PAGE_SIZE = 10
 
     const pageIndex = Number(searchParams.get('page') ?? 1) - 1
@@ -31,16 +31,16 @@ const SubjectList = () => {
         completed
     })
 
-    const updateSearchParams = (newParam: any) => {
-        const oldParams = [...searchParams.entries()].map(o => ({
-            [o[0]]: o[1]
-        })).reduce((previousValue, currentValue) => previousValue = {...previousValue, ...currentValue}, {})
-        setSearchParams(prev => ({
-            ...prev,
-            ...oldParams,
-            ...newParam
-        }))
-    }
+    // const updateSearchParams = (newParam: any) => {
+    //     const oldParams = [...searchParams.entries()].map(o => ({
+    //         [o[0]]: o[1]
+    //     })).reduce((previousValue, currentValue) => previousValue = {...previousValue, ...currentValue}, {})
+    //     setSearchParams(prev => ({
+    //         ...prev,
+    //         ...oldParams,
+    //         ...newParam
+    //     }))
+    // }
 
     const maxFileTypes = Object.values(SubjectFileTypes).map(Number).filter(isNaN).length
 
@@ -63,10 +63,9 @@ const SubjectList = () => {
             </div>
 
             <PaginationWithUrlSearchParams pageIndex={pageIndex}
-                                           setPage={(newPage: number) => setSearchParams(p => ({
-                                               ...p,
+                                           setPage={(newPage: number) => updateSearchParams({
                                                page: newPage
-                                           }))}
+                                           })}
                                            hasPrev={false}
                                            hasNext={false}
                                            className={'mt-7'}/>
@@ -80,7 +79,7 @@ const SubjectList = () => {
 
     subjectsContent = (subjects && !isFetching && !isError) ? <div className="bg-blue-300 dark:bg-gray-300 p-3">
         <div className="flex-sm1-md2-lg3-gap-3 justify-around">
-            {subjects.map(s => <AppLink to={'/subject/' + s.code} key={s.id}
+            {subjects.map(s => <AppLink to={'/Subject/' + s.code} key={s.id}
                                         className={`border rounded-xl ${isAdmin ? (maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800') : 'border-gray-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
                 <img
                     src="/Images/subject.jpg"
@@ -110,9 +109,8 @@ const SubjectList = () => {
                     <h3 className="text-center text-2xl sm:text-xl my-3 bg-blue-500 dark:bg-gray-500">Filters</h3>
                     <div className={"bg-blue-300 dark:bg-gray-300 p-3" + (isFetching ? ' animate-pulse' : '')}>
                         <div className="flex justify-around my-3">
-                            <button type={'button'} onClick={_ => {
-                                setSearchParams(p => ({...p, page: 1}))
-                            }}>Clear Search
+                            <button type={'button'} onClick={_ => clearSearchParams()}>
+                                Clear Search
                             </button>
                         </div>
                         <form onSubmit={e => {
@@ -167,55 +165,55 @@ const SubjectList = () => {
 
                         <hr className={'my-3'}/>
                         {isInRole('admin') &&
-                        <form onSubmit={e => {
-                            e.preventDefault()
-                            const formData = new FormData(e.currentTarget)
-                            const d = [...formData.entries()][0]
-                            //@ts-ignore
-                            updateSearchParams({[d[0]]: d[1]})
-                        }}>
-                            {/*A Completion Filter*/}
-                            <div>
-                                <h3 className="text-start ml-1">Choose</h3>
+                            <form onSubmit={e => {
+                                e.preventDefault()
+                                const formData = new FormData(e.currentTarget)
+                                const d = [...formData.entries()][0]
+                                //@ts-ignore
+                                updateSearchParams({[d[0]]: d[1]})
+                            }}>
+                                {/*A Completion Filter*/}
                                 <div>
-                                    <input type={'radio'}
-                                           name={'completed'}
-                                           value={'true'}
-                                           defaultChecked={completed == true}
-                                           id={'is-completed'}
-                                           className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
-                                    />
-                                    <label htmlFor="is-completed"
-                                           className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}
-                                    >Completed</label>
-                                </div>
+                                    <h3 className="text-start ml-1">Choose</h3>
+                                    <div>
+                                        <input type={'radio'}
+                                               name={'completed'}
+                                               value={'true'}
+                                               defaultChecked={completed == true}
+                                               id={'is-completed'}
+                                               className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
+                                        />
+                                        <label htmlFor="is-completed"
+                                               className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}
+                                        >Completed</label>
+                                    </div>
 
-                                <div>
-                                    <input type={'radio'}
-                                           name={'completed'}
-                                           value={'false'}
-                                           defaultChecked={completed == false}
-                                           className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
-                                           id={'is-not-completed'}/>
-                                    <label htmlFor="is-not-completed"
-                                           className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}
-                                    >Not Completed</label>
-                                </div>
+                                    <div>
+                                        <input type={'radio'}
+                                               name={'completed'}
+                                               value={'false'}
+                                               defaultChecked={completed == false}
+                                               className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
+                                               id={'is-not-completed'}/>
+                                        <label htmlFor="is-not-completed"
+                                               className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}
+                                        >Not Completed</label>
+                                    </div>
 
-                                <div>
-                                    <input type={'radio'}
-                                           name={'completed'}
-                                           value={undefined}
-                                           defaultChecked={completed == undefined}
-                                           className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
-                                           id={'is-completed-or-not'}/>
-                                    <label htmlFor="is-or-completed-not"
-                                           className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}
-                                    >Any</label>
+                                    <div>
+                                        <input type={'radio'}
+                                               name={'completed'}
+                                               value={undefined}
+                                               defaultChecked={completed == undefined}
+                                               className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
+                                               id={'is-completed-or-not'}/>
+                                        <label htmlFor="is-completed-or-not"
+                                               className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}
+                                        >Any</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <button>Search</button>
-                        </form>}
+                                <button>Search</button>
+                            </form>}
                         <hr className={'my-3'}/>
                         {/*Department Filter*/}
 

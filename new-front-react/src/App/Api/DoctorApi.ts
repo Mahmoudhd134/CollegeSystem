@@ -1,9 +1,9 @@
-import {AddDoctorModel} from "../../Models/Doctor/AddDoctorModel";
-import {DoctorForPageModel} from "../../Models/Doctor/DoctorForPageModel";
-import {DoctorModel} from "../../Models/Doctor/DoctorModel";
+import {AddDoctorModel} from "../Models/Doctor/AddDoctorModel";
+import {DoctorForPageModel} from "../Models/Doctor/DoctorForPageModel";
+import {DoctorModel} from "../Models/Doctor/DoctorModel";
 import {baseApi} from "./BaseApi";
-import {EditDoctorModel} from "../../Models/Doctor/EditDoctorModel";
-import {DoctorReportModel} from "../../Models/Doctor/DoctorReportModel";
+import {EditDoctorModel} from "../Models/Doctor/EditDoctorModel";
+import {DoctorReportModel} from "../Models/Doctor/DoctorReportModel";
 
 export const DoctorApi = baseApi.injectEndpoints({
     endpoints: builder => ({

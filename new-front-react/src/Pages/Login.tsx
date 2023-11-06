@@ -1,6 +1,6 @@
 import {useFormik} from 'formik'
 import * as yup from 'yup'
-import LoginModel from '../Models/Auth/LoginModel'
+import LoginModel from '../App/Models/Auth/LoginModel'
 import {useLoginMutation} from '../App/Api/AuthApi'
 import {MutableRefObject, useEffect, useRef} from 'react'
 import useAppDispatch from '../Hookes/useAppDispatch'

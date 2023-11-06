@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Doctor;
+using Application.Dtos.Subject;
 using AutoMapper;
 using Domain.Subject;
 

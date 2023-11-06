@@ -1,8 +1,8 @@
 import {baseApi} from "./BaseApi";
-import LoginModel from "../../Models/Auth/LoginModel";
-import TokenModel from "../../Models/Auth/TokenModel";
-import RegisterModel from "../../Models/Auth/RegisterModel";
-import ChangePasswordModel from "../../Models/Auth/ChangePasswordModel";
+import LoginModel from "../Models/Auth/LoginModel";
+import TokenModel from "../Models/Auth/TokenModel";
+import RegisterModel from "../Models/Auth/RegisterModel";
+import ChangePasswordModel from "../Models/Auth/ChangePasswordModel";
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

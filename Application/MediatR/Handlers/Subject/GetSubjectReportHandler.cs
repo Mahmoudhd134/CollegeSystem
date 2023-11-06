@@ -2,6 +2,7 @@
 using Application.MediatR.Queries.Subject;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Subject;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
@@ -21,11 +22,16 @@ public class GetSubjectReportHandler : IRequestHandler<GetSubjectReportQuery, Re
     public async Task<Response<SubjectReportDto>> Handle(GetSubjectReportQuery request,
         CancellationToken cancellationToken)
     {
-        var id = request.SubjectId;
+        var code = request.SubjectCode;
 
         var subjectDto = await _context.Subjects
             .ProjectTo<SubjectReportDto>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(s => s.Code == code, cancellationToken);
+
+        subjectDto.IsComplete = subjectDto.Files
+            .Select(f => f.Type)
+            .Distinct()
+            .Count() == Enum.GetNames<SubjectFileTypes>().Length;
 
         return subjectDto;
     }

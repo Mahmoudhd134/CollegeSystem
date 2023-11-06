@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Student;
+using Application.Dtos.Subject;
 using AutoMapper;
 
 namespace Application.MappingProfiles;

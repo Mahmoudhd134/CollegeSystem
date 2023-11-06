@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import TokenModel from '../../Models/Auth/TokenModel'
+import TokenModel from '../../App/Models/Auth/TokenModel'
 import jwtDecode from "jwt-decode";
 
 const initialState: TokenModel = {

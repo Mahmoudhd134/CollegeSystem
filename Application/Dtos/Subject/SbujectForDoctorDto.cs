@@ -1,4 +1,4 @@
-﻿namespace Application.Dtos.Doctor;
+﻿namespace Application.Dtos.Subject;
 
 public class SbujectForDoctorDto
 {

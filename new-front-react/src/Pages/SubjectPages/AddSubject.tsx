@@ -1,6 +1,6 @@
 import {useAddSubjectMutation} from "../../App/Api/SubjectApi";
 import {Form, Formik} from "formik";
-import {AddSubjectModel} from "../../Models/Subject/AddSubjectModel";
+import {AddSubjectModel} from "../../App/Models/Subject/AddSubjectModel";
 import * as Yup from 'yup'
 import getAppError from "../../Utilites/getAppError";
 import {FormFieldWrapper} from "../../Components/Form/FormFieldWrapper";

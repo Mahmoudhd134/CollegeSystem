@@ -55,7 +55,7 @@ public class Subject : Profile
             .ForMember(dest => dest.NumberOfStudentsForEachDepartment, opt =>
                 opt.MapFrom(src => src.StudentSubjects
                     .GroupBy(x => x.Student.Department)
-                    .Select(x => new x()
+                    .Select(x => new DepartmentAndCount()
                     {
                         Department = x.Key,
                         Count = x.Count()

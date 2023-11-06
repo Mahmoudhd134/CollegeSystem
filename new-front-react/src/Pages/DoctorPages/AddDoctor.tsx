@@ -3,7 +3,7 @@ import {useAddDoctorMutation} from "../../App/Api/DoctorApi";
 import {useFormik} from "formik";
 import getAppError from "../../Utilites/getAppError";
 import {BASE_URL} from "../../App/Api/axiosApi";
-import {AddDoctorModel} from "../../Models/Doctor/AddDoctorModel";
+import {AddDoctorModel} from "../../App/Models/Doctor/AddDoctorModel";
 import * as Yup from "yup";
 import './doctor.css'
 

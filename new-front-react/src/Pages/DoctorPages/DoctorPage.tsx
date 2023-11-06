@@ -3,7 +3,7 @@ import {BASE_URL} from "../../App/Api/axiosApi";
 import {useGetDoctorQuery} from "../../App/Api/DoctorApi";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
-import SubjectFileTypes from "../../Models/Subject/SubjectFileTypes";
+import SubjectFileTypes from "../../App/Models/Subject/SubjectFileTypes";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
 import DoctorNotFound from "./DoctorNotFound";
 import AppLink from "../../Components/Navigation/AppLink";
@@ -158,7 +158,7 @@ const DoctorPage = () => {
         <div className="flex-1-2-3-gap-3 justify-center w-full">
             {doctor?.subjects.map(s => <div key={s.id}
                                             className={`border-2 ${s.numberOfFilesTypes === fileTypesCount ? 'border-green-500' : 'border-red-500'} bg-blue-100 p-5 text-center flex flex-col justify-center items-center gap-3 rounded-xl hover:shadow-xl transition-all hover:cursor-pointer`}
-                                            onClick={e => navigator('/subject/' + s.code)}>
+                                            onClick={_ => navigator('/Subject/' + s.code)}>
                 <div className={'text-2xl sm:text-xl justify-start'}>{s.name}</div>
                 <div>{s.department}{s.code}</div>
                 <div>{s.numberOfFilesTypes}/{fileTypesCount}</div>
@@ -216,7 +216,7 @@ const DoctorPage = () => {
 
     return (<>
         <div className="bg-gradient-to-b from-blue-300 to-blue-200 min-h-remaining text-gray-900 flex items-center">
-            {err.length > 0 && <h3 className="text-2xl text-center text-red-900">{err}</h3>}
+            {err?.length > 0 && <h3 className="text-2xl text-center text-red-900">{err}</h3>}
             {docSection}
         </div>
 

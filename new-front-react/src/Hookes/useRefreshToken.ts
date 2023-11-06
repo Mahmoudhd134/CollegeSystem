@@ -1,5 +1,5 @@
 import {BASE_URL} from "../App/Api/axiosApi"
-import TokenModel from "../Models/Auth/TokenModel";
+import TokenModel from "../App/Models/Auth/TokenModel";
 import axios from "axios";
 
 const useRefreshToken = () => {
