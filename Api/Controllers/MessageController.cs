@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+[Authorize(Roles = "Admin,Doctor")]
 public class MessageController : BaseController
 {
     [HttpGet]

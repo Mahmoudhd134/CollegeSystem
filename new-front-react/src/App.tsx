@@ -1,5 +1,5 @@
 import useAppDispatch from "./Hookes/useAppDispatch";
-import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Outlet, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import useRefreshToken from "./Hookes/useRefreshToken";
 import {logout, setCredentials} from "./Feutures/Auth/authSlice";
@@ -8,21 +8,27 @@ import Home from "./Pages/Home";
 import Layout from "./Pages/Layout";
 import PathNotFound from "./Pages/NotFound/PathNotFound";
 import Login from "./Pages/Login";
-import DoctorList from "./Pages/DoctorPages/DoctorList";
+import DoctorList from "./Pages/Doctor/DoctorList";
 import RouteProtector from "./Components/Global/RouteProtector";
 import {baseApi} from "./App/Api/BaseApi";
-import AddDoctor from "./Pages/DoctorPages/AddDoctor";
+import AddDoctor from "./Pages/Doctor/AddDoctor";
 import AdminDashboard from "./Pages/AdminDashboard";
-import DoctorPage from "./Pages/DoctorPages/DoctorPage";
-import EditDoctor from "./Pages/DoctorPages/EditDoctor";
-import ChangePassword from "./Pages/DoctorPages/ChangePassword";
-import DoctorReport from "./Pages/DoctorPages/DoctorReport";
-import SubjectList from "./Pages/SubjectPages/SubjectList";
-import {AddSubject} from "./Pages/SubjectPages/AddSubject";
-import {SubjectPage} from "./Pages/SubjectPages/SubjectPage";
-import SubjectWithStudents from "./Pages/SubjectPages/SubjectWithStudents";
-import SubjectWithFiles from "./Pages/SubjectPages/SubjectWithFiles";
-import SubjectReport from "./Pages/SubjectPages/SubjectReport";
+import DoctorPage from "./Pages/Doctor/DoctorPage";
+import EditDoctor from "./Pages/Doctor/EditDoctor";
+import ChangePassword from "./Pages/Doctor/ChangePassword";
+import DoctorReport from "./Pages/Doctor/DoctorReport";
+import SubjectList from "./Pages/Subject/SubjectList";
+import AddSubject from "./Pages/Subject/AddSubject";
+import SubjectPage from "./Pages/Subject/SubjectPage";
+import SubjectWithStudents from "./Pages/Subject/SubjectWithStudents";
+import SubjectWithFiles from "./Pages/Subject/SubjectWithFiles";
+import SubjectReport from "./Pages/Subject/SubjectReport";
+import AddMessage from "./Pages/Message/AddMessage";
+import MessagesLayout from "./Pages/Message/MessagesLayout";
+import SentMessages from "./Pages/Message/SentMessages";
+import ReceivedMessages from "./Pages/Message/ReceivedMessages";
+import Message from "./Pages/Message/Message";
+import EditSubject from "./Pages/Subject/EditSubject";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -54,22 +60,25 @@ function App() {
 
                 <Route path='login' element={<Login/>}/>
 
-                <Route path='doctor' element={<RouteProtector allowedRoles={['admin']}/>}>
-                    <Route path='list' element={<DoctorList/>}/>
-                    <Route path='add' element={<AddDoctor/>}/>
+                <Route path='doctor'>
+                    <Route element={<RouteProtector allowedRoles={['admin']}/>}>
+                        <Route index element={<DoctorList/>}/>
+                        <Route path='add' element={<AddDoctor/>}/>
+                    </Route>
+
+                    <Route element={<RouteProtector allowedRoles={['doctor']}/>}>
+                        <Route path={'edit/:id'} element={<EditDoctor/>}/>
+                        <Route path={'changePassword'} element={<ChangePassword/>}/>
+                    </Route>
+
+
+                    <Route element={<RouteProtector allowedRoles={['admin', 'doctor']}/>}>
+                        <Route path={':id'} element={<DoctorPage/>}/>
+                        <Route path={'report/:id'} element={<DoctorReport/>}/>
+                    </Route>
                 </Route>
 
-                <Route path='doctor' element={<RouteProtector allowedRoles={['admin', 'doctor']}/>}>
-                    <Route path={':id'} element={<DoctorPage/>}/>
-                    <Route path={'report/:id'} element={<DoctorReport/>}/>
-                </Route>
-
-                <Route path='doctor' element={<RouteProtector allowedRoles={['doctor']}/>}>
-                    <Route path={'edit/:id'} element={<EditDoctor/>}/>
-                    <Route path={'changePassword'} element={<ChangePassword/>}/>
-                </Route>
-
-                <Route path='subject' element={<RouteProtector allowedRoles={[]}/>}>
+                <Route path='subject'>
                     <Route index element={<SubjectList/>}/>
 
                     <Route path={':code'} element={<RouteProtector allowedRoles={[]}/>}>
@@ -82,9 +91,29 @@ function App() {
                         </Route>
                     </Route>
 
-                    <Route path={'add'} element={<RouteProtector allowedRoles={['admin']}/>}>
-                        <Route index element={<AddSubject/>}/>
+                    <Route element={<RouteProtector allowedRoles={['admin']}/>}>
+                        <Route path='add' element={<AddSubject/>}/>
+                        <Route path='edit/:code' element={<EditSubject/>}/>
                     </Route>
+                </Route>
+
+                <Route path='message'>
+                    <Route element={<RouteProtector allowedRoles={['admin']}/>}>
+                        <Route path='add' element={<AddMessage/>}/>
+                    </Route>
+
+                    <Route element={<MessagesLayout/>}>
+                        <Route element={<RouteProtector allowedRoles={['admin', 'doctor']}/>}>
+
+                            <Route element={<RouteProtector allowedRoles={['admin']}/>}>
+                                <Route path='sent' element={<SentMessages/>}/>
+                            </Route>
+
+                            <Route path='received' element={<ReceivedMessages/>}/>
+                        </Route>
+                    </Route>
+                    
+                    <Route path=':id' element={<Message/>}/>
                 </Route>
 
                 <Route path={'AdminDashboard'} element={<RouteProtector allowedRoles={['admin']}/>}>

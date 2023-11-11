@@ -10,7 +10,7 @@ import {useEffect} from "react";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
 import {useLocation} from "react-router-dom";
 
-export const AddSubject = () => {
+const AddSubject = () => {
     const [add, addResult] = useAddSubjectMutation()
     const navigator = useAppNavigator()
     const loc = useLocation()
@@ -80,3 +80,5 @@ export const AddSubject = () => {
     </div>
 
 };
+
+export default AddSubject

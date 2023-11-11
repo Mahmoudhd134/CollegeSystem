@@ -5,86 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27a6be72-2e81-46b0-95f5-5c6fda5b96fe" name="Changes" comment="Make Subject with Files Page (frontend) &amp;&amp; enhance downloading file mechanism (backend)">
-      <change afterPath="$PROJECT_DIR$/Application/Dtos/SubjectMaterial/SubjectMaterialStreamInfoDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/SubjectWithStudentsModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-front-react/src/Hookes/Navigation/useMySearchParams.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectFiles.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectReport.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectWithFiles.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectWithStudents.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new-front-react/public/Images/message.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new-front-react/src/Components/Form/MyTextAreaField.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Message/AddMessage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Controllers/SubjectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Controllers/SubjectController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Controllers/SubjectFileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Controllers/SubjectFileController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/wwwroot/SubjectFileTemplate/TypeFour.docx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/SubjectWithMaterialsModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/wwwroot/SubjectFileTemplate/TypeThree.docx" beforeDir="false" afterPath="$PROJECT_DIR$/Api/wwwroot/SubjectFileTemplate/TypeThree.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Abstractions/IFileAccessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Abstractions/IFileAccessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Application.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Doctor/DoctorDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Doctor/DoctorDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/StudentDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Student/StudentDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Subject/SbujectForDoctorDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Subject/SbujectForDoctorDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectForStudentDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectForStudentDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectReportDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectReportDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectWithStudentsDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Dtos/Subject/SubjectWithStudentsDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/SubjectMaterial/GetSubjectMaterialPathAndTypeDto.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/Doctor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MappingProfiles/Doctor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/Student.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MappingProfiles/Student.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/Subject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MappingProfiles/Subject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectFileTypeTemplateHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectFileTypeTemplateHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectMaterialPathAndTypeHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectMaterialInfoHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectReportHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MediatR/Handlers/Subject/GetSubjectReportHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MediatR/Queries/Subject/GetSubjectFileTypeTemplateQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MediatR/Queries/Subject/GetSubjectFileTypeTemplateQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MediatR/Queries/Subject/GetSubjectMaterialPathAndContentQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MediatR/Queries/Subject/GetSubjectMaterialInfoQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MediatR/Queries/Subject/GetSubjectReportQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/MediatR/Queries/Subject/GetSubjectReportQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Infrastructure/PhysicalFileAccessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Infrastructure/PhysicalFileAccessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/new-front-react/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/App/Api/AuthApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Api/AuthApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/App/Api/DoctorApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Api/DoctorApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/App/Api/MessageApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Api/MessageApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/App/Api/SubjectApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Api/SubjectApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/App/Api/SubjectMaterialApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Api/SubjectMaterialApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/App/Api/axiosApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Api/axiosApi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Components/Form/MyButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Components/Form/MyButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Components/Global/TimeAgo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Components/Global/TimeAgo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Feutures/Auth/authSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Feutures/Auth/authSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Hookes/useRefreshToken.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Hookes/useRefreshToken.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Auth/ChangePasswordModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Auth/ChangePasswordModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Auth/LoginModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Auth/LoginModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Auth/RegisterModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Auth/RegisterModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Auth/TokenModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Auth/TokenModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Doctor/AddDoctorModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Doctor/AddDoctorModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Doctor/DoctorForPageModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Doctor/DoctorForPageModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Doctor/DoctorModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Doctor/DoctorModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Doctor/DoctorReportModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Doctor/DoctorReportModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Doctor/EditDoctorModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Doctor/EditDoctorModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Doctor/SubjectForDoctorReportModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Doctor/SubjectForDoctorReportModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Message/AddMessageModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Message/AddMessageModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Message/MessageForReceivedListModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Message/MessageForReceivedListModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Message/MessageForSendListModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Message/MessageForSendListModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Message/MessageModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Message/MessageModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Subject/AddSubjectModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/AddSubjectModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Subject/DoctorForSubjectReportModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/DoctorForSubjectReportModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Subject/EditSubjectModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/EditSubjectModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Subject/SubjectFileTypes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/SubjectFileTypes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Subject/SubjectForPageModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/SubjectForPageModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Subject/SubjectModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/SubjectModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/Subject/SubjectReportModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/Subject/SubjectReportModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/SubjectMaterial/AddSubjectMaterialModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/SubjectMaterial/AddSubjectMaterialModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Models/SubjectMaterial/SubjectFileModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/App/Models/SubjectMaterial/SubjectFileModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Components/Global/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Components/Global/Navbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/AdminDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/AdminDashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/AddDoctor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/AddDoctor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/ChangePassword.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/ChangePassword.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorReport.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/EditDoctor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/EditDoctor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/AddSubject.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/AddSubject.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-front-react/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/AddDoctor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Doctor/AddDoctor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/ChangePassword.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Doctor/ChangePassword.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Doctor/DoctorList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorNotFound.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Doctor/DoctorNotFound.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Doctor/DoctorPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/DoctorReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Doctor/DoctorReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/EditDoctor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Doctor/EditDoctor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/doctor.css" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Doctor/doctor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/AddSubject.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Subject/AddSubject.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/ChoseDoctor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Subject/ChoseDoctor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectFiles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Subject/SubjectFiles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Subject/SubjectList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Subject/SubjectPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Subject/SubjectReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectWithFiles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Subject/SubjectWithFiles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-front-react/src/Pages/SubjectPages/SubjectWithStudents.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/new-front-react/src/Pages/Subject/SubjectWithStudents.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,8 +37,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -110,22 +53,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ReactCreateComponentLastSelected": "arrowFunctionComponent",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/University/Api/wwwroot/SubjectFileTemplate",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "E:\\University\\front-react\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ReactCreateComponentLastSelected&quot;: &quot;arrowFunctionComponent&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/University/new-front-react/public/Images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\University\\front-react\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -136,8 +79,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\University\Api\wwwroot\SubjectFileTemplate" />
       <recent name="E:\University\new-front-react\public\Images" />
+      <recent name="E:\University\Api\wwwroot\SubjectFileTemplate" />
       <recent name="E:\University\new-front-react\public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -172,7 +115,9 @@
       <workItem from="1698683465208" duration="22974000" />
       <workItem from="1698839603502" duration="4077000" />
       <workItem from="1699028726898" duration="2555000" />
-      <workItem from="1699107889460" duration="36008000" />
+      <workItem from="1699107889460" duration="39901000" />
+      <workItem from="1699539930898" duration="828000" />
+      <workItem from="1699541472478" duration="11000" />
     </task>
     <task id="LOCAL-00001" summary="Add SubjectWithStudents Section (backend)">
       <created>1698399201630</created>
@@ -202,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698843780779</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Make Subject with Files Page (frontend) &amp;&amp; enhance downloading file mechanism (backend)">
+      <created>1699314280107</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1699314280107</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -231,7 +183,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/new-front-react/src/Pages/DoctorPages/ChangePassword.tsx</url>
+          <url>file://$PROJECT_DIR$/new-front-react/src/Pages/Doctor/ChangePassword.tsx</url>
           <line>13</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>

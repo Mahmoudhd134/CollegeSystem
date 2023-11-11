@@ -12,6 +12,7 @@ import React, {useRef, useState} from "react";
 import {useChangeProfilePhoto} from "../../App/Api/UserApi";
 import useAxiosApi from "../../Hookes/useAxiosApi";
 import useAppDispatch from "../../Hookes/useAppDispatch";
+import useIsInRole from "../../Hookes/useIsInRole";
 
 const DoctorPage = () => {
     const {id} = useParams()
@@ -22,6 +23,7 @@ const DoctorPage = () => {
     const navigator = useAppNavigator()
     const imgInput = useRef<HTMLInputElement>(null);
     const [err, setErr] = useState('');
+    const isAdmin = useIsInRole()('admin')
 
     // let doctor:typeof data
     // if(data)
@@ -140,6 +142,10 @@ const DoctorPage = () => {
                      alt="profile_photo"/>}
         </div>
         {docInfo}
+        {isAdmin && <div className={'my-3 flex items-center'}>
+            <img src="/Images/message.png" alt="message" className={'h-12 w-12 rounded-full'}/>
+            <AppLink to={`/message/add?id=${doctor?.id}&userName=${doctor?.username}`}>Send Message</AppLink>
+        </div>}
         {filesLink}
     </div>
 

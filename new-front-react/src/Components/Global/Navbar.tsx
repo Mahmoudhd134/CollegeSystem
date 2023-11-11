@@ -1,27 +1,33 @@
-import {Link, useLocation} from "react-router-dom";
 import useAppSelector from "../../Hookes/useAppSelector";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faX} from "@fortawesome/free-solid-svg-icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import useAppDispatch from "../../Hookes/useAppDispatch";
 import {logout} from "../../Feutures/Auth/authSlice";
 import './navbar.css'
+import AppLink from "../Navigation/AppLink";
+import {useLazyGetIsHasUnReadMessagesQuery} from "../../App/Api/MessageApi";
 
 const Navbar = () => {
-    const loc = useLocation()
     const token = useAppSelector(s => s.auth.token)
     const [showMobMenu, setShowMobMenu] = useState(false)
     const dispatch = useAppDispatch()
+    const [get, {data: hasUnReadMessages}] = useLazyGetIsHasUnReadMessagesQuery()
+    useEffect(() => {
+        get()
+    }, [token])
 
     const isInRole = ((roles: string[] | null) => (role: string) =>
         roles?.some(x => x.toLowerCase() === role.toLowerCase()))(useAppSelector(s => s.auth.roles))
 
     const isAdmin = isInRole('admin')
     const isDoctor = isInRole('doctor')
+
+    const redNotifyIconClasses = hasUnReadMessages ? 'absolute top-0 right-0 opacity-75 w-4 h-4 rounded-full bg-red-900 dark:bg-red-900' : ''
     const mobLink = (link: string, text: string) =>
-        <Link to={link} state={{from: loc}} className='nav-bar-mobile-link'>{text}</Link>
+        <AppLink to={link} className='nav-bar-mobile-link'>{text}</AppLink>
     const navBarLink = (link: string, text: string) =>
-        <Link to={link} state={{from: loc}} className='nav-bar-non-mobile-link'>{text}</Link>
+        <AppLink to={link} className='nav-bar-non-mobile-link'>{text}</AppLink>
 
     const mobMenu = <div
         className='nav-bar-mobile-menu'
@@ -34,6 +40,9 @@ const Navbar = () => {
         {/*Mob Links Here*/}
         {isAdmin && mobLink('/AdminDashboard', 'Admin Dashboard')}
         {isDoctor && mobLink('/doctor/me', 'Profile')}
+        <span>
+            {mobLink('/Message/Received', 'Messages')}
+        </span>
         {mobLink('/Subject', 'Subjects')}
 
         {token ? <div
@@ -50,8 +59,8 @@ const Navbar = () => {
 
     return (<nav className={'nav-bar no-print'}>
         <div className="container mx-auto p-4 flex items-baseline">
-            <Link to={'/'} state={{from: loc}}
-                  className={'text-3xl sm:text-2xl hover:text-blue-700 transition-all'}>Home</Link>
+            <AppLink to={'/'}
+                     className={'text-3xl sm:text-2xl hover:text-blue-700 transition-all'}>Home</AppLink>
 
             {showMobMenu ? mobMenu : mobMenuButton}
 
@@ -60,6 +69,10 @@ const Navbar = () => {
                 {isAdmin && navBarLink('/AdminDashboard', 'AdminDashboard')}
 
                 {isDoctor && navBarLink('/doctor/me', 'Profile')}
+                <span className={'relative'}>
+                   <span className={redNotifyIconClasses}></span>
+                    {navBarLink('/Message/Received', 'Messages')}
+                </span>
                 {navBarLink('/Subject', 'Subjects')}
 
                 {token ? <div
