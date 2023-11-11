@@ -20,7 +20,8 @@ const AdminDashboard = () => {
                 <GroupTitle>Subjects!</GroupTitle>
                 <GroupLinksContainer>
                     <GroupLink to={'/Subject'}>Subjects List</GroupLink>
-                    <GroupLink to={'/Subject/add'}>Add New</GroupLink>
+                    <GroupLink to={'/Subject/Add'}>Add New</GroupLink>
+                    <GroupLink to={'/Subject/Templates'}>Templates</GroupLink>
                 </GroupLinksContainer>
             </Group>
 

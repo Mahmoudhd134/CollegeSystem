@@ -29,6 +29,7 @@ import SentMessages from "./Pages/Message/SentMessages";
 import ReceivedMessages from "./Pages/Message/ReceivedMessages";
 import Message from "./Pages/Message/Message";
 import EditSubject from "./Pages/Subject/EditSubject";
+import SubjectFileTypeTemplates from "./Pages/Subject/SubjectFileTypeTemplates";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -94,6 +95,7 @@ function App() {
                     <Route element={<RouteProtector allowedRoles={['admin']}/>}>
                         <Route path='add' element={<AddSubject/>}/>
                         <Route path='edit/:code' element={<EditSubject/>}/>
+                        <Route path='templates' element={<SubjectFileTypeTemplates/>}/>
                     </Route>
                 </Route>
 

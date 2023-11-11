@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useRef} from 'react';
+import SubjectFileTypes from "../../App/Models/Subject/SubjectFileTypes";
 
-const GroupLinksContainer = ({children}:any) => {
+const GroupLinksContainer = ({children}: any) => {
     return (
-        <div className="flex justify-between mt-3">
+        <div className="flex flex-wrap justify-center gap-5 mt-3">
             {children}
         </div>
     );
