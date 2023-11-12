@@ -475,6 +475,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-/wwwroot/SubjectMaterials/*
-/wwwroot/ProfileImages/*
+#/wwwroot/SubjectMaterials/*
+#/wwwroot/ProfileImages/*
+#!/wwwroot/ProfileImages/default.png
+/wwwroot/*
 !/wwwroot/ProfileImages/default.png

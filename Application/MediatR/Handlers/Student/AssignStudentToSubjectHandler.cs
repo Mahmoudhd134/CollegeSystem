@@ -17,8 +17,7 @@ public class AssignStudentToSubjectHandler : IRequestHandler<AssignStudentToSubj
 
     public async Task<Response<bool>> Handle(AssignStudentToSubjectCommand request, CancellationToken cancellationToken)
     {
-        var studentId = request.AssignStudentToSubjectDto.StudentId;
-        var subjectId = request.AssignStudentToSubjectDto.SubjectId;
+        var (studentId,subjectId) = request;
 
         var studentFound = await _context.Students
             .AnyAsync(x => x.Id.Equals(studentId), cancellationToken);

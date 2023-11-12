@@ -5,4 +5,5 @@ export default interface RegisterModel {
     phoneNumber: string,
     email: string,
     password: string,
+    nationalNumber: string;
 }

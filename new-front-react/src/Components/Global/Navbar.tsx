@@ -7,6 +7,7 @@ import {logout} from "../../Feutures/Auth/authSlice";
 import './navbar.css'
 import AppLink from "../Navigation/AppLink";
 import {useLazyGetIsHasUnReadMessagesQuery} from "../../App/Api/MessageApi";
+import {baseApi} from "../../App/Api/BaseApi";
 
 const Navbar = () => {
     const token = useAppSelector(s => s.auth.token)
@@ -22,8 +23,9 @@ const Navbar = () => {
 
     const isAdmin = isInRole('admin')
     const isDoctor = isInRole('doctor')
+    const isStudent = isInRole('student')
 
-    const redNotifyIconClasses = hasUnReadMessages ? 'absolute top-0 right-0 opacity-75 w-4 h-4 rounded-full bg-red-900 dark:bg-red-900' : ''
+    const redNotifyIconClasses = hasUnReadMessages ? 'absolute top-1/2 right-0 -translate-y-1/2 opacity-75 w-4 h-4 rounded-full bg-red-900 dark:bg-red-900' : ''
     const mobLink = (link: string, text: string) =>
         <AppLink to={link} className='nav-bar-mobile-link'>{text}</AppLink>
     const navBarLink = (link: string, text: string) =>
@@ -39,10 +41,12 @@ const Navbar = () => {
 
         {/*Mob Links Here*/}
         {isAdmin && mobLink('/AdminDashboard', 'Admin Dashboard')}
-        {isDoctor && mobLink('/doctor/me', 'Profile')}
-        <span>
+        {isDoctor && mobLink('/Doctor/me', 'Profile')}
+        {isStudent && mobLink('/Student/me', 'Profile')}
+        {(isAdmin || isDoctor) && <span className={'relative'}>
+            <span className={redNotifyIconClasses}></span>
             {mobLink('/Message/Received', 'Messages')}
-        </span>
+        </span>}
         {mobLink('/Subject', 'Subjects')}
 
         {token ? <div
@@ -68,16 +72,20 @@ const Navbar = () => {
                 {/*Non-Mob Links */}
                 {isAdmin && navBarLink('/AdminDashboard', 'AdminDashboard')}
 
-                {isDoctor && navBarLink('/doctor/me', 'Profile')}
-                <span className={'relative'}>
+                {isDoctor && navBarLink('/Doctor/me', 'Profile')}
+                {isStudent && navBarLink('/Student/me', 'Profile')}
+                {(isAdmin || isDoctor) && <span className={'relative'}>
                    <span className={redNotifyIconClasses}></span>
                     {navBarLink('/Message/Received', 'Messages')}
-                </span>
+                </span>}
                 {navBarLink('/Subject', 'Subjects')}
 
                 {token ? <div
                     className={'nav-bar-non-mobile-link text-red-600 hover:text-red-800 hover:cursor-pointer mx-1'}
-                    onClick={e => dispatch(logout())}
+                    onClick={e => {
+                        dispatch(logout())
+                        dispatch(baseApi.util.resetApiState())
+                    }}
                 >SignOut</div> : navBarLink('/login', 'Login')}
             </div>
         </div>

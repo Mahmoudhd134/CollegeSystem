@@ -54,6 +54,7 @@ const DoctorPage = () => {
     if (per == 0)
         per = 25
 
+    const maxFileTypes = Object.values(SubjectFileTypes).map(Number).filter(isNaN).length
     const progressBar = <div className="w-full rounded-full bg-gray-700 relative">
         <div className={`bg-blue-600 leading-none rounded-full h-full p-1`}
              style={{width: per + '%'}}
@@ -105,7 +106,7 @@ const DoctorPage = () => {
                 <>
                     <AppLink
                         className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition flex justify-center items-center"
-                        to={'/doctor/changePassword'}
+                        to={'/User/ChangePassword'}
                     >
                         Change Password
                     </AppLink>
@@ -162,13 +163,19 @@ const DoctorPage = () => {
         </div>}
 
         <div className="flex-1-2-3-gap-3 justify-center w-full">
-            {doctor?.subjects.map(s => <div key={s.id}
-                                            className={`border-2 ${s.numberOfFilesTypes === fileTypesCount ? 'border-green-500' : 'border-red-500'} bg-blue-100 p-5 text-center flex flex-col justify-center items-center gap-3 rounded-xl hover:shadow-xl transition-all hover:cursor-pointer`}
-                                            onClick={_ => navigator('/Subject/' + s.code)}>
-                <div className={'text-2xl sm:text-xl justify-start'}>{s.name}</div>
-                <div>{s.department}{s.code}</div>
-                <div>{s.numberOfFilesTypes}/{fileTypesCount}</div>
-            </div>)}
+            {doctor?.subjects.map(s => <AppLink to={'/Subject/' + s.code} key={s.id}
+                                                className={`border rounded-xl ${isAdmin ? (maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800') : 'border-gray-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
+                <img
+                    src="/Images/subject.jpg"
+                    alt="subjectImg"
+                    className={'rounded-tr-xl rounded-tl-xl w-full'}
+                />
+                <div className="p-3 text-center">
+                    <div className={'text-2xl'}>{s.department.toUpperCase()}{s.code}</div>
+                    <div className={'text-xl sm:text-lg'}>{s.name}</div>
+                    {isAdmin && <div className={'text-lg sm:text-md'}>{s.numberOfFilesTypes}/{maxFileTypes}</div>}
+                </div>
+            </AppLink>)}
         </div>
     </div>
 

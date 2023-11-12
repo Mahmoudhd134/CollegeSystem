@@ -43,7 +43,7 @@ public class AddStudentHandler : IRequestHandler<AddStudentCommand, Response<boo
             return Response<bool>.Failure(UserErrors.EmailAlreadyUsedError);
 
         var foundNationalNumber =
-            await _context.Doctors.AnyAsync(d => d.NationalNumber.Equals(addStudentDto.NationalNumber),
+            await _context.Users.AnyAsync(d => d.NationalNumber.Equals(addStudentDto.NationalNumber),
                 cancellationToken);
         if (foundNationalNumber)
             return Response<bool>.Failure(UserErrors.NationalNumberAlreadyExists);

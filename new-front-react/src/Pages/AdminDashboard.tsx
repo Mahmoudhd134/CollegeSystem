@@ -11,16 +11,16 @@ const AdminDashboard = () => {
             <Group>
                 <GroupTitle>Doctors!</GroupTitle>
                 <GroupLinksContainer>
-                    <GroupLink to={'/Doctor'}>Doctors List</GroupLink>
-                    <GroupLink to={'/Doctor/Add'}>Add New</GroupLink>
+                    <GroupLink to={'/Doctor'}>List</GroupLink>
+                    <GroupLink to={'/Doctor/Add'}>Add</GroupLink>
                 </GroupLinksContainer>
             </Group>
 
             <Group>
                 <GroupTitle>Subjects!</GroupTitle>
                 <GroupLinksContainer>
-                    <GroupLink to={'/Subject'}>Subjects List</GroupLink>
-                    <GroupLink to={'/Subject/Add'}>Add New</GroupLink>
+                    <GroupLink to={'/Subject'}>List</GroupLink>
+                    <GroupLink to={'/Subject/Add'}>Add</GroupLink>
                     <GroupLink to={'/Subject/Templates'}>Templates</GroupLink>
                 </GroupLinksContainer>
             </Group>
@@ -30,6 +30,14 @@ const AdminDashboard = () => {
                 <GroupLinksContainer>
                     <GroupLink to={'/Message/Sent'}>Sent</GroupLink>
                     <GroupLink to={'/Message/Received'}>Received</GroupLink>
+                </GroupLinksContainer>
+            </Group>
+            
+            <Group>
+                <GroupTitle>Students!</GroupTitle>
+                <GroupLinksContainer>
+                    <GroupLink to={'/Student'}>List</GroupLink>
+                    <GroupLink to={'/Student/Add'}>Add</GroupLink>
                 </GroupLinksContainer>
             </Group>
         </GroupsContainer>

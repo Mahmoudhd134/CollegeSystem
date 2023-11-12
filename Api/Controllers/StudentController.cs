@@ -14,6 +14,10 @@ public class StudentController : BaseController
         GetPage(int pageSize, int pageIndex, string usernamePrefix) =>
         Return(await Mediator.Send(new GetStudentsPageQuery(pageSize, pageIndex, usernamePrefix)));
 
+    [HttpGet("IsAssignToSubject/{subjectId:int}")]
+    public async Task<ActionResult<bool>> IsAssignedToSubject(int subjectId) =>
+        Return(await Mediator.Send(new IsAssignedToSubjectQuery(subjectId, Id)));
+
     [HttpGet("Me")]
     public async Task<ActionResult<StudentDto>> GetMe() =>
         Return(await Mediator.Send(new GetStudentByIdQuery(Id, Id, Roles)));
@@ -27,11 +31,10 @@ public class StudentController : BaseController
     public async Task<ActionResult<bool>> Add([FromBody] AddStudentDto addStudentDto) =>
         Return(await Mediator.Send(new AddStudentCommand(addStudentDto)));
 
-    [HttpPost("AssignToSubject")]
-    [Authorize(Roles = "Admin,Student")]
-    public async Task<ActionResult<bool>> AssignToSubject(
-        [FromBody] AssignStudentToSubjectDto assignStudentToSubjectDto) =>
-        Return(await Mediator.Send(new AssignStudentToSubjectCommand(assignStudentToSubjectDto)));
+    [HttpPost("AssignToSubject/{subjectId:int}")]
+    [Authorize(Roles = "Student")]
+    public async Task<ActionResult<bool>> AssignToSubject(int subjectId) =>
+        Return(await Mediator.Send(new AssignStudentToSubjectCommand(Id, subjectId)));
 
     [HttpPut]
     [Authorize(Roles = "Student")]
@@ -45,7 +48,7 @@ public class StudentController : BaseController
         Return(await Mediator.Send(new DeleteStudentCommand(id)));
 
     [HttpDelete("DeAssignFromSubject/{subjectId:int}")]
-    [Authorize(Roles = "Admin,Student")]
+    [Authorize(Roles = "Student")]
     public async Task<ActionResult<bool>> DeAssignFromSubject(int subjectId) =>
         Return(await Mediator.Send(new DeAssignStudentFromSubjectCommand(Id, subjectId)));
 }

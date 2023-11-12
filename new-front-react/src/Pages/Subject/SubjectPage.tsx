@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {
     useDeleteAssignedDoctorMutation,
     useDeleteSubjectMutation,
@@ -13,6 +13,15 @@ import {MyButton} from "../../Components/Form/MyButton";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
+import ProfileContainer from "../../Components/Profile/ProfileContainer";
+import ProfileTitle from "../../Components/Profile/ProfileTitle";
+import ProfileSection from "../../Components/Profile/ProfileSection";
+import MyButtonAsLink from "../../Components/Form/MyButtonAsLink";
+import {
+    useAssignSubjectWithStudentMutation,
+    useDeAssignSubjectFromStudentMutation,
+    useLazyIsAssignedToSubjectQuery
+} from "../../App/Api/StudentApi";
 
 const SubjectPage = () => {
     const {code} = useParams()
@@ -22,17 +31,28 @@ const SubjectPage = () => {
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [remove, removeResult] = useDeleteSubjectMutation()
     const navigator = useAppNavigator()
+    const [isAssign, isAssignResult] = useLazyIsAssignedToSubjectQuery()
+    const [assignToSubject] = useAssignSubjectWithStudentMutation()
+    const [deAssignFromSubject] = useDeAssignSubjectFromStudentMutation()
 
     const isInRole = useIsInRole()
     const isAdmin = isInRole('admin')
     const isDoctor = isInRole('doctor')
+    const isStudent = isInRole('student')
+
+    useEffect(() => {
+        if (isStudent && subject)
+            isAssign(subject.id)
+    }, [isStudent, subject?.id])
 
     useEffect(() => {
         if (removeResult.isSuccess)
             navigator('/Subject')
     }, [removeResult.isSuccess])
 
-    console.log(removeResult)
+    const assignToThisSubject = () => assignToSubject(subject?.id!)
+    const deAssignFromThisSubject = () => deAssignFromSubject(subject?.id!)
+
     let subjectUi
     let roomsUi
     if (isFetching || removeResult.isLoading) {
@@ -57,6 +77,11 @@ const SubjectPage = () => {
                 <div>Department: {subject?.department.toUpperCase()}</div>
                 <div>Code: {subject?.code}</div>
                 <div>Hours: {subject?.hours}</div>
+                {(isAdmin || isDoctor) && <div>
+                    <MyButtonAsLink to={`/Subject/${subject?.code}/Report`}>
+                        Report
+                    </MyButtonAsLink>
+                </div>}
             </div>
 
             <h3 className="bg-blue-500 text-center text-2xl sm:text-xl p-4">Doctor</h3>
@@ -88,10 +113,6 @@ const SubjectPage = () => {
                         {' '}<b>Add One</b>
                     </span>}
                     </div>}
-                {(isAdmin || isDoctor) && <AppLink to={`/Subject/${subject?.code}/Report`}
-                                                   className={''}>
-                    <MyButton type={'button'}>Report</MyButton>
-                </AppLink>}
             </div>
         </div>
 
@@ -128,13 +149,13 @@ const SubjectPage = () => {
 
 
     subjectUi = (subject && !isFetching && !isError && !removeResult.isLoading) ? <>
-            <div
-                className={(displayChoseDoctor ? 'absolute' : 'hidden') + " top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 w-11/12 h-5/6 bg-opacity-90 rounded-xl overflow-y-scroll"}
+            {displayChoseDoctor && <div
+                className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 w-11/12 h-5/6 bg-opacity-90 rounded-xl overflow-y-scroll"}
                 style={{zIndex: 123}}
                 onClick={e => e.stopPropagation()}
             >
                 <ChoseDoctor subjectId={subject.id} closeModal={() => setDisplayChoseDoctor(false)}/>
-            </div>
+            </div>}
 
             {confirmDelete && <div className={'border-2 rounded-xl p-3 text-center'}>
                 <div>
@@ -152,39 +173,72 @@ const SubjectPage = () => {
                 </div>
             </div>}
 
-            <h3 className="bg-blue-500 text-center text-2xl sm:text-xl p-4 flex justify-center gap-7">
+            <ProfileTitle>
                 <div>{subject.name.split(' ').map(x => x[0].toUpperCase() + x.slice(1).toLowerCase() + ' ')}</div>
-                {isAdmin && <>
-                    <div><AppLink to={'/Subject/Edit/' + subject.code}><FontAwesomeIcon icon={faPencil}/></AppLink></div>
-                    <div className={'hover:cursor-pointer'}
-                         onClick={_ => {
-                             setConfirmDelete(true)
-                             window.scroll({
-                                 top: 0,
-                                 behavior: 'smooth'
-                             })
-                         }}
-                    ><FontAwesomeIcon color='red' icon={faTrash}/></div>
-                </>}
-            </h3>
-            <div className={'bg-blue-400 p-4 text-xl sm:text-lg flex flex-col gap-3 tracking-wide w-11/12 mx-auto'}>
+            </ProfileTitle>
+            <ProfileSection>
                 <div>Department: {subject.department.toUpperCase()}</div>
                 <div>Code: {subject.code}</div>
                 <div>Hours: {subject.hours}</div>
-            </div>
+            </ProfileSection>
 
-            <h3 className="bg-blue-500 text-center text-2xl sm:text-xl p-4">Doctor</h3>
-            <div className={'bg-blue-400 p-4 text-lg sm:text-md w-11/12 mx-auto flex justify-between items-center'}>
+            <ProfileTitle>Actions</ProfileTitle>
+            <ProfileSection>
+                <div className="flex justify-around flex-wrap items-center">
+                    {isAdmin && <>
+                        <div>
+                            <MyButtonAsLink to={'/Subject/Edit/' + subject.code}><FontAwesomeIcon
+                                icon={faPencil}/></MyButtonAsLink>
+                        </div>
+                        <div className={'hover:cursor-pointer'}
+                             onClick={_ => {
+                                 setConfirmDelete(true)
+                                 window.scroll({
+                                     top: 0,
+                                     behavior: 'smooth'
+                                 })
+                             }}>
+                            <MyButton type={'button'}><FontAwesomeIcon color='red' icon={faTrash}/></MyButton>
+                        </div>
+                    </>}
+                    {(isAdmin || isDoctor) && <div>
+                        <MyButtonAsLink to={`/Subject/${subject?.code}/Report`}>
+                            Report
+                        </MyButtonAsLink>
+                    </div>}
+                    {isStudent && (
+                        isAssignResult.data ?
+                            <MyButton type={'button'}
+                                      className={'bg-red-100 hover:bg-red-200 focus:bg-red-300'}
+                                      onClick={deAssignFromThisSubject}>
+                                DeAssign
+                            </MyButton> :
+                            <MyButton type={'button'}
+                                      onClick={assignToThisSubject}>
+                                Assign
+                            </MyButton>
+                    )}
+                </div>
+            </ProfileSection>
+
+            <ProfileTitle>Doctor</ProfileTitle>
+            <ProfileSection>
                 {subject.hasADoctor ?
                     <div
                         className={'flex flex-col justify-center sm:flex-row sm:items-center sm:justify-between text-center'}>
-                        <AppLink to={'/doctor/' + subject.doctorId}>
+                        {(isAdmin || isDoctor) ? <AppLink to={'/doctor/' + subject.doctorId}>
                             <img src={PROFILE_IMAGES_URL + subject.doctorProfilePhoto}
                                  alt={"profile_image_for_doctor_" + subject.doctorUsername}
                                  className={'w-12 h-12 object-contain rounded-full inline'}
                             />
                             @{subject.doctorUsername}
-                        </AppLink>
+                        </AppLink> : <div>
+                            <img src={PROFILE_IMAGES_URL + subject.doctorProfilePhoto}
+                                 alt={"profile_image_for_doctor_" + subject.doctorUsername}
+                                 className={'w-12 h-12 object-contain rounded-full inline'}
+                            />
+                            @{subject.doctorUsername}
+                        </div>}
                         {isAdmin && <div className="">
                             <button
                                 className={'mx-auto sm:ml-auto sm:self-end text-red-800 h-12 w-24 p-4 hover:bg-red-500 transition-all rounded-xl flex justify-center items-center'}
@@ -202,17 +256,13 @@ const SubjectPage = () => {
                         {' '}<b>Add One</b>
                     </span>}
                     </div>}
-                {(isAdmin || isDoctor) && <AppLink to={`/Subject/${subject?.code}/Report`}
-                                                   className={''}>
-                    <MyButton type={'button'}>Report</MyButton>
-                </AppLink>}
-            </div>
+            </ProfileSection>
         </>
         : subjectUi
 
     roomsUi = (!isError && !isFetching && subject && !removeResult.isLoading) ? <>
-        <h3 className="bg-blue-500 text-center text-2xl sm:text-xl p-4">Rooms</h3>
-        <div className={'bg-blue-400 p-4 text-xl sm:text-lg flex flex-col gap-3 tracking-wide w-11/12 mx-auto'}>
+        <ProfileTitle>Rooms</ProfileTitle>
+        <ProfileSection>
             <div className="flex-sm1-md2-lg3-gap-3 justify-around">
                 {(isAdmin || isDoctor) && <>
                     <AppLink to={`/Subject/${subject?.code}/Students`}
@@ -230,16 +280,16 @@ const SubjectPage = () => {
                     </AppLink></>}
 
             </div>
-        </div>
+        </ProfileSection>
     </> : roomsUi
 
     return <div
         className={'my-container min-h-remaining relative'}
         onClick={_ => setDisplayChoseDoctor(false)}>
-        <div className={'flex flex-col gap-3'}>
+        <ProfileContainer>
             {subjectUi}
             {roomsUi}
-        </div>
+        </ProfileContainer>
     </div>
 
 };

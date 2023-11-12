@@ -1,5 +1,5 @@
 import useAppDispatch from "./Hookes/useAppDispatch";
-import {Outlet, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import useRefreshToken from "./Hookes/useRefreshToken";
 import {logout, setCredentials} from "./Feutures/Auth/authSlice";
@@ -15,7 +15,7 @@ import AddDoctor from "./Pages/Doctor/AddDoctor";
 import AdminDashboard from "./Pages/AdminDashboard";
 import DoctorPage from "./Pages/Doctor/DoctorPage";
 import EditDoctor from "./Pages/Doctor/EditDoctor";
-import ChangePassword from "./Pages/Doctor/ChangePassword";
+import ChangePassword from "./Pages/User/ChangePassword";
 import DoctorReport from "./Pages/Doctor/DoctorReport";
 import SubjectList from "./Pages/Subject/SubjectList";
 import AddSubject from "./Pages/Subject/AddSubject";
@@ -30,6 +30,10 @@ import ReceivedMessages from "./Pages/Message/ReceivedMessages";
 import Message from "./Pages/Message/Message";
 import EditSubject from "./Pages/Subject/EditSubject";
 import SubjectFileTypeTemplates from "./Pages/Subject/SubjectFileTypeTemplates";
+import AddStudent from "./Pages/Studnet/AddStudent";
+import StudentList from "./Pages/Studnet/StudentList";
+import StudentPage from "./Pages/Studnet/StudentPage";
+import EditStudent from "./Pages/Studnet/EditStudent";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -61,6 +65,10 @@ function App() {
 
                 <Route path='login' element={<Login/>}/>
 
+                <Route path='user' element={<RouteProtector allowedRoles={[]}/>}>
+                    <Route path={'changePassword'} element={<ChangePassword/>}/>
+                </Route>
+
                 <Route path='doctor'>
                     <Route element={<RouteProtector allowedRoles={['admin']}/>}>
                         <Route index element={<DoctorList/>}/>
@@ -69,7 +77,6 @@ function App() {
 
                     <Route element={<RouteProtector allowedRoles={['doctor']}/>}>
                         <Route path={'edit/:id'} element={<EditDoctor/>}/>
-                        <Route path={'changePassword'} element={<ChangePassword/>}/>
                     </Route>
 
 
@@ -79,10 +86,10 @@ function App() {
                     </Route>
                 </Route>
 
-                <Route path='subject'>
+                <Route path='subject' element={<RouteProtector allowedRoles={[]}/>}>
                     <Route index element={<SubjectList/>}/>
 
-                    <Route path={':code'} element={<RouteProtector allowedRoles={[]}/>}>
+                    <Route path={':code'}>
                         <Route index element={<SubjectPage/>}/>
 
                         <Route element={<RouteProtector allowedRoles={['admin', 'doctor']}/>}>
@@ -114,8 +121,20 @@ function App() {
                             <Route path='received' element={<ReceivedMessages/>}/>
                         </Route>
                     </Route>
-                    
+
                     <Route path=':id' element={<Message/>}/>
+                </Route>
+
+                <Route path='student' element={<RouteProtector allowedRoles={[]}/>}>
+                    <Route element={<RouteProtector allowedRoles={['admin']}/>}>
+                        <Route index element={<StudentList/>}/>
+                        <Route path='add' element={<AddStudent/>}/>
+                    </Route>
+
+                    <Route path=':id' element={<StudentPage/>}/>
+                    <Route element={<RouteProtector allowedRoles={['student']}/>}>
+                        <Route path='edit/:id' element={<EditStudent/>}/>
+                    </Route>
                 </Route>
 
                 <Route path={'AdminDashboard'} element={<RouteProtector allowedRoles={['admin']}/>}>

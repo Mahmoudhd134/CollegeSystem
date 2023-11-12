@@ -1,9 +1,11 @@
 ﻿import {useField} from "formik";
+import {HTMLInputTypeAttribute} from "react";
 
 type Props = {
     name: string,
     label: string,
-    placeholder?: string
+    placeholder?: string,
+    type?:HTMLInputTypeAttribute
 }
 const MyInputField = (props: Props) => {
     const [field, meta] = useField(props.name)

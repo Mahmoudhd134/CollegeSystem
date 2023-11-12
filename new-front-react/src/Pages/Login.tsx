@@ -42,7 +42,8 @@ const Login = () => {
             return
         }
         if (isInRole('admin')) navigator('/AdminDashboard')
-        if (isInRole('doctor')) navigator('/doctor/me')
+        if (isInRole('doctor')) navigator('/Doctor/me')
+        if (isInRole('student')) navigator('/Student/me')
 
     }, [loginResult.isSuccess])
 

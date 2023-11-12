@@ -1,6 +1,5 @@
 ﻿import {useParams} from "react-router-dom";
 import {useEditSubjectMutation, useGetSubjectByCodeQuery} from "../../App/Api/SubjectApi";
-import {useEditDoctorMutation, useGetDoctorEditInfoQuery} from "../../App/Api/DoctorApi";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
 import {useEffect, useState} from "react";
 import * as Yup from "yup";

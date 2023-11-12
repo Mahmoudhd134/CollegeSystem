@@ -10,7 +10,7 @@ export interface AppError {
 }
 
 
-export const sendDefualt = fetchBaseQuery({
+export const sendDefault = fetchBaseQuery({
     baseUrl: BASE_URL,
     credentials: 'include',
     prepareHeaders: (headers, {getState}) => {
@@ -38,13 +38,13 @@ const baseQuery: BaseQueryFn<
             }
         }
     }
-    return sendDefualt(args, api, extraOptions);
+    return sendDefault(args, api, extraOptions);
 }
 
 export const baseApi = createApi({
     reducerPath: 'api',
     baseQuery,
-    tagTypes: ['user', 'doctor', 'subject', 'message'],
+    tagTypes: ['user', 'doctor', 'subject', 'message','student'],
     endpoints: () => ({}),
-    keepUnusedDataFor: 0
+    // keepUnusedDataFor: 0,
 })

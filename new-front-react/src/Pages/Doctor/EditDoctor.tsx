@@ -28,7 +28,7 @@ const EditDoctor = () => {
 
     useEffect(() => {
         if (editResult.isSuccess)
-            navigator('/doctor/' + id)
+            navigator('/Doctor/' + id)
     }, [editResult.isSuccess])
 
     const validationSchema = Yup.object({
