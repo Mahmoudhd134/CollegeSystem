@@ -30,7 +30,7 @@ public class
         if (subjectMaterials == null)
             return Response<SubjectWithMaterialsDto>.Failure(SubjectErrors.WrongId);
 
-        subjectMaterials.IsOwner = subjectMaterials.DoctorId.Equals(id);
+        subjectMaterials.IsOwner = subjectMaterials.DoctorId?.Equals(id) ?? false;
         subjectMaterials.NumberOfFileTypesUploaded = subjectMaterials.Files
             .DistinctBy(x => x.Type)
             .Count();

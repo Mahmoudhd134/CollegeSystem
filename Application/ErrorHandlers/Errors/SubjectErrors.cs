@@ -28,4 +28,7 @@ public static class SubjectErrors
 
     public static readonly Error UnAuthorizedGet = new("Subject.UnAuthorizedGet",
         "You can not get details for a subject you are not assigned in");
+
+    public static readonly Error UnAuthorizedReportGet = new("Subject.UnAuthorizedReportGet",
+        "You can not get the report for a subject you are not assigned in");
 }

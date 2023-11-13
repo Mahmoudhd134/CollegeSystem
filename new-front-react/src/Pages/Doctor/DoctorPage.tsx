@@ -23,7 +23,9 @@ const DoctorPage = () => {
     const navigator = useAppNavigator()
     const imgInput = useRef<HTMLInputElement>(null);
     const [err, setErr] = useState('');
-    const isAdmin = useIsInRole()('admin')
+    const isInRole = useIsInRole()
+    const isAdmin = isInRole('admin')
+    const isDoctor = isInRole('doctor')
 
     // let doctor:typeof data
     // if(data)
@@ -164,7 +166,7 @@ const DoctorPage = () => {
 
         <div className="flex-1-2-3-gap-3 justify-center w-full">
             {doctor?.subjects.map(s => <AppLink to={'/Subject/' + s.code} key={s.id}
-                                                className={`border rounded-xl ${isAdmin ? (maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800') : 'border-gray-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
+                                                className={`border rounded-xl ${(isAdmin || isDoctor) ? (maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800') : 'border-gray-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
                 <img
                     src="/Images/subject.jpg"
                     alt="subjectImg"
@@ -173,7 +175,8 @@ const DoctorPage = () => {
                 <div className="p-3 text-center">
                     <div className={'text-2xl'}>{s.department.toUpperCase()}{s.code}</div>
                     <div className={'text-xl sm:text-lg'}>{s.name}</div>
-                    {isAdmin && <div className={'text-lg sm:text-md'}>{s.numberOfFilesTypes}/{maxFileTypes}</div>}
+                    {(isAdmin || isDoctor) &&
+                        <div className={'text-lg sm:text-md'}>{s.numberOfFilesTypes}/{maxFileTypes}</div>}
                 </div>
             </AppLink>)}
         </div>

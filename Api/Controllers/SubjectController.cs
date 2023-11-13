@@ -11,25 +11,21 @@ public class SubjectController : BaseController
     [HttpGet]
     [Route("{pageIndex:int}/{pageSize:int}")]
     public async Task<ActionResult> Page(int pageIndex, int pageSize, string department, int? year,
-        string namePrefix,bool? hasDoctor, bool? completed)
-    {
-        return Return(
-            await Mediator.Send(new GetSubjectForPageQuery(pageIndex, pageSize, department, year, namePrefix, hasDoctor, completed)));
-    }
+        string namePrefix, bool? hasDoctor, bool? completed) =>
+        Return(await Mediator.Send(new GetSubjectForPageQuery(
+            pageIndex, pageSize, department, year, namePrefix, hasDoctor, completed)));
 
     [HttpGet]
     [Route("{code:int}")]
-    public async Task<ActionResult> GetByCode(int code)
-    {
-        return Return(await Mediator.Send(new GetSubjectByCodeQuery(code, Id)));
-    }
+    public async Task<ActionResult> GetByCode(int code) =>
+        Return(await Mediator.Send(new GetSubjectByCodeQuery(code, Id)));
 
     [Authorize(Roles = "Admin,Doctor")]
     [HttpGet]
     [Route("Materials/{code:int}")]
     public async Task<ActionResult<SubjectWithMaterialsDto>> GetSubjectWithMaterials(int code) =>
         Return(await Mediator.Send(new GetSubjectWithMaterialsInfoQuery(code, Id)));
-    
+
     [Authorize(Roles = "Admin,Doctor")]
     [HttpGet]
     [Route("Students/{code:int}")]
@@ -39,38 +35,28 @@ public class SubjectController : BaseController
     [Authorize(Roles = "Admin,Doctor")]
     [HttpGet]
     [Route("Report/{code:int}")]
-    public async Task<ActionResult> GetReport(int code)
-    {
-        return Return(await Mediator.Send(new GetSubjectReportQuery(code)));
-    }
+    public async Task<ActionResult> GetReport(int code) =>
+        Return(await Mediator.Send(new GetSubjectReportQuery(code, Id)));
 
     [Authorize(Roles = "Admin")]
     [HttpPut]
-    public async Task<ActionResult> Edit([FromBody] EditSubjectDto editSubjectDto)
-    {
-        return Return(await Mediator.Send(new EditSubjectCommand(editSubjectDto)));
-    }
+    public async Task<ActionResult> Edit([FromBody] EditSubjectDto editSubjectDto) =>
+        Return(await Mediator.Send(new EditSubjectCommand(editSubjectDto)));
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
-    public async Task<ActionResult> Add([FromBody] AddSubjectDto addSubjectDto)
-    {
-        return Return(await Mediator.Send(new AddSubjectCommand(addSubjectDto)));
-    }
+    public async Task<ActionResult> Add([FromBody] AddSubjectDto addSubjectDto) =>
+        Return(await Mediator.Send(new AddSubjectCommand(addSubjectDto)));
 
     [Authorize(Roles = "Admin")]
     [HttpDelete]
     [Route("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        return Return(await Mediator.Send(new DeleteSubjectCommand(id)));
-    }
+    public async Task<ActionResult> Delete(int id) =>
+        Return(await Mediator.Send(new DeleteSubjectCommand(id)));
 
     [Authorize(Roles = "Admin")]
     [HttpDelete]
     [Route("DeleteAssignedDoctor/{subjectId:int}")]
-    public async Task<ActionResult> DeleteAssignedDoctor(int subjectId)
-    {
-        return Return(await Mediator.Send(new DeleteAssignedDoctorCommand(subjectId)));
-    }
+    public async Task<ActionResult> DeleteAssignedDoctor(int subjectId) =>
+        Return(await Mediator.Send(new DeleteAssignedDoctorCommand(subjectId)));
 }

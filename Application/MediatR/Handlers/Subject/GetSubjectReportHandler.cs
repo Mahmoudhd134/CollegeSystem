@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Subject;
+using Application.ErrorHandlers.Errors;
 using Application.MediatR.Queries.Subject;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -22,11 +23,14 @@ public class GetSubjectReportHandler : IRequestHandler<GetSubjectReportQuery, Re
     public async Task<Response<SubjectReportDto>> Handle(GetSubjectReportQuery request,
         CancellationToken cancellationToken)
     {
-        var code = request.SubjectCode;
+        var (code, requesterId) = request;
 
         var subjectDto = await _context.Subjects
             .ProjectTo<SubjectReportDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(s => s.Code == code, cancellationToken);
+
+        if ((subjectDto.Doctor?.Id ?? "") != requesterId)
+            return Response<SubjectReportDto>.Failure(SubjectErrors.UnAuthorizedReportGet);
 
         subjectDto.IsComplete = subjectDto.Files
             .Select(f => f.Type)

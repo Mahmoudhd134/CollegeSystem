@@ -22,6 +22,7 @@ import {
     useDeAssignSubjectFromStudentMutation,
     useLazyIsAssignedToSubjectQuery
 } from "../../App/Api/StudentApi";
+import useAppSelector from "../../Hookes/useAppSelector";
 
 const SubjectPage = () => {
     const {code} = useParams()
@@ -32,8 +33,10 @@ const SubjectPage = () => {
     const [remove, removeResult] = useDeleteSubjectMutation()
     const navigator = useAppNavigator()
     const [isAssign, isAssignResult] = useLazyIsAssignedToSubjectQuery()
-    const [assignToSubject] = useAssignSubjectWithStudentMutation()
-    const [deAssignFromSubject] = useDeAssignSubjectFromStudentMutation()
+    const [assignToSubject, {isLoading: assignLoading}] = useAssignSubjectWithStudentMutation()
+    const [deAssignFromSubject, {isLoading: deAssignLoading}] = useDeAssignSubjectFromStudentMutation()
+    const isMutating = isFetching || removeResult.isLoading || assignLoading || deAssignLoading
+    const myId = useAppSelector(s => s.auth.id)
 
     const isInRole = useIsInRole()
     const isAdmin = isInRole('admin')
@@ -55,7 +58,7 @@ const SubjectPage = () => {
 
     let subjectUi
     let roomsUi
-    if (isFetching || removeResult.isLoading) {
+    if (isMutating) {
         subjectUi = <div className={'animate-pulse flex flex-col gap-3 relative'}>
             <h3 className="bg-blue-500 text-center text-2xl sm:text-xl p-4 flex justify-center gap-7">
                 <div>{subject?.name.split(' ').map(x => x[0].toUpperCase() + x.slice(1).toLowerCase() + ' ')}</div>
@@ -83,6 +86,10 @@ const SubjectPage = () => {
                     </MyButtonAsLink>
                 </div>}
             </div>
+            <ProfileTitle>Actions</ProfileTitle>
+            <ProfileSection>
+                <div className="h-16"></div>
+            </ProfileSection>
 
             <h3 className="bg-blue-500 text-center text-2xl sm:text-xl p-4">Doctor</h3>
             <div className={'bg-blue-400 p-4 text-lg sm:text-md w-11/12 mx-auto flex justify-between items-center'}>
@@ -148,7 +155,7 @@ const SubjectPage = () => {
     }
 
 
-    subjectUi = (subject && !isFetching && !isError && !removeResult.isLoading) ? <>
+    subjectUi = (subject && !isMutating) ? <>
             {displayChoseDoctor && <div
                 className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 w-11/12 h-5/6 bg-opacity-90 rounded-xl overflow-y-scroll"}
                 style={{zIndex: 123}}
@@ -201,8 +208,8 @@ const SubjectPage = () => {
                             <MyButton type={'button'}><FontAwesomeIcon color='red' icon={faTrash}/></MyButton>
                         </div>
                     </>}
-                    {(isAdmin || isDoctor) && <div>
-                        <MyButtonAsLink to={`/Subject/${subject?.code}/Report`}>
+                    {(isAdmin || (subject.doctorId == myId)) && <div>
+                        <MyButtonAsLink to={`/Subject/${subject.code}/Report`}>
                             Report
                         </MyButtonAsLink>
                     </div>}
@@ -260,7 +267,7 @@ const SubjectPage = () => {
         </>
         : subjectUi
 
-    roomsUi = (!isError && !isFetching && subject && !removeResult.isLoading) ? <>
+    roomsUi = (subject && !isMutating) ? <>
         <ProfileTitle>Rooms</ProfileTitle>
         <ProfileSection>
             <div className="flex-sm1-md2-lg3-gap-3 justify-around">
