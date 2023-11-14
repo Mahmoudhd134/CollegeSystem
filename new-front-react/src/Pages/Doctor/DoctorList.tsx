@@ -1,5 +1,5 @@
 import {useDeleteDoctorMutation, useGetDoctorPageQuery} from "../../App/Api/DoctorApi"
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import getAppError from "../../Utilites/getAppError";
 import {BASE_URL} from "../../App/Api/axiosApi";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
@@ -7,13 +7,15 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../Components/Global/Pagination";
 import './doctor.css'
+import useMySearchParams from "../../Hookes/Navigation/useMySearchParams";
+import PaginationWithUrlSearchParams from "../../Components/Global/PaginationWithUrlSearchParams";
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 10
 const DoctorList = () => {
-    const [pageIndex, setPageIndex] = useState(0)
-    const [usernamePrefix, setUsernamePrefix] = useState('')
-    const [usernamePrefixField, setUsernamePrefixField] = useState('')
-    const [hasSubject, setHasSubject] = useState<boolean | null>(null)
+    const {searchParams, updateSearchParams, clearSearchParams} = useMySearchParams()
+    const pageIndex = +(searchParams.get('page') ?? 1) - 1
+    const usernamePrefix = searchParams.get('usernamePrefix') ?? undefined
+    const hasSubject = searchParams.get('hasSubject') ? searchParams.get('hasSubject') == 'true' : undefined
     const [remove, removeResult] = useDeleteDoctorMutation()
     const [id, setId] = useState<string | null>(null)
     const {data, isError, error, isFetching} = useGetDoctorPageQuery({
@@ -42,42 +44,8 @@ const DoctorList = () => {
                 fill="currentFill"/>
         </svg>
 
-    const usernamePrefixInput = <form onSubmit={e => e.preventDefault()}
-                                      className="flex h-12 mx-auto w-full sm:w-3/4 md:w-1/2 xl:w-1/3">
-        <input
-            type="text"
-            value={usernamePrefixField}
-            id={'usernamePrefix'}
-            className="doctor-list-search-input"
-            onChange={e => setUsernamePrefixField(e.currentTarget.value)}
-            placeholder={'Username Prefix...'}
-        />
-        <button
-            className="doctor-list-search-button"
-            onClick={e => {
-                setUsernamePrefix(usernamePrefixField)
-                setPageIndex(0)
-            }}
-        >Search
-        </button>
-    </form>
-
-    const hasSubjectInput = <div className="w-full sm:w-1/3 md:w-1/4 mx-auto my-2">
-        <select
-            value={hasSubject == null ? '' : hasSubject ? 'true' : 'false'}
-            onChange={e => {
-                setHasSubject(e.target.value.length == 0 ? null : e.target.value == 'true')
-                setPageIndex(0)
-            }}
-            className="doctor-list-select-menu">
-            <option value={''}>All</option>
-            <option value={'true'}>Has subject</option>
-            <option value={'false'}>Has no subject</option>
-        </select>
-    </div>
-
-    const doctors = data &&
-        <div className="grid-1-2-3-4-gap-3 my-3 w-full">
+    const doctors = data && <div className={'bg-blue-300 dark:bg-gray-300 p-3'}>
+        <div className="flex-sm1-md2-lg3-gap-3 justify-around items-center my-3 w-full">
             {data.map(d => <div key={d.id}
                                 className={`border-4 ${d.isComplete ? 'border-green-500' : 'border-red-500'} h-80 rounded-2xl bg-blue-50`}>
                 <div className="h-1/2 p-2 rounded-t-2xl bg-gradient-to-b from-blue-500 to-blue-200">
@@ -91,7 +59,7 @@ const DoctorList = () => {
                 </div>
                 <div className="h-1/4 flex bg-gradient-to-r from-blue-200 to-red-200 rounded-b-2xl">
                     <button
-                        onClick={e => navigator('/doctor/' + d.id)}
+                        onClick={e => navigator('/Doctor/' + d.id)}
                         className="doctor-list-card-more-button">More
                     </button>
                     <button
@@ -101,6 +69,14 @@ const DoctorList = () => {
                 </div>
             </div>)}
         </div>
+        <PaginationWithUrlSearchParams
+            pageIndex={pageIndex}
+            setPage={(newPage => updateSearchParams({page: newPage}))}
+            hasPrev={pageIndex > 0}
+            hasNext={data?.length == PAGE_SIZE}
+            className={'my-3'}
+        />
+    </div>
 
     const removeDoctor = <div
         className={'doctor-list-remove-doctor-window'}
@@ -132,33 +108,39 @@ const DoctorList = () => {
         </div>
     </div>
 
-    const skeleton = isFetching && <div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 my-3 w-full animate-pulse">
-        {Array.from(Array(Math.floor(PAGE_SIZE / 2)).keys()).map(i => <div key={i}
-                                                                           className="border border-blue-500 h-80 rounded-2xl bg-blue-50">
-            <div className="h-1/2 p-2 rounded-t-2xl bg-gradient-to-b from-blue-500 to-blue-200 relative">
-                <svg
-                    className={'object-contain w-full h-full rounded-2xl'}
-                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-                    fill="currentColor" viewBox="0 0 640 512">
-                    <path
-                        d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/>
-                </svg>
+    const skeleton = isFetching && <div className={'bg-blue-300 dark:bg-gray-300 p-3'}>
+        <div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 my-3 w-full animate-pulse">
+            {Array.from(Array(Math.floor(PAGE_SIZE / 2)).keys()).map(i => <div key={i}
+                                                                               className="border border-blue-500 h-80 rounded-2xl bg-blue-50">
+                <div className="h-1/2 p-2 rounded-t-2xl bg-gradient-to-b from-blue-500 to-blue-200 relative">
+                    <svg
+                        className={'object-contain w-full h-full rounded-2xl'}
+                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                        fill="currentColor" viewBox="0 0 640 512">
+                        <path
+                            d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/>
+                    </svg>
 
-            </div>
-            <div className="h-1/4 p-2 text-center bg-gradient-to-b from-blue-200 to-blue-100">
-                <h1 className={'text-3xl sm:text-2xl overflow-hidden h-4'}></h1>
-                <h3 className="text-md sm:text-sm h-4"><b></b></h3>
-            </div>
-            <div className="h-1/4 flex bg-gradient-to-r from-blue-200 to-red-200 rounded-b-2xl">
-                <button
-                    className="doctor-list-card-more-button">More
-                </button>
-                <button
-                    className="doctor-list-card-remove-button">Remove
-                </button>
-            </div>
-        </div>)}
+                </div>
+                <div className="h-1/4 p-2 text-center bg-gradient-to-b from-blue-200 to-blue-100">
+                    <h1 className={'text-3xl sm:text-2xl overflow-hidden h-4'}></h1>
+                    <h3 className="text-md sm:text-sm h-4"><b></b></h3>
+                </div>
+                <div className="h-1/4 flex bg-gradient-to-r from-blue-200 to-red-200 rounded-b-2xl">
+                    <button
+                        className="doctor-list-card-more-button">More
+                    </button>
+                    <button
+                        className="doctor-list-card-remove-button">Remove
+                    </button>
+                </div>
+            </div>)}
+        </div>
+        <PaginationWithUrlSearchParams pageIndex={0}
+                                       setPage={(n) => undefined}
+                                       hasPrev={false} hasNext={false}
+                                       className={'my-3'}/>
     </div>
 
 
@@ -166,26 +148,99 @@ const DoctorList = () => {
         return <h3>Error {getAppError(error)?.message}</h3>
 
     return (
-        <>
+        <div className={'my-container min-h-remaining'}>
             {id && removeDoctor}
-            <div className="container mx-auto p-4 overflow-x-hidden">
-                <div className="w-full flex">
-                    <button
-                        onClick={e => navigator('/doctor/add')}
-                        className="doctor-list-add-doctor-button">Add Doctor
-                    </button>
+            <div className="block lg:flex flex-row-reverse">
+                <div className="w-full lg:w-2/12 lg:ml-1">
+                    <h3 className="text-center text-2xl sm:text-xl my-3 bg-blue-500 dark:bg-gray-500">Filters</h3>
+                    <div className={"bg-blue-300 dark:bg-gray-300 p-3" + (isFetching ? ' animate-pulse' : '')}>
+                        <div className="flex justify-around my-3">
+                            <button type={'button'} onClick={_ => clearSearchParams()}>
+                                Clear Search
+                            </button>
+                        </div>
+                        <form onSubmit={e => {
+                            e.preventDefault()
+                            const formData = new FormData(e.currentTarget)
+                            const d = [...formData.entries()][0]
+                            //@ts-ignore
+                            updateSearchParams({[d[0]]: d[1]})
+                        }}>
+                            {/*Has A Subject*/}
+                            <div>
+                                <h3 className="text-start ml-1">Choose</h3>
+                                <div>
+                                    <input type={'radio'}
+                                           name={'hasSubject'}
+                                           value={'true'}
+                                           id={'has-subject'}
+                                           defaultChecked={hasSubject == true}
+                                           className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
+                                    />
+                                    <label htmlFor="has-subject"
+                                           className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}
+                                    >Has a Subject</label>
+                                </div>
+
+                                <div>
+                                    <input type={'radio'}
+                                           name={'hasSubject'}
+                                           value={'false'}
+                                           defaultChecked={hasSubject == false}
+                                           className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
+                                           id={'not-has-subject'}/>
+                                    <label htmlFor="not-has-subject"
+                                           className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}>
+                                        Has No Subject</label>
+                                </div>
+
+                                <div>
+                                    <input type={'radio'}
+                                           name={'hasSubject'}
+                                           value={undefined}
+                                           defaultChecked={hasSubject == undefined}
+                                           className={'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'}
+                                           id={'has-subject-or-not'}/>
+                                    <label htmlFor="has-subject-or-not"
+                                           className={'ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'}>
+                                        Any</label>
+                                </div>
+                            </div>
+                            <button>Search</button>
+                        </form>
+                        <br/>
+                        <hr/>
+                        <br/>
+                        <form onSubmit={e => {
+                            e.preventDefault()
+                            const formData = new FormData(e.currentTarget)
+                            const d = [...formData.entries()][0]
+                            //@ts-ignore
+                            updateSearchParams({[d[0]]: d[1]})
+                        }}>
+                            {/*Name Prefix Filter*/}
+                            <div>
+                                <label htmlFor="namePrefix">Name Prefix</label>
+                                <input
+                                    className={'block w-10/12 border text-white border-blue-500 bg-blue-50 p-2 focus:border-blue-600 focus:ring-blue-700 rounded-2xl'}
+                                    name={'usernamePrefix'}
+                                    id={'namePrefix'}
+                                    placeholder={'Name Prefix...'}
+                                    defaultValue={usernamePrefix}
+                                />
+                            </div>
+                            <button>Search</button>
+                        </form>
+                        <hr className={'my-3'}/>
+                    </div>
                 </div>
-                {usernamePrefixInput}
-                {hasSubjectInput}
-                {isFetching ? skeleton : doctors}
-                <Pagination
-                    page={pageIndex}
-                    setPage={setPageIndex}
-                    hasPrev={pageIndex > 0}
-                    hasNext={PAGE_SIZE == (data?.length ?? -1)}
-                />
+
+                <div className="w-full lg:w-10/12">
+                    <h3 className="text-center text-2xl sm:text-xl my-3 bg-blue-500 dark:bg-gray-500">Doctors</h3>
+                    {isFetching ? skeleton : doctors}
+                </div>
             </div>
-        </>
+        </div>
     )
 }
 

@@ -94,31 +94,17 @@ public class SubjectFileController : BaseController
     {
         return Return(await Mediator.Send(new DeleteSubjectMaterialCommand(id, Id)));
     }
-
-    private ClaimsPrincipal ValidateToken(string authToken)
+    
+    protected ClaimsPrincipal ValidateToken(string authToken)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var validationParameters = GetValidationParameters();
-
+        var validationParameters = Constants.GetValidationParameters(_jwt.SecurityKey);
         var principal =
             tokenHandler.ValidateToken(authToken, validationParameters, out var validatedToken);
         return principal;
     }
 
-    private TokenValidationParameters GetValidationParameters()
-    {
-        return new TokenValidationParameters()
-        {
-            ValidateLifetime = false, // Because there is no expiration in the generated token
-            ValidateAudience = false, // Because there is no audiance in the generated token
-            ValidateIssuer = false, // Because there is no issuer in the generated token
-            ValidIssuer = "Sample",
-            ValidAudience = "Sample",
-            IssuerSigningKey = _jwt.SecurityKey
-        };
-    }
-
-    private bool IsInAnyRole(ClaimsPrincipal claims, params string[] roles)
+    protected bool IsInAnyRole(ClaimsPrincipal claims, params string[] roles)
     {
         return claims.Claims.Any(c => c.Type == ClaimTypes.Role && roles.Contains(c.Value));
     }

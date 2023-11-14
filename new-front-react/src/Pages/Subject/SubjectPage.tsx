@@ -189,6 +189,43 @@ const SubjectPage = () => {
                 <div>Hours: {subject.hours}</div>
             </ProfileSection>
 
+            <ProfileTitle>Doctor</ProfileTitle>
+            <ProfileSection>
+                {subject.hasADoctor ?
+                    <div
+                        className={'flex flex-col justify-center sm:flex-row sm:items-center sm:justify-between text-center'}>
+                        {(isAdmin || isDoctor) ? <AppLink to={'/doctor/' + subject.doctorId}>
+                            <img src={PROFILE_IMAGES_URL + subject.doctorProfilePhoto}
+                                 alt={"profile_image_for_doctor_" + subject.doctorUsername}
+                                 className={'w-12 h-12 object-contain rounded-full inline'}
+                            />
+                            @{subject.doctorUsername}
+                        </AppLink> : <div>
+                            <img src={PROFILE_IMAGES_URL + subject.doctorProfilePhoto}
+                                 alt={"profile_image_for_doctor_" + subject.doctorUsername}
+                                 className={'w-12 h-12 object-contain rounded-full inline'}
+                            />
+                            @{subject.doctorUsername}
+                        </div>}
+                        {isAdmin && <div className="">
+                            <button
+                                className={'mx-auto sm:ml-auto sm:self-end text-red-800 h-12 w-24 p-4 hover:bg-red-500 transition-all rounded-xl flex justify-center items-center'}
+                                onClick={_ => deAssign(subject.id)}
+                            >Remove
+                            </button>
+                        </div>}
+                    </div> : <div>
+                        Has No Doctor
+                        {isAdmin && <span className={'text-blue-800 hover:cursor-pointer'}
+                                          onClick={e => {
+                                              e.stopPropagation()
+                                              setDisplayChoseDoctor(true)
+                                          }}>
+                        {' '}<b>Add One</b>
+                    </span>}
+                    </div>}
+            </ProfileSection>
+
             <ProfileTitle>Actions</ProfileTitle>
             <ProfileSection>
                 <div className="flex justify-around flex-wrap items-center">
@@ -226,43 +263,6 @@ const SubjectPage = () => {
                             </MyButton>
                     )}
                 </div>
-            </ProfileSection>
-
-            <ProfileTitle>Doctor</ProfileTitle>
-            <ProfileSection>
-                {subject.hasADoctor ?
-                    <div
-                        className={'flex flex-col justify-center sm:flex-row sm:items-center sm:justify-between text-center'}>
-                        {(isAdmin || isDoctor) ? <AppLink to={'/doctor/' + subject.doctorId}>
-                            <img src={PROFILE_IMAGES_URL + subject.doctorProfilePhoto}
-                                 alt={"profile_image_for_doctor_" + subject.doctorUsername}
-                                 className={'w-12 h-12 object-contain rounded-full inline'}
-                            />
-                            @{subject.doctorUsername}
-                        </AppLink> : <div>
-                            <img src={PROFILE_IMAGES_URL + subject.doctorProfilePhoto}
-                                 alt={"profile_image_for_doctor_" + subject.doctorUsername}
-                                 className={'w-12 h-12 object-contain rounded-full inline'}
-                            />
-                            @{subject.doctorUsername}
-                        </div>}
-                        {isAdmin && <div className="">
-                            <button
-                                className={'mx-auto sm:ml-auto sm:self-end text-red-800 h-12 w-24 p-4 hover:bg-red-500 transition-all rounded-xl flex justify-center items-center'}
-                                onClick={_ => deAssign(subject.id)}
-                            >Remove
-                            </button>
-                        </div>}
-                    </div> : <div>
-                        Has No Doctor
-                        {isAdmin && <span className={'text-blue-800 hover:cursor-pointer'}
-                                          onClick={e => {
-                                              e.stopPropagation()
-                                              setDisplayChoseDoctor(true)
-                                          }}>
-                        {' '}<b>Add One</b>
-                    </span>}
-                    </div>}
             </ProfileSection>
         </>
         : subjectUi

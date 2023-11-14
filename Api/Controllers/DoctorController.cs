@@ -17,7 +17,7 @@ public class DoctorController : BaseController
 
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    [Route("{pageIndex:int}/{pageSize:int}/{usernamePrefix?}")]
+    [Route("{pageIndex:int}/{pageSize:int}")]
     public async Task<ActionResult> Page(int pageIndex, int pageSize, bool? hasSubject = null,
         string usernamePrefix = "")
     {

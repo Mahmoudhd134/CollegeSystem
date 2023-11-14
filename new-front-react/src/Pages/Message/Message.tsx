@@ -31,7 +31,9 @@ const Message = () => {
                     <span className="block mt-1 text-lg leading-tight font-medium text-black">
                         {data.title}
                     </span>
-                    <p className="mt-2 text-gray-500"><pre>{data.content}</pre></p>
+                    <p className="mt-2 text-gray-500">
+                        <pre className={'whitespace-pre-wrap'}>{data.content}</pre>
+                    </p>
                     <p className="mt-4 text-gray-600">
                         <TimeAgo timestamp={data.date}/>
                     </p>

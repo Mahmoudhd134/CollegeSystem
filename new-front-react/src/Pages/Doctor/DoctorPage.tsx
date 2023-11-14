@@ -13,6 +13,10 @@ import {useChangeProfilePhoto} from "../../App/Api/UserApi";
 import useAxiosApi from "../../Hookes/useAxiosApi";
 import useAppDispatch from "../../Hookes/useAppDispatch";
 import useIsInRole from "../../Hookes/useIsInRole";
+import ProfileContainer from "../../Components/Profile/ProfileContainer";
+import ProfileTitle from "../../Components/Profile/ProfileTitle";
+import ProfileSection from "../../Components/Profile/ProfileSection";
+import MyButtonAsLink from "../../Components/Form/MyButtonAsLink";
 
 const DoctorPage = () => {
     const {id} = useParams()
@@ -58,128 +62,100 @@ const DoctorPage = () => {
 
     const maxFileTypes = Object.values(SubjectFileTypes).map(Number).filter(isNaN).length
     const progressBar = <div className="w-full rounded-full bg-gray-700 relative">
-        <div className={`bg-blue-600 leading-none rounded-full h-full p-1`}
+        <div className={`bg-blue-600 leading-none rounded-full h-full p-1 text-center`}
              style={{width: per + '%'}}
         >{hasDone}/{doctor?.subjects.length}
         </div>
     </div>
 
-    const filesLink = <a href={'#Files'}
-                         className={'w-32 h-16 p-4 bg-blue-300 hover:bg-blue-400 focus:bg-blue-500 transition rounded-3xl flex justify-around items-center mt-8 text-xl hover:-translate-y-1 group hover:text-white'}>
-        <FontAwesomeIcon icon={faArrowDown}
-                         className={'text-blue-500 group-hover:translate-y-2 transition'}/>
-        Files
-        <FontAwesomeIcon icon={faArrowDown}
-                         className={'text-blue-500 group-hover:translate-y-2 transition'}/>
-    </a>
-
-    const docInfo = <div className={'text-center text-anywhere'}>
-        <div className={'text-2xl sm:text-xl'}>
-            <div>
-                NN: {doctor?.nationalNumber}
-            </div>
-            <div>
-                {doctor?.firstname} {doctor?.lastname}
-            </div>
-        </div>
-
-        <div className="text-3xl sm:text-2xl">
-            <b>#</b>{doctor?.username}
-        </div>
-        <div className="text-xl sm:text-lg">
-            <div>
-                {doctor?.email}
-            </div>
-            <div>
-                {doctor?.phoneNumber}
-            </div>
-        </div>
-        {progressBar}
-    </div>
-
-    const docSection = <div className="container mx-auto p-4 flex flex-col items-center">
-        <div className="flex flex-wrap justify-around gap-3">
-            <AppLink
-                to={'/doctor/report/' + doctor?.id}
-                className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition flex justify-center items-center"
-            >Report
-            </AppLink>
-            {doctor?.isOwner &&
+    const docSection = <div className="my-container">
+        <ProfileContainer>
+            <ProfileTitle>{doctor?.firstname + ' ' + doctor?.lastname}</ProfileTitle>
+            <ProfileSection>
                 <>
-                    <AppLink
-                        className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition flex justify-center items-center"
-                        to={'/User/ChangePassword'}
-                    >
-                        Change Password
-                    </AppLink>
-                    <AppLink
-                        to={'/doctor/edit/' + doctor.id}
-                        className="w-48 h-16 mb-0 sm:mb-5 bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 rounded-xl transition flex justify-center items-center"
-                    >
-                        Edit
-                    </AppLink>
+                    {doctor?.isOwner ?
+                        <>
+                            <input type="file"
+                                   accept='image/*'
+                                   className={'hidden'}
+                                   ref={imgInput}
+                                   onChange={changeProfileImgHandler}/>
+                            <img className={'h-48 w-fit self-center object-contain rounded-full hover:cursor-pointer'}
+                                 src={BASE_URL.slice(0, BASE_URL.length - 4) + '/profileImages/' + doctor?.profilePhoto}
+                                 alt="profile_photo"
+                                 onClick={_ => imgInput.current?.click()}
+                            />
+                        </> :
+                        <img className={'h-48 w-fit self-center object-contain rounded-full'}
+                             src={BASE_URL.slice(0, BASE_URL.length - 4) + '/profileImages/' + doctor?.profilePhoto}
+                             alt="profile_photo"/>}
+                    <div>First Name: {doctor?.firstname}</div>
+                    <div>Last Name: {doctor?.lastname}</div>
+                    <div>Email: {doctor?.email}</div>
+                    <div>National Number: {doctor?.nationalNumber}</div>
+                    <div>Phone Number: {doctor?.phoneNumber}</div>
+                    <div className={doctor?.isComplete ? 'text-green-500' : 'text-red-500'}>
+                        Is Complete: {doctor?.isComplete ? 'Yes' : 'No'}
+                    </div>
+                    <div>{progressBar}</div>
                 </>
-            }
-        </div>
+            </ProfileSection>
 
-        <div
-            className={`h-52 w-52 border-2 ${doctor ? doctor.isComplete ? 'border-green-500' : 'border-red-500' : 'border-black'} overflow-hidden flex flex-col p-4 my-2 justify-center items-center rounded-lg`}>
-            {doctor && (doctor.isComplete ?
-                <div className={'text-green-500 text-2xl sm:text-xl'}>Done</div> :
-                <div className={'text-red-500 text-2xl sm:text-xl'}>Not Done</div>)}
-            {doctor?.isOwner ?
-                <>
-                    <input type="file"
-                           accept='image/*'
-                           className={'hidden'}
-                           ref={imgInput}
-                           onChange={changeProfileImgHandler}/>
-                    <img className={'h-48 w-48 object-contain rounded-full hover:cursor-pointer'}
-                         src={BASE_URL.slice(0, BASE_URL.length - 4) + '/profileImages/' + doctor?.profilePhoto}
-                         alt="profile_photo"
-                         onClick={_ => imgInput.current?.click()}
-                    />
-                </> :
-                <img className={'h-48 w-48 object-contain rounded-full'}
-                     src={BASE_URL.slice(0, BASE_URL.length - 4) + '/profileImages/' + doctor?.profilePhoto}
-                     alt="profile_photo"/>}
-        </div>
-        {docInfo}
-        {isAdmin && <div className={'my-3 flex items-center'}>
-            <img src="/Images/message.png" alt="message" className={'h-12 w-12 rounded-full'}/>
-            <AppLink to={`/message/add?id=${doctor?.id}&userName=${doctor?.username}`}>Send Message</AppLink>
-        </div>}
-        {filesLink}
+            <ProfileTitle>Actions</ProfileTitle>
+            <ProfileSection>
+                <div className="flex flex-wrap justify-around items-center gap-3">
+                    <a href={'#Subjects'}
+                       className={'bg-blue-300 hover:bg-blue-400 focus:bg-blue-500 border border-blue-600 rounded-2xl p-3 transition-all hover:shadow-xl hover:shadow-blue-200 '}
+                    >Files</a>
+                    <MyButtonAsLink to={'/Doctor/Report/' + doctor?.id}>
+                        Report
+                    </MyButtonAsLink>
+                    {doctor?.isOwner &&
+                        <>
+                            <MyButtonAsLink to={'/User/ChangePassword'}>
+                                Change Password
+                            </MyButtonAsLink>
+                            <MyButtonAsLink to={'/Doctor/Edit/' + doctor.id}>
+                                Edit
+                            </MyButtonAsLink>
+                        </>
+                    }
+                    {isAdmin && <MyButtonAsLink to={`/Message/Add?userName=${doctor?.username}&id=${doctor?.id}`}>Send Message</MyButtonAsLink>}
+                </div>
+            </ProfileSection>
+        </ProfileContainer>
     </div>
 
-    const subjectSection = <div className="container mx-auto p-4 flex flex-col items-center">
-        <h1 className="text-2xl sm:text-xl my-3">
-            Subjects
-        </h1>
+    const subjectSection = <div className="my-container">
+        <ProfileContainer>
+            <ProfileTitle>Subjects</ProfileTitle>
+            <ProfileSection>
+                {doctor?.subjects.length == 0 && <div
+                    className={`w-5/6 sm:w-4/6 md:w-3/6 lg:w-2/6 mx-auto p-4 text-red-600 text-center bg-red-50 rounded-2xl shadow`}>
+                    <h3 className={'text-2xl sm:text-xl'}>No Subjects Assigned To This Doctor!!</h3>
+                    <p className={'text-xl sm:text-lg my-1 text-red-500'}>This doctor has no subject, you can go to any
+                        subject
+                        that has no doctor and assign it to this doctor</p>
+                </div>}
 
-        {doctor?.subjects.length == 0 && <div
-            className={`w-5/6 sm:w-4/6 md:w-3/6 lg:w-2/6 mx-auto p-4 text-red-600 text-center bg-red-50 rounded-2xl shadow`}>
-            <h3 className={'text-2xl sm:text-xl'}>No Subjects Assigned To This Doctor!!</h3>
-            <p className={'text-xl sm:text-lg my-1 text-red-500'}>This doctor has no subject, you can go to any subject
-                that has no doctor and assign it to this doctor</p>
-        </div>}
-
-        <div className="flex-1-2-3-gap-3 justify-center w-full">
-            {doctor?.subjects.map(s => <AppLink to={'/Subject/' + s.code} key={s.id}
-                                                className={`border rounded-xl ${(isAdmin || isDoctor) ? (maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800') : 'border-gray-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
-                <img
-                    src="/Images/subject.jpg"
-                    alt="subjectImg"
-                    className={'rounded-tr-xl rounded-tl-xl w-full'}
-                />
-                <div className="p-3 text-center">
-                    <div className={'text-2xl'}>{s.department.toUpperCase()}{s.code}</div>
-                    <div className={'text-xl sm:text-lg'}>{s.name}</div>
-                    {(isAdmin || isDoctor) &&
-                        <div className={'text-lg sm:text-md'}>{s.numberOfFilesTypes}/{maxFileTypes}</div>}
+                <div className="flex-1-2-3-gap-3 justify-center w-full">
+                    {doctor?.subjects.map(s => <AppLink to={'/Subject/' + s.code} key={s.id}
+                                                        className={`border rounded-xl ${(isAdmin || isDoctor) ? (maxFileTypes == s.numberOfFilesTypes ? 'border-green-800' : 'border-red-800') : 'border-gray-800'} hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl transition-all`}>
+                        <img
+                            src="/Images/subject.jpg"
+                            alt="subjectImg"
+                            className={'rounded-tr-xl rounded-tl-xl w-full'}
+                        />
+                        <div className="p-3 text-center">
+                            <div className={'text-2xl'}>{s.department.toUpperCase()}{s.code}</div>
+                            <div className={'text-xl sm:text-lg'}>{s.name}</div>
+                            {(isAdmin || isDoctor) &&
+                                <div className={'text-lg sm:text-md'}>{s.numberOfFilesTypes}/{maxFileTypes}</div>}
+                        </div>
+                    </AppLink>)}
                 </div>
-            </AppLink>)}
-        </div>
+            </ProfileSection>
+        </ProfileContainer>
     </div>
 
     if (isFetching) {
@@ -217,9 +193,9 @@ const DoctorPage = () => {
                     <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full mt-1"></p>
                     <p className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full mt-1"></p>
                 </div>
-                {filesLink}
+                {/*{filesLink}*/}
             </div>
-            <div className="container mx-auto min-h-remaining p-4" id={'Files'}>
+            <div className="container mx-auto min-h-remaining p-4" id={'Subjects'}>
                 <div className="flex-1-2-3-gap-3 justify-center w-full">
                     {tempSubjects.map((x, i) => <div key={i}>{x}</div>)}
                 </div>
@@ -236,7 +212,7 @@ const DoctorPage = () => {
             {docSection}
         </div>
 
-        <div className="bg-gradient-to-b from-blue-300 to-blue-200 min-h-remaining" id={'Files'}>
+        <div className="bg-gradient-to-b from-blue-300 to-blue-200 min-h-remaining" id={'Subjects'}>
             {subjectSection}
         </div>
     </>)
