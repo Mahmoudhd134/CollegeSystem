@@ -1,4 +1,5 @@
-﻿using Application.Dtos.Subject;
+﻿using Application.Dtos.Room;
+using Application.Dtos.Subject;
 using Application.Dtos.SubjectMaterial;
 using AutoMapper;
 using Domain.Subject;
@@ -26,7 +27,15 @@ public class Subject : Profile
             .ForMember(dest => dest.DoctorUsername, opt =>
                 opt.MapFrom(src => src.DoctorSubject.Doctor.UserName))
             .ForMember(dest => dest.DoctorProfilePhoto, opt =>
-                opt.MapFrom(src => src.DoctorSubject.Doctor.ProfilePhoto));
+                opt.MapFrom(src => src.DoctorSubject.Doctor.ProfilePhoto))
+            .ForMember(dest => dest.Rooms, opt =>
+                opt.MapFrom(src => src.Rooms.Select(r => new RoomForSubjectDto()
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Image = r.Image,
+                    SubjectId = r.SubjectId
+                })));
 
         CreateMap<Domain.Subject.Subject, SubjectWithMaterialsDto>()
             .ForMember(dest => dest.HasADoctor, opt =>

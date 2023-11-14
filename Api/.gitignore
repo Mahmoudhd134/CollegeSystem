@@ -480,3 +480,4 @@ $RECYCLE.BIN/
 #!/wwwroot/ProfileImages/default.png
 /wwwroot/*
 !/wwwroot/ProfileImages/default.png
+!/wwwroot/RoomImages/default.png

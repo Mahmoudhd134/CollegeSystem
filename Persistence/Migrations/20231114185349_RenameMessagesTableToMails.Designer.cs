@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data;
 
@@ -11,9 +12,11 @@ using Persistence.Data;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231114185349_RenameMessagesTableToMails")]
+    partial class RenameMessagesTableToMails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +47,7 @@ namespace Persistence.Migrations
                     b.HasIndex("SubjectId")
                         .IsUnique();
 
-                    b.ToTable("DoctorSubjects", (string)null);
+                    b.ToTable("DoctorSubjects");
                 });
 
             modelBuilder.Entity("Domain.Identity.Role", b =>
@@ -204,7 +207,7 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId", "UserAgent")
                         .IsUnique();
 
-                    b.ToTable("UserRefreshTokens", (string)null);
+                    b.ToTable("UserRefreshTokens");
                 });
 
             modelBuilder.Entity("Domain.Mails.Mail", b =>
@@ -245,126 +248,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Mails", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Room.Message", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 11, 14, 21, 19, 21, 167, DateTimeKind.Local).AddTicks(4379));
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(4095)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Messages", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Room.Room", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("Rooms", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Room.UserMessageState", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DeliveredDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDelivered")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("MessageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ReadDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
-
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserMessageStates", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Room.UserRoom", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRooms", (string)null);
+                    b.ToTable("Mails");
                 });
 
             modelBuilder.Entity("Domain.Student.StudentSubjects", b =>
@@ -387,7 +271,7 @@ namespace Persistence.Migrations
                     b.HasIndex("StudentId", "SubjectId")
                         .IsUnique();
 
-                    b.ToTable("StudentSubjects", (string)null);
+                    b.ToTable("StudentSubjects");
                 });
 
             modelBuilder.Entity("Domain.Subject.Subject", b =>
@@ -425,7 +309,7 @@ namespace Persistence.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("Domain.Subject.SubjectFiles", b =>
@@ -459,7 +343,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("SubjectMaterials", (string)null);
+                    b.ToTable("SubjectMaterials");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -626,13 +510,13 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Mails.Mail", b =>
                 {
                     b.HasOne("Domain.Identity.User", "Receiver")
-                        .WithMany("MailsReceived")
+                        .WithMany("MessagesReceived")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Identity.User", "Sender")
-                        .WithMany("MailsSend")
+                        .WithMany("MessagesSend")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -640,82 +524,6 @@ namespace Persistence.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("Domain.Room.Message", b =>
-                {
-                    b.HasOne("Domain.Room.Room", "Room")
-                        .WithMany("Messages")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Identity.User", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Room");
-
-                    b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("Domain.Room.Room", b =>
-                {
-                    b.HasOne("Domain.Subject.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("Domain.Room.UserMessageState", b =>
-                {
-                    b.HasOne("Domain.Room.Message", "Message")
-                        .WithMany("UserMessageStates")
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Room.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Identity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Message");
-
-                    b.Navigation("Room");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Room.UserRoom", b =>
-                {
-                    b.HasOne("Domain.Room.Room", "Room")
-                        .WithMany("UserRooms")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Identity.User", "User")
-                        .WithMany("UserRooms")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Room");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Student.StudentSubjects", b =>
@@ -801,23 +609,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Identity.User", b =>
                 {
-                    b.Navigation("MailsReceived");
+                    b.Navigation("MessagesReceived");
 
-                    b.Navigation("MailsSend");
-
-                    b.Navigation("UserRooms");
-                });
-
-            modelBuilder.Entity("Domain.Room.Message", b =>
-                {
-                    b.Navigation("UserMessageStates");
-                });
-
-            modelBuilder.Entity("Domain.Room.Room", b =>
-                {
-                    b.Navigation("Messages");
-
-                    b.Navigation("UserRooms");
+                    b.Navigation("MessagesSend");
                 });
 
             modelBuilder.Entity("Domain.Subject.Subject", b =>

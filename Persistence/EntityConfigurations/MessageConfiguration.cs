@@ -1,28 +1,26 @@
-﻿using Domain.Messages;
+﻿using Domain.Room;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.EntityConfigurations;
 
-public class MessageConfiguration : IEntityTypeConfiguration<Message>
+public class MessageConfiguration:IEntityTypeConfiguration<Message>
 {
     public void Configure(EntityTypeBuilder<Message> builder)
     {
-        builder.HasKey(m => m.Id);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(m => m.Title).HasMaxLength(255).IsRequired();
-        builder.Property(m => m.Content).HasMaxLength(2047).IsRequired();
-
-        builder
-            .HasOne(m => m.Sender)
-            .WithMany(u => u.MessagesSend)
-            .HasForeignKey(m => m.SenderId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.Property(x => x.Text).HasMaxLength(4095).IsRequired();
+        builder.Property(x => x.Date).IsRequired();
 
         builder
-            .HasOne(m => m.Receiver)
-            .WithMany(u => u.MessagesReceived)
-            .HasForeignKey(m => m.ReceiverId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(x => x.Sender)
+            .WithMany()
+            .HasForeignKey(x => x.SenderId);
+
+        builder
+            .HasOne(x => x.Room)
+            .WithMany(x => x.Messages)
+            .HasForeignKey(x => x.RoomId);
     }
 }

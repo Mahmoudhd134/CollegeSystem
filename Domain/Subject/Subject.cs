@@ -13,4 +13,5 @@ public class Subject
     public DoctorSubject DoctorSubject { get; set; }
     public IList<SubjectFiles> SubjectFiles { get; set; } = new List<SubjectFiles>();
     public IList<StudentSubjects> StudentSubjects { get; set; } = new List<StudentSubjects>();
+    public IList<Room.Room> Rooms { get; set; } = new List<Room.Room>();
 }

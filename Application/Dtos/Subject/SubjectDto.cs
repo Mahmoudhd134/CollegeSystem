@@ -1,4 +1,6 @@
-﻿namespace Application.Dtos.Subject;
+﻿using Application.Dtos.Room;
+
+namespace Application.Dtos.Subject;
 
 public class SubjectDto
 {
@@ -11,4 +13,5 @@ public class SubjectDto
     public string DoctorId { get; set; }
     public string DoctorUsername { get; set; }
     public string DoctorProfilePhoto { get; set; }
+    public IList<RoomForSubjectDto> Rooms { get; set; }
 }

@@ -1,6 +1,7 @@
 using Domain.Doctor;
 using Domain.Identity;
-using Domain.Messages;
+using Domain.Mails;
+using Domain.Room;
 using Domain.Student;
 using Domain.Subject;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -19,7 +20,12 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<SubjectFiles> SubjectMaterials { get; set; }
     public DbSet<DoctorSubject> DoctorSubjects { get; set; }
+
+    public DbSet<Mail> Mails { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<Room> Rooms { get; set; }
+    public DbSet<UserRoom> UserRooms { get; set; }
+    public DbSet<UserMessageState> UserMessageStates { get; set; }
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
@@ -34,9 +40,13 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
         builder.ApplyConfiguration(new SubjectConfiguration());
         builder.ApplyConfiguration(new DoctorSubjectConfiguration());
         builder.ApplyConfiguration(new SubjectFileConfiguration());
-        builder.ApplyConfiguration(new MessageConfiguration());
+        builder.ApplyConfiguration(new MailConfiguration());
         builder.ApplyConfiguration(new StudentSubjectConfiguration());
         builder.ApplyConfiguration(new StudentConfiguration());
+        builder.ApplyConfiguration(new MessageConfiguration());
+        builder.ApplyConfiguration(new RoomConfiguration());
+        builder.ApplyConfiguration(new UserRoomConfiguration());
+        builder.ApplyConfiguration(new UserMessageStateConfiguration());
         builder.ApplyUtcDateTimeConverter();
     }
 }
