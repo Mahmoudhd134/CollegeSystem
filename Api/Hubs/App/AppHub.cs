@@ -14,11 +14,12 @@ public class AppHub : BaseHub<IAppHubClient>
 
     public override async Task OnConnectedAsync()
     {
-        _connections.Add(Context.ConnectionId, new UserAppConnection()
-        {
-            UserId = UserId,
-            UserRooms = (await Mediator.Send(new GetUserJoinedRoomsQuery(UserId))).Data
-        });
+        if (_connections.Any(x => x.Value.UserId == UserId) == false)
+            _connections.Add(Context.ConnectionId, new UserAppConnection()
+            {
+                UserId = UserId,
+                UserRooms = (await Mediator.Send(new GetUserJoinedRoomsQuery(UserId))).Data
+            });
         await base.OnConnectedAsync();
     }
 

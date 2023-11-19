@@ -24,11 +24,11 @@ public class GetSubjectMaterialInfoHandler : IRequestHandler<GetSubjectMaterialI
         {
             return await _fileAccessor.GetStream(request.Name);
         }
-        catch (FileNotFoundException e)
+        catch (FileNotFoundException)
         {
             return Response<SubjectMaterialStreamInfoDto>.Failure(SubjectMaterialErrors.FileNotFound);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return Response<SubjectMaterialStreamInfoDto>.Failure(DomainErrors.UnKnown);
         }

@@ -1,6 +1,7 @@
 ﻿import {baseApi} from "./BaseApi";
 import AddRoomModel from "../Models/Room/AddRoomModel";
 import RoomModel from "../Models/Room/RoomModel";
+import EditRoomModel from "../Models/Room/EditRoomModel";
 
 export const RoomApi = baseApi.injectEndpoints({
     endpoints: builder => ({
@@ -31,12 +32,37 @@ export const RoomApi = baseApi.injectEndpoints({
                 'room',
                 {type: 'room', id: arg}
             ]
-        })
+        }),
+        editRoom: builder.mutation<boolean, EditRoomModel>({
+            query: arg => ({
+                url: 'room',
+                method: 'put',
+                body: arg,
+            }),
+            invalidatesTags: (result, error, arg) => [
+                'room',
+                'subject',
+                {type: 'room', id: arg.id}
+            ]
+        }),
+        deleteRoom: builder.mutation<boolean, string>({
+            query: arg => ({
+                url: 'room/' + arg,
+                method: 'delete',
+            }),
+            invalidatesTags: (result, error, arg) => [
+                'room',
+                'subject',
+                {type: 'room', id: arg}
+            ]
+        }),
     })
 })
 
 export const {
     useGetRoomQuery,
     useAddRoomMutation,
-    useJoinRoomMutation
+    useJoinRoomMutation,
+    useEditRoomMutation,
+    useDeleteRoomMutation
 } = RoomApi

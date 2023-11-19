@@ -93,6 +93,7 @@ const Navbar = () => {
             {showMobMenu ? mobMenu : mobMenuButton}
 
             <div>
+                {navBarLink('/Subject', 'Subjects')}
                 {token ? <Menu>
                     <MenuHandler>
                         <Avatar
@@ -115,7 +116,7 @@ const Navbar = () => {
                             isDoctor ? '/Doctor/Me' :
                                 isStudent ? '/Student/Me' :
                                     '/'}>
-                            
+
                             <MenuItem className="flex items-center gap-2 relative">
                                 {hasUnReadMessages && <span className={redNotifyIconClasses}></span>}
                                 <svg

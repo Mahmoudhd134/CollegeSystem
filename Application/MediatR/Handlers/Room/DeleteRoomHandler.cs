@@ -23,13 +23,17 @@ public class DeleteRoomHandler : IRequestHandler<DeleteRoomCommand, Response<boo
             .Select(r => new
             {
                 RoomId = r.Id,
-                SubjectId = r.SubjectId,
-                DoctorId = r.Subject.DoctorSubject.DoctorId
+                r.SubjectId,
+                r.Subject.DoctorSubject.DoctorId
             })
             .AnyAsync(r => r.RoomId == roomId && r.DoctorId == id, cancellationToken);
         if (!isRoomSubjectAssignedToDoctor)
             return Response<bool>.Failure(RoomErrors.UnAuthorizeDelete);
-
+        
+        await _context.UserMessageStates
+            .Where(ums => ums.RoomId == roomId)
+            .ExecuteDeleteAsync(cancellationToken);
+            
         var r = await _context.Rooms
             .Where(r => r.Id == roomId)
             .ExecuteDeleteAsync(cancellationToken);

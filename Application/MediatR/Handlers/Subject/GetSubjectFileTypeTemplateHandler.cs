@@ -30,7 +30,7 @@ public class GetSubjectFileTypeTemplateHandler : IRequestHandler<GetSubjectFileT
                 Size = info.Length
             };
         }
-        catch (FileNotFoundException e)
+        catch (FileNotFoundException)
         {
             return Response<SubjectMaterialStreamInfoDto>.Failure(SubjectFileTemplateErrors.FileNotFound);
         }

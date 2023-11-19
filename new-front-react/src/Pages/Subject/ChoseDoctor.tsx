@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {PROFILE_IMAGES_URL} from "../../App/Api/axiosApi";
 import getAppError from "../../Utilites/getAppError";
 
-export const ChoseDoctor = ({subjectId, closeModal}: { subjectId: number, closeModal: () => void }) => {
+const ChoseDoctor = ({subjectId, closeModal}: { subjectId: number, closeModal: () => void }) => {
     const [assign, assignResult] = useAssignDoctorToSubjectMutation()
     const [getDoctors, {data: doctors}] = useLazyGetDoctorPageQuery()
     const [doctorUsername, setDoctorUsername] = useState<string>();
@@ -59,3 +59,5 @@ export const ChoseDoctor = ({subjectId, closeModal}: { subjectId: number, closeM
         </div>
     );
 };
+
+export default ChoseDoctor

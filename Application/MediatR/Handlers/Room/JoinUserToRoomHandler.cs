@@ -26,6 +26,8 @@ public class JoinUserToRoomHandler : IRequestHandler<JoinUserToRoomCommand, Resp
             .AnyAsync(ur => ur.RoomId == roomId && ur.UserId == userId, cancellationToken);
         if (isJoined)
             return Response<bool>.Failure(RoomErrors.UserAlreadyJoined);
+        // var canJoin = await _context.Rooms
+        //     .Where(r => _context.)
 
         var roomName = await _context.Rooms
             .Where(r => r.Id == roomId)

@@ -7,22 +7,23 @@ import {
 import {PROFILE_IMAGES_URL, ROOM_IMAGES_URL} from "../../App/Api/axiosApi";
 import AppLink from "../../Components/Navigation/AppLink";
 import useIsInRole from "../../Hookes/useIsInRole";
-import {useEffect, useState} from "react";
-import {ChoseDoctor} from "./ChoseDoctor";
+import {lazy, Suspense, useEffect, useState} from "react";
 import {MyButton} from "../../Components/Form/MyButton";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
 import useAppNavigator from "../../Hookes/Navigation/useAppNavigator";
-import ProfileContainer from "../../Components/Profile/ProfileContainer";
-import ProfileTitle from "../../Components/Profile/ProfileTitle";
-import ProfileSection from "../../Components/Profile/ProfileSection";
-import MyButtonAsLink from "../../Components/Form/MyButtonAsLink";
+const ProfileContainer  = lazy(() => import("../../Components/Profile/ProfileContainer"));
+const ProfileTitle  = lazy(() => import("../../Components/Profile/ProfileTitle"));
+const ProfileSection  = lazy(() => import("../../Components/Profile/ProfileSection"));
+const MyButtonAsLink  = lazy(() => import("../../Components/Form/MyButtonAsLink"));
 import {
     useAssignSubjectWithStudentMutation,
     useDeAssignSubjectFromStudentMutation,
     useLazyIsAssignedToSubjectQuery
 } from "../../App/Api/StudentApi";
 import useAppSelector from "../../Hookes/useAppSelector";
+
+const ChoseDoctor = lazy(() => import('./ChoseDoctor'))
 const SubjectPage = () => {
     const {code} = useParams()
     const {data: subject, isFetching, isError, error} = useGetSubjectByCodeQuery(+(code ?? ''))
@@ -173,11 +174,13 @@ const SubjectPage = () => {
 
     subjectUi = (subject && !isMutating) ? <>
             {displayChoseDoctor && <div
-                className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 w-11/12 h-5/6 bg-opacity-90 rounded-xl overflow-y-scroll"}
+                className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-500 w-11/12 h-5/6 bg-opacity-90 rounded-xl overflow-y-scroll"}
                 style={{zIndex: 123}}
                 onClick={e => e.stopPropagation()}
             >
-                <ChoseDoctor subjectId={subject.id} closeModal={() => setDisplayChoseDoctor(false)}/>
+                <Suspense fallback={<h3>Getting The Form...</h3>}>
+                    <ChoseDoctor subjectId={subject.id} closeModal={() => setDisplayChoseDoctor(false)}/>
+                </Suspense>
             </div>}
 
             {confirmDelete && <div className={'border-2 rounded-xl p-3 text-center'}>
@@ -310,7 +313,7 @@ const SubjectPage = () => {
                 {subject.rooms.map(r => {
                     const index = roomHasUnReadMessages.findIndex(rr => rr.name.toLowerCase() === r.name)
                     console.log(roomHasUnReadMessages)
-                    if(r.name == 'room two')
+                    if (r.name == 'room two')
                         console.log(index)
                     return <AppLink to={'/Room/' + r.id}
                                     key={r.id}
@@ -325,15 +328,14 @@ const SubjectPage = () => {
         </ProfileSection>
     </> : roomsUi
 
-    return <div
-        className={'my-container min-h-remaining relative'}
-        onClick={_ => setDisplayChoseDoctor(false)}>
-        <ProfileContainer>
-            {subjectUi}
-            {roomsUi}
-        </ProfileContainer>
+    return <div onClick={_ => setDisplayChoseDoctor(false)}>
+        <div className={'my-container min-h-remaining relative'}>
+            <ProfileContainer>
+                {subjectUi}
+                {roomsUi}
+            </ProfileContainer>
+        </div>
     </div>
-
 };
 
 export default SubjectPage

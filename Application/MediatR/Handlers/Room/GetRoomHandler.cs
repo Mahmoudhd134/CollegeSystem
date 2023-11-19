@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Room;
+using Application.ErrorHandlers.Errors;
 using Application.MediatR.Queries.Room;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -23,6 +24,9 @@ public class GetRoomHandler : IRequestHandler<GetRoomQuery, Response<RoomDto>>
         var roomDto = await _context.Rooms
             .ProjectTo<RoomDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(r => r.Id == request.RoomId, cancellationToken);
+        
+        if(roomDto==null)
+            return Response<RoomDto>.Failure(RoomErrors.WrongId);
 
         roomDto.IsJoined = await _context.UserRooms
             .AnyAsync(ur =>

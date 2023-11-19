@@ -4,8 +4,11 @@ import useAppDispatch from "../../Hookes/useAppDispatch";
 import {loadMoreMessages} from "../../App/Feutures/Room/roomSlice";
 import useAxiosApi from "../../Hookes/useAxiosApi";
 import {MyButton} from "../../Components/Form/MyButton";
+import TimeAgo from "../../Components/Global/TimeAgo";
+import {Avatar, Typography} from "@material-tailwind/react";
+import {PROFILE_IMAGES_URL} from "../../App/Api/axiosApi";
 
-const Messages = ({roomId}: { roomId: string }) => {
+const Messages = ({roomId, doctorId}: { roomId: string, doctorId: string }) => {
     const screenHeight = window.innerHeight
     const height = `${screenHeight - 48 - 48 - 64 - 16 * 2}px`
     const messageRef = useRef<HTMLDivElement>(null)
@@ -13,6 +16,11 @@ const Messages = ({roomId}: { roomId: string }) => {
     const messages = useAppSelector(s => s.room.rooms[roomId])
     const api = useAxiosApi()
     const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        if (messages?.length == 0)
+            loadMore()
+    }, [messages?.length])
 
     useEffect(() => {
         if (!messages)
@@ -35,22 +43,32 @@ const Messages = ({roomId}: { roomId: string }) => {
             api,
             roomId,
             messagesCount: 150,
-            date: messages[0]?.date as unknown as Date ?? new Date().toUTCString() as unknown as Date
+            date: (messages && messages[0])?.date as unknown as Date ?? new Date().toUTCString() as unknown as Date
         }))
     }
 
     return <div className={`flex flex-col items-end gap-3 w-full overflow-y-scroll`} style={{height}} ref={messageRef}>
         <MyButton type={'button'} onClick={_ => loadMore()}>load more</MyButton>
         {messages?.map((m, i) => <div key={m.id + i}
-                                      className={'border p-3 w-8/12' + (m.sender.id == myId ? ' ml-auto' : ' mr-auto')}>
-            <div>{m.sender?.userName}</div>
-            <div>{m.text}</div>
-            {m.sender.id == myId && <div className={'text-end'}>
+                                      className={'bg-blue-900 text-white rounded-3xl p-3 max-w-[66%]' + (m.sender.id == myId ? ' ml-auto' : ' mr-auto')}>
+            <div className={'mb-1'}>
+                <a href={PROFILE_IMAGES_URL + m.sender.image} target={'_blank'}>
+                    <Avatar src={PROFILE_IMAGES_URL + m.sender.image} size={'sm'} className={'w-8 h-8 mx-1'}/>
+                </a>
+                {m.sender?.userName}{m.sender?.id == doctorId && '(doctor)'}
+            </div>
+            <Typography variant={'paragraph'}>{m.text}</Typography>
+            <div className={'text-end'}>
+                {(m.sender.id != myId || (m.serverReached || m.isRead || m.isDelivered)) ?
+                    <TimeAgo timestamp={m.date} className={'mx-3'}/> :
+                    <span>after seconds</span>}
+                {m.sender.id == myId && <span>
                 {m.isRead ? 'read' :
                     m.isDelivered ? 'delivered' :
                         m.serverReached ? 'sent' :
                             'waiting'}
-            </div>}
+            </span>}
+            </div>
         </div>)}
     </div>
 };

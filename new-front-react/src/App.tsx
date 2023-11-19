@@ -1,41 +1,43 @@
 import useAppDispatch from "./Hookes/useAppDispatch";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import {lazy, useEffect} from "react";
 import useRefreshToken from "./Hookes/useRefreshToken";
 import {logout, setCredentials} from "./App/Feutures/Auth/authSlice";
 import TokenModel from "./App/Models/Auth/TokenModel";
-import Home from "./Pages/Home";
-import Layout from "./Pages/Layout";
-import PathNotFound from "./Pages/NotFound/PathNotFound";
-import Login from "./Pages/Login";
-import DoctorList from "./Pages/Doctor/DoctorList";
-import RouteProtector from "./Components/Global/RouteProtector";
 import {baseApi} from "./App/Api/BaseApi";
-import AddDoctor from "./Pages/Doctor/AddDoctor";
-import AdminDashboard from "./Pages/AdminDashboard";
-import DoctorPage from "./Pages/Doctor/DoctorPage";
-import EditDoctor from "./Pages/Doctor/EditDoctor";
-import ChangePassword from "./Pages/User/ChangePassword";
-import DoctorReport from "./Pages/Doctor/DoctorReport";
-import SubjectList from "./Pages/Subject/SubjectList";
-import AddSubject from "./Pages/Subject/AddSubject";
-import SubjectPage from "./Pages/Subject/SubjectPage";
-import SubjectWithStudents from "./Pages/Subject/SubjectWithStudents";
-import SubjectWithFiles from "./Pages/Subject/SubjectWithFiles";
-import SubjectReport from "./Pages/Subject/SubjectReport";
-import AddMail from "./Pages/Mail/AddMail";
-import Mail from "./Pages/Mail/Mail";
-import MailsLayout from "./Pages/Mail/MailsLayout";
-import SentMails from "./Pages/Mail/SentMails";
-import InboxMails from "./Pages/Mail/InboxMails";
-import EditSubject from "./Pages/Subject/EditSubject";
-import SubjectFileTypeTemplates from "./Pages/Subject/SubjectFileTypeTemplates";
-import AddStudent from "./Pages/Studnet/AddStudent";
-import StudentList from "./Pages/Studnet/StudentList";
-import StudentPage from "./Pages/Studnet/StudentPage";
-import EditStudent from "./Pages/Studnet/EditStudent";
-import AddRoom from "./Pages/Room/AddRoom";
-import Room from "./Pages/Room/Room";
+import RouteProtector from "./Components/Global/RouteProtector";
+
+const Home = lazy(() => import(  "./Pages/Home"));
+const Layout = lazy(() => import(  "./Pages/Layout"));
+const PathNotFound = lazy(() => import(  "./Pages/NotFound/PathNotFound"));
+const Login = lazy(() => import(  "./Pages/Login"));
+const DoctorList = lazy(() => import(  "./Pages/Doctor/DoctorList"));
+
+const AddDoctor = lazy(() => import( "./Pages/Doctor/AddDoctor"));
+const AdminDashboard = lazy(() => import( "./Pages/AdminDashboard"));
+const DoctorPage = lazy(() => import( "./Pages/Doctor/DoctorPage"));
+const EditDoctor = lazy(() => import( "./Pages/Doctor/EditDoctor"));
+const ChangePassword = lazy(() => import( "./Pages/User/ChangePassword"));
+const DoctorReport = lazy(() => import( "./Pages/Doctor/DoctorReport"));
+const SubjectList = lazy(() => import( "./Pages/Subject/SubjectList"));
+const AddSubject = lazy(() => import( "./Pages/Subject/AddSubject"));
+const SubjectPage = lazy(() => import( "./Pages/Subject/SubjectPage"));
+const SubjectWithStudents = lazy(() => import( "./Pages/Subject/SubjectWithStudents"));
+const SubjectWithFiles = lazy(() => import( "./Pages/Subject/SubjectWithFiles"));
+const SubjectReport = lazy(() => import( "./Pages/Subject/SubjectReport"));
+const AddMail = lazy(() => import( "./Pages/Mail/AddMail"));
+const Mail = lazy(() => import( "./Pages/Mail/Mail"));
+const MailsLayout = lazy(() => import( "./Pages/Mail/MailsLayout"));
+const SentMails = lazy(() => import( "./Pages/Mail/SentMails"));
+const InboxMails = lazy(() => import( "./Pages/Mail/InboxMails"));
+const EditSubject = lazy(() => import( "./Pages/Subject/EditSubject"));
+const SubjectFileTypeTemplates = lazy(() => import( "./Pages/Subject/SubjectFileTypeTemplates"));
+const AddStudent = lazy(() => import( "./Pages/Student/AddStudent"));
+const StudentList = lazy(() => import( "./Pages/Student/StudentList"));
+const StudentPage = lazy(() => import( "./Pages/Student/StudentPage"));
+const EditStudent = lazy(() => import( "./Pages/Student/EditStudent"));
+const AddRoom = lazy(() => import( "./Pages/Room/AddRoom"));
+const Room = lazy(() => import( "./Pages/Room/Room"));
 import {
     addNewMessageNotification,
     buildAppConnection, getDelayedMessagesInfo,
@@ -43,9 +45,9 @@ import {
     stopAppConnection
 } from "./App/Feutures/App/AppSlice";
 import useAppSelector from "./Hookes/useAppSelector";
-import NewMessageNotificationModel from "./App/Models/App/NewMessageNotificationModel";
 import Notifications from "./Pages/Notifications";
 import useAxiosApi from "./Hookes/useAxiosApi";
+import NewMessageNotificationModel from "./App/Models/App/NewMessageNotificationModel";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')

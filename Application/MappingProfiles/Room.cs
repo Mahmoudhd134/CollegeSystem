@@ -9,6 +9,14 @@ public class Room : Profile
     {
         CreateMap<AddRoomDto, Domain.Room.Room>();
         CreateMap<EditRoomDto, Domain.Room.Room>();
-        CreateMap<Domain.Room.Room, RoomDto>();
+        CreateMap<Domain.Room.Room, RoomDto>()
+            .ForMember(dest => dest.Subject, opt =>
+                opt.MapFrom(src => new SubjectForRoomDto()
+                {
+                    SubjectId = src.SubjectId,
+                    SubjectCode = src.Subject.Code,
+                    SubjectName = src.Subject.Name,
+                    DoctorId = src.Subject.DoctorSubject.DoctorId
+                }));
     }
 }

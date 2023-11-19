@@ -88,7 +88,10 @@ const roomSlice = createSlice({
         })
 
         builder.addCase(loadMoreMessages.fulfilled, (state, action: PayloadAction<{ messages: RoomMessageModel[], roomId: string }>) => {
-            state.rooms[action.payload.roomId]?.unshift(...action.payload.messages)
+            state.rooms[action.payload.roomId]?.unshift(...action.payload.messages.map(m => ({
+                ...m,
+                serverReached: true
+            })))
         })
     }
 })

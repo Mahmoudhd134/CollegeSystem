@@ -52,6 +52,9 @@
         <_ContentIncludedByDefault Remove="wwwroot\Images\message.png" />
         <_ContentIncludedByDefault Remove="wwwroot\Images\students.jpg" />
         <_ContentIncludedByDefault Remove="wwwroot\Images\subject.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index-2791ac39.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index-6f8c0a4e.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\assets\index-efe62f56.js" />
     </ItemGroup>
 
     <ItemGroup>

@@ -17,11 +17,21 @@ public class DeleteSubjectHandler : IRequestHandler<DeleteSubjectCommand, Respon
     public async Task<Response<bool>> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
     {
         var id = request.Id;
-        var subject = await _context.Subjects.FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
-        if (subject == null)
-            return Response<bool>.Failure(SubjectErrors.WrongId);
-        _context.Subjects.Remove(subject);
-        await _context.SaveChangesAsync(cancellationToken);
+
+        await _context.UserMessageStates
+            .Where(ums => _context.Rooms
+                .Where(x => x.SubjectId == id)
+                .Select(x => x.Id)
+                .Contains(ums.RoomId))
+            .ExecuteDeleteAsync(cancellationToken);
+
+        await _context.Rooms
+            .Where(r => r.SubjectId == id)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        await _context.Subjects
+            .Where(s => s.Id == id)
+            .ExecuteDeleteAsync(cancellationToken);
         return true;
     }
 }

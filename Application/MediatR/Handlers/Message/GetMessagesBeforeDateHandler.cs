@@ -9,20 +9,20 @@ using Persistence.Data;
 namespace Application.MediatR.Handlers.Message;
 
 public class
-    GetMessagesAfterMessageIdHandler : IRequestHandler<GetMessagesAfterDateQuery, Response<IList<RoomMessageDto>>>
+    GetMessagesBeforeDateHandler : IRequestHandler<GetMessagesBeforeDateQuery, Response<IList<RoomMessageDto>>>
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public GetMessagesAfterMessageIdHandler(ApplicationDbContext context, IMapper mapper, IMediator mediator)
+    public GetMessagesBeforeDateHandler(ApplicationDbContext context, IMapper mapper, IMediator mediator)
     {
         _context = context;
         _mapper = mapper;
         _mediator = mediator;
     }
 
-    public async Task<Response<IList<RoomMessageDto>>> Handle(GetMessagesAfterDateQuery request,
+    public async Task<Response<IList<RoomMessageDto>>> Handle(GetMessagesBeforeDateQuery request,
         CancellationToken cancellationToken)
     {
         var (messagesCount, dateTime, userId, roomId) = request;
