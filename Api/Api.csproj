@@ -48,6 +48,10 @@
         <_ContentIncludedByDefault Remove="wwwroot\assets\index.5762a44a.js" />
         <_ContentIncludedByDefault Remove="wwwroot\assets\index.b93d0ed5.css" />
         <_ContentIncludedByDefault Remove="wwwroot\assets\index.b9dedee1.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\Images\files.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\Images\message.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\Images\students.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\Images\subject.jpg" />
     </ItemGroup>
 
     <ItemGroup>

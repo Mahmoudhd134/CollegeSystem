@@ -4,7 +4,7 @@ import AppLink from "../Components/Navigation/AppLink";
 import TimeAgo from "../Components/Global/TimeAgo";
 
 const Notifications = () => {
-    const notifications = useAppSelector(s => s.app.messageNotification)
+    const notifications = useAppSelector(s => s.app.messageNotifications)
     return <div className={'my-container'}>
         <div className="flex flex-col gap-3">
             {notifications.map((n, i) => <div key={i} className="border rounded-xl p-3">
