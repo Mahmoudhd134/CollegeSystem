@@ -28,8 +28,8 @@ const AdminDashboard = () => {
             <Group>
                 <GroupTitle>Messages!</GroupTitle>
                 <GroupLinksContainer>
-                    <GroupLink to={'/Message/Sent'}>Sent</GroupLink>
-                    <GroupLink to={'/Message/Received'}>Received</GroupLink>
+                    <GroupLink to={'/Mail/Sent'}>Sent</GroupLink>
+                    <GroupLink to={'/Mail/Inbox'}>Inbox</GroupLink>
                 </GroupLinksContainer>
             </Group>
             

@@ -1,5 +1,5 @@
 import {BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError} from '@reduxjs/toolkit/query/react'
-import {logout, setCredentials} from '../../Feutures/Auth/authSlice'
+import {logout, setCredentials} from '../Feutures/Auth/authSlice'
 import {RootState} from '../store'
 import useRefreshToken from '../../Hookes/useRefreshToken'
 import {BASE_URL} from "./axiosApi";
@@ -44,7 +44,7 @@ const baseQuery: BaseQueryFn<
 export const baseApi = createApi({
     reducerPath: 'api',
     baseQuery,
-    tagTypes: ['user', 'doctor', 'subject', 'message','student'],
+    tagTypes: ['user', 'doctor', 'subject', 'mail', 'student', 'room'],
     endpoints: () => ({}),
     // keepUnusedDataFor: 0,
 })

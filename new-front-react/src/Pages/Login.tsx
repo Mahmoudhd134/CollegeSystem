@@ -4,7 +4,7 @@ import LoginModel from '../App/Models/Auth/LoginModel'
 import {useLoginMutation} from '../App/Api/AuthApi'
 import {MutableRefObject, useEffect, useRef} from 'react'
 import useAppDispatch from '../Hookes/useAppDispatch'
-import {setCredentials} from '../Feutures/Auth/authSlice'
+import {setCredentials} from '../App/Feutures/Auth/authSlice'
 import useAppNavigator from "../Hookes/Navigation/useAppNavigator";
 import getAppError from "../Utilites/getAppError";
 import {useLocation} from "react-router-dom";

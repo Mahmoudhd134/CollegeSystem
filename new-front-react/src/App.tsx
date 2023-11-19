@@ -2,7 +2,7 @@ import useAppDispatch from "./Hookes/useAppDispatch";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import useRefreshToken from "./Hookes/useRefreshToken";
-import {logout, setCredentials} from "./Feutures/Auth/authSlice";
+import {logout, setCredentials} from "./App/Feutures/Auth/authSlice";
 import TokenModel from "./App/Models/Auth/TokenModel";
 import Home from "./Pages/Home";
 import Layout from "./Pages/Layout";
@@ -23,23 +23,44 @@ import SubjectPage from "./Pages/Subject/SubjectPage";
 import SubjectWithStudents from "./Pages/Subject/SubjectWithStudents";
 import SubjectWithFiles from "./Pages/Subject/SubjectWithFiles";
 import SubjectReport from "./Pages/Subject/SubjectReport";
-import AddMessage from "./Pages/Message/AddMessage";
-import MessagesLayout from "./Pages/Message/MessagesLayout";
-import SentMessages from "./Pages/Message/SentMessages";
-import ReceivedMessages from "./Pages/Message/ReceivedMessages";
-import Message from "./Pages/Message/Message";
+import AddMail from "./Pages/Mail/AddMail";
+import Mail from "./Pages/Mail/Mail";
+import MailsLayout from "./Pages/Mail/MailsLayout";
+import SentMails from "./Pages/Mail/SentMails";
+import InboxMails from "./Pages/Mail/InboxMails";
 import EditSubject from "./Pages/Subject/EditSubject";
 import SubjectFileTypeTemplates from "./Pages/Subject/SubjectFileTypeTemplates";
 import AddStudent from "./Pages/Studnet/AddStudent";
 import StudentList from "./Pages/Studnet/StudentList";
 import StudentPage from "./Pages/Studnet/StudentPage";
 import EditStudent from "./Pages/Studnet/EditStudent";
+import AddRoom from "./Pages/Room/AddRoom";
+import Room from "./Pages/Room/Room";
+import {
+    addNewMessageNotification,
+    buildAppConnection, getDelayedMessagesInfo,
+    startAppConnection,
+    stopAppConnection
+} from "./App/Feutures/App/AppSlice";
+import useAppSelector from "./Hookes/useAppSelector";
+import NewMessageNotificationModel from "./App/Models/App/NewMessageNotificationModel";
+import Notifications from "./Pages/Notifications";
+import useAxiosApi from "./Hookes/useAxiosApi";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
     const dispatch = useAppDispatch()
     const loc = useLocation()
     const navigator = useNavigate()
+    const token = useAppSelector(s => s.auth.token)
+    const connection = useAppSelector(s => s.app.connection)
+    const api = useAxiosApi()
+
+    useEffect(() => {
+        if (!token)
+            return
+        dispatch(getDelayedMessagesInfo({api}))
+    }, [token])
 
     useEffect(() => {
         if (stayLogin) {
@@ -55,8 +76,27 @@ function App() {
                 }
             })()
         }
-    }, [])
+    }, [dispatch])
 
+    useEffect(() => {
+        if (!token)
+            return
+        dispatch(buildAppConnection({token}))
+        dispatch(startAppConnection())
+        return () => {
+            dispatch(stopAppConnection())
+        }
+    }, [token, dispatch])
+
+
+    useEffect(() => {
+        if (!connection)
+            return
+
+        connection.on("ReceiveNewMessageNotification", (newMessageNotification: NewMessageNotificationModel) => {
+            dispatch(addNewMessageNotification(newMessageNotification))
+        })
+    }, [connection])
 
     return (
         <Routes>
@@ -97,6 +137,10 @@ function App() {
                             <Route path={'files'} element={<SubjectWithFiles/>}/>
                             <Route path={'report'} element={<SubjectReport/>}/>
                         </Route>
+
+                        <Route element={<RouteProtector allowedRoles={['doctor']}/>}>
+                            <Route path='addRoom/:id' element={<AddRoom/>}/>
+                        </Route>
                     </Route>
 
                     <Route element={<RouteProtector allowedRoles={['admin']}/>}>
@@ -106,23 +150,22 @@ function App() {
                     </Route>
                 </Route>
 
-                <Route path='message'>
+                <Route path='mail'>
                     <Route element={<RouteProtector allowedRoles={['admin']}/>}>
-                        <Route path='add' element={<AddMessage/>}/>
+                        <Route path='add' element={<AddMail/>}/>
                     </Route>
 
-                    <Route element={<MessagesLayout/>}>
+                    <Route element={<MailsLayout/>}>
                         <Route element={<RouteProtector allowedRoles={['admin', 'doctor']}/>}>
 
                             <Route element={<RouteProtector allowedRoles={['admin']}/>}>
-                                <Route path='sent' element={<SentMessages/>}/>
+                                <Route path='sent' element={<SentMails/>}/>
                             </Route>
-
-                            <Route path='received' element={<ReceivedMessages/>}/>
+                            <Route path='inbox' element={<InboxMails/>}/>
                         </Route>
                     </Route>
 
-                    <Route path=':id' element={<Message/>}/>
+                    <Route path=':id' element={<Mail/>}/>
                 </Route>
 
                 <Route path='student' element={<RouteProtector allowedRoles={[]}/>}>
@@ -137,8 +180,16 @@ function App() {
                     </Route>
                 </Route>
 
+                <Route path={'room'} element={<RouteProtector allowedRoles={[]}/>}>
+                    <Route path=':id' element={<Room/>}/>
+                </Route>
+
                 <Route path={'AdminDashboard'} element={<RouteProtector allowedRoles={['admin']}/>}>
                     <Route index element={<AdminDashboard/>}/>
+                </Route>
+
+                <Route path={'notifications'} element={<RouteProtector allowedRoles={[]}/>}>
+                    <Route index element={<Notifications/>}/>
                 </Route>
 
                 <Route path='*' element={<PathNotFound/>}/>

@@ -12,7 +12,7 @@ public class UserMessageState
     public Guid MessageId { get; set; }
     public Message Message { get; set; }
     public bool IsDelivered { get; set; }
-    public DateTime DeliveredDate { get; set; }
+    public DateTime? DeliveredDate { get; set; }
     public bool IsRead { get; set; }
-    public DateTime ReadDate { get; set; }
+    public DateTime? ReadDate { get; set; }
 }

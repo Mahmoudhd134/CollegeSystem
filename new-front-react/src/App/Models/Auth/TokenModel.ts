@@ -4,4 +4,5 @@ export default interface TokenModel {
     roles: string[] | null,
     username: string | null
     id: string | null,
+    profileImage:string|null
 }

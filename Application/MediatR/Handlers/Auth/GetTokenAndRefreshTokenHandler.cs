@@ -44,7 +44,8 @@ public class GetTokenAndRefreshTokenHandler : IRequestHandler<GetTokenAndRefresh
             RefreshToken = refreshToken,
             Token = token,
             Roles = roles,
-            UserId = user.Id
+            UserId = user.Id,
+            ProfileImage = user.ProfilePhoto
         };
     }
 

@@ -1,8 +1,9 @@
 ﻿import axios from "axios";
 
-export const BASE_URL = 'http://localhost:5016/api/'
-export const PROFILE_IMAGES_URL = 'http://localhost:5016/ProfileImages/'
-// export const BASE_URL = 'https://qualityms-001-site1.gtempurl.com/api/'
+export const SERVER_HOST_NAME = 'http://localhost:5016'
+export const BASE_URL = SERVER_HOST_NAME + '/api/'
+export const PROFILE_IMAGES_URL = SERVER_HOST_NAME + '/ProfileImages/'
+export const ROOM_IMAGES_URL = SERVER_HOST_NAME + '/RoomImages/'
 
 export const axiosApi = axios.create({
     baseURL: BASE_URL.slice(0, -1),

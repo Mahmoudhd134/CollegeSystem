@@ -22,6 +22,7 @@ const SubjectPage = () => {
     const [doctorUsername, setDoctorUsername] = useState('')
     const [send, doctorListResult] = useLazyGetDoctorPageQuery()
     const loc = useLocation()
+    
 
     useEffect(() => {
         if (p.current == undefined)

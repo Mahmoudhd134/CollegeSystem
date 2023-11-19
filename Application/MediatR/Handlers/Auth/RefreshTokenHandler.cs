@@ -51,7 +51,8 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Response
             UserId = userId,
             Roles = response.Data.Roles,
             Token = response.Data.Token,
-            RefreshToken = response.Data.RefreshToken
+            RefreshToken = response.Data.RefreshToken,
+            ProfileImage = response.Data.ProfileImage
         };
 
         userRefreshToken.RefreshToken = newRefreshTokenDto.RefreshToken;

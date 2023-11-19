@@ -44,7 +44,7 @@ namespace Persistence.Migrations
                     b.HasIndex("SubjectId")
                         .IsUnique();
 
-                    b.ToTable("DoctorSubjects", (string)null);
+                    b.ToTable("DoctorSubjects");
                 });
 
             modelBuilder.Entity("Domain.Identity.Role", b =>
@@ -204,7 +204,7 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId", "UserAgent")
                         .IsUnique();
 
-                    b.ToTable("UserRefreshTokens", (string)null);
+                    b.ToTable("UserRefreshTokens");
                 });
 
             modelBuilder.Entity("Domain.Mails.Mail", b =>
@@ -245,7 +245,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Mails", (string)null);
+                    b.ToTable("Mails");
                 });
 
             modelBuilder.Entity("Domain.Room.Message", b =>
@@ -255,9 +255,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 11, 14, 21, 19, 21, 167, DateTimeKind.Local).AddTicks(4379));
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier");
@@ -277,7 +275,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Domain.Room.Room", b =>
@@ -303,7 +301,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Domain.Room.UserMessageState", b =>
@@ -312,7 +310,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DeliveredDate")
+                    b.Property<DateTime?>("DeliveredDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDelivered")
@@ -324,7 +322,7 @@ namespace Persistence.Migrations
                     b.Property<Guid>("MessageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ReadDate")
+                    b.Property<DateTime?>("ReadDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("RoomId")
@@ -342,7 +340,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserMessageStates", (string)null);
+                    b.ToTable("UserMessageStates");
                 });
 
             modelBuilder.Entity("Domain.Room.UserRoom", b =>
@@ -360,11 +358,12 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoomId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRooms", (string)null);
+                    b.HasIndex("RoomId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserRooms");
                 });
 
             modelBuilder.Entity("Domain.Student.StudentSubjects", b =>
@@ -387,7 +386,7 @@ namespace Persistence.Migrations
                     b.HasIndex("StudentId", "SubjectId")
                         .IsUnique();
 
-                    b.ToTable("StudentSubjects", (string)null);
+                    b.ToTable("StudentSubjects");
                 });
 
             modelBuilder.Entity("Domain.Subject.Subject", b =>
@@ -425,7 +424,7 @@ namespace Persistence.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("Domain.Subject.SubjectFiles", b =>
@@ -459,7 +458,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("SubjectMaterials", (string)null);
+                    b.ToTable("SubjectMaterials");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -664,7 +663,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Room.Room", b =>
                 {
                     b.HasOne("Domain.Subject.Subject", "Subject")
-                        .WithMany()
+                        .WithMany("Rooms")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -824,6 +823,8 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("DoctorSubject")
                         .IsRequired();
+
+                    b.Navigation("Rooms");
 
                     b.Navigation("StudentSubjects");
 

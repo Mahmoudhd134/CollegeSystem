@@ -1,5 +1,7 @@
 using System.Text;
+using Api.Hubs.Implementation;
 using Application.Abstractions;
+using Application.Dtos.RealTimeConnection;
 using Application.Helpers.Configurations;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,6 +15,10 @@ public static class DependencyInjection
         ConfigurationManager configuration)
     {
         services.AddScoped<IFileAccessor, PhysicalFileAccessor>();
+        services.AddSingleton(_ => new Dictionary<string, UserRoomConnection>());
+        services.AddSingleton(_ => new Dictionary<string, UserAppConnection>());
+        services.AddSingleton<IAppRealTimeMethods, SignalRAppRealTimeMethods>();
+        services.AddSingleton<IRoomRealTimeMethods, SignalRRoomRealTimeMethods>();
 
 
         services.AddAutoMapper(typeof(Program).Assembly);
@@ -42,9 +48,22 @@ public static class DependencyInjection
                 opt.TokenValidationParameters =
                     Constants.GetValidationParameters(
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:key"]!)));
+                opt.Events = new JwtBearerEvents()
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var token = context.Request.Query["access_token"];
+                        var isHubPath = context.Request.Path.StartsWithSegments("/hub");
+                        if (!string.IsNullOrWhiteSpace(token) && isHubPath)
+                            context.Token = token;
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         services.AddDirectoryBrowser();
+
+        services.AddSignalR();
 
         return services;
     }

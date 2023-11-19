@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.EntityConfigurations;
 
-public class UserRoomConfiguration:IEntityTypeConfiguration<UserRoom>
+public class UserRoomConfiguration : IEntityTypeConfiguration<UserRoom>
 {
     public void Configure(EntityTypeBuilder<UserRoom> builder)
     {
@@ -19,5 +19,7 @@ public class UserRoomConfiguration:IEntityTypeConfiguration<UserRoom>
             .HasOne(x => x.User)
             .WithMany(x => x.UserRooms)
             .HasForeignKey(x => x.UserId);
+
+        builder.HasIndex(x => new { x.RoomId, x.UserId }).IsUnique();
     }
 }

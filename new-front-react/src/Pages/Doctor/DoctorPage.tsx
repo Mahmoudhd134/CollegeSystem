@@ -106,7 +106,7 @@ const DoctorPage = () => {
                 <div className="flex flex-wrap justify-around items-center gap-3">
                     <a href={'#Subjects'}
                        className={'bg-blue-300 hover:bg-blue-400 focus:bg-blue-500 border border-blue-600 rounded-2xl p-3 transition-all hover:shadow-xl hover:shadow-blue-200 '}
-                    >Files</a>
+                    >Subjects</a>
                     <MyButtonAsLink to={'/Doctor/Report/' + doctor?.id}>
                         Report
                     </MyButtonAsLink>
@@ -120,7 +120,7 @@ const DoctorPage = () => {
                             </MyButtonAsLink>
                         </>
                     }
-                    {isAdmin && <MyButtonAsLink to={`/Message/Add?userName=${doctor?.username}&id=${doctor?.id}`}>Send Message</MyButtonAsLink>}
+                    {isAdmin && <MyButtonAsLink to={`/Mail/Add?userName=${doctor?.username}&id=${doctor?.id}`}>Send Mail</MyButtonAsLink>}
                 </div>
             </ProfileSection>
         </ProfileContainer>

@@ -4,7 +4,7 @@ import {
     useDeleteSubjectMutation,
     useGetSubjectByCodeQuery
 } from "../../App/Api/SubjectApi";
-import {PROFILE_IMAGES_URL} from "../../App/Api/axiosApi";
+import {PROFILE_IMAGES_URL, ROOM_IMAGES_URL} from "../../App/Api/axiosApi";
 import AppLink from "../../Components/Navigation/AppLink";
 import useIsInRole from "../../Hookes/useIsInRole";
 import {useEffect, useState} from "react";
@@ -23,7 +23,6 @@ import {
     useLazyIsAssignedToSubjectQuery
 } from "../../App/Api/StudentApi";
 import useAppSelector from "../../Hookes/useAppSelector";
-
 const SubjectPage = () => {
     const {code} = useParams()
     const {data: subject, isFetching, isError, error} = useGetSubjectByCodeQuery(+(code ?? ''))
@@ -37,6 +36,23 @@ const SubjectPage = () => {
     const [deAssignFromSubject, {isLoading: deAssignLoading}] = useDeAssignSubjectFromStudentMutation()
     const isMutating = isFetching || removeResult.isLoading || assignLoading || deAssignLoading
     const myId = useAppSelector(s => s.auth.id)
+
+    const {messageNotifications, delayedSubjectMessage} = useAppSelector(s => s.app)
+    const roomHasUnReadMessages: { name: string, count: number }[] = [
+        ...messageNotifications.map(n => ({
+            name: n.roomName,
+            count: 1
+        })).reduce((previousValue, currentValue) => {
+            const index = previousValue.findIndex(x => x.name === currentValue.name)
+            if (index == -1) {
+                previousValue.push({name: currentValue.name, count: 1})
+                return previousValue
+            }
+            previousValue[index].count += 1
+            return previousValue
+        }, [] as { name: string, count: number }[]),
+        ...delayedSubjectMessage.flatMap(d => d.delayedRooms.map(r => ({name: r.roomName, count: r.messageCount})))
+    ]
 
     const isInRole = useIsInRole()
     const isAdmin = isInRole('admin')
@@ -229,6 +245,11 @@ const SubjectPage = () => {
             <ProfileTitle>Actions</ProfileTitle>
             <ProfileSection>
                 <div className="flex justify-around flex-wrap items-center">
+                    {(subject.doctorId == myId) && <div>
+                        <MyButtonAsLink to={'AddRoom/' + subject.id}>
+                            Add Room
+                        </MyButtonAsLink>
+                    </div>}
                     {isAdmin && <>
                         <div>
                             <MyButtonAsLink to={'/Subject/Edit/' + subject.code}><FontAwesomeIcon
@@ -272,20 +293,34 @@ const SubjectPage = () => {
         <ProfileSection>
             <div className="flex-sm1-md2-lg3-gap-3 justify-around">
                 {(isAdmin || isDoctor) && <>
-                    <AppLink to={`/Subject/${subject?.code}/Students`}
+                    <AppLink to={`Students`}
                              className="h-48 border rounded-xl hover:shadow-xl transition-all hover:cursor-pointer bg-blue-100 relative flex justify-center items-center text-2xl sm:text-xl group">
                         <img src="/Images/students.jpg" alt="students_picture"
                              className={'absolute top-0 left-0 rounded-xl opacity-50 w-full h-full object-fit group-hover:opacity-0 transition-all'}/>
                         <b>Students</b>
                     </AppLink>
 
-                    <AppLink to={`/Subject/${subject?.code}/Files`}
+                    <AppLink to={`Files`}
                              className="h-48 border rounded-xl hover:shadow-xl transition-all hover:cursor-pointer bg-blue-100 relative flex justify-center items-center text-2xl sm:text-xl group">
                         <img src="/Images/files.jpg" alt="files_picture"
                              className={'absolute top-0 left-0 rounded-xl opacity-50 w-full h-full object-fit group-hover:opacity-0 transition-all'}/>
                         <b>Files</b>
                     </AppLink></>}
 
+                {subject.rooms.map(r => {
+                    const index = roomHasUnReadMessages.findIndex(rr => rr.name.toLowerCase() === r.name)
+                    console.log(roomHasUnReadMessages)
+                    if(r.name == 'room two')
+                        console.log(index)
+                    return <AppLink to={'/Room/' + r.id}
+                                    key={r.id}
+                                    className="h-48 border rounded-xl hover:shadow-xl transition-all hover:cursor-pointer bg-blue-100 relative flex flex-col justify-center items-center text-2xl sm:text-xl group">
+                        <img src={ROOM_IMAGES_URL + r.image} alt="room_picture"
+                             className={'absolute top-0 left-0 rounded-xl opacity-50 w-full h-full object-fit group-hover:opacity-0 transition-all'}/>
+                        <b>{r.name}</b>
+                        {index !== -1 && <p>Has {roomHasUnReadMessages[index].count} un read messages!</p>}
+                    </AppLink>
+                })}
             </div>
         </ProfileSection>
     </> : roomsUi

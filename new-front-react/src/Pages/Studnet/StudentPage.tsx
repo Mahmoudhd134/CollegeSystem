@@ -29,6 +29,12 @@ const StudentPage = () => {
     const [confirmDelete, setConfirmDelete] = useState(false)
     const navigator = useAppNavigator()
 
+    const {messageNotifications, delayedSubjectMessage} = useAppSelector(s => s.app)
+    const subjectsHasUnReadMessages: string[] = [
+        ...messageNotifications.map(n => n.subjectName),
+        ...delayedSubjectMessage.map(d => d.subjectName)
+    ]
+
     const isInRole = UseIsInRole()
     const isAdmin = isInRole('admin')
 
@@ -176,6 +182,8 @@ const StudentPage = () => {
                     <div className="p-3 text-center">
                         <div className={'text-2xl'}>{s.department.toUpperCase()}{s.code}</div>
                         <div className={'text-xl sm:text-lg'}>{s.name}</div>
+                        {subjectsHasUnReadMessages.some(x => x.toLowerCase() === s.name.toLowerCase()) &&
+                            <span className={'text-red-900'}>has un read messages</span>}
                     </div>
                 </AppLink>)}
             </div>

@@ -56,6 +56,7 @@ public class LoginUserHandler : IRequestHandler<LoginUserCommand, Response<Refre
 
         await _context.SaveChangesAsync(cancellationToken);
 
+        response.Data.ProfileImage = user.ProfilePhoto;
         return response.Data;
     }
 }

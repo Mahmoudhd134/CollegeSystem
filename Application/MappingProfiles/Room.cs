@@ -9,5 +9,6 @@ public class Room : Profile
     {
         CreateMap<AddRoomDto, Domain.Room.Room>();
         CreateMap<EditRoomDto, Domain.Room.Room>();
+        CreateMap<Domain.Room.Room, RoomDto>();
     }
 }

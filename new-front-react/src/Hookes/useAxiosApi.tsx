@@ -2,7 +2,7 @@
 import useAppSelector from "./useAppSelector";
 import {axiosApi} from "../App/Api/axiosApi";
 import useRefreshToken from "./useRefreshToken";
-import {logout, setCredentials} from "../Feutures/Auth/authSlice";
+import {logout, setCredentials} from "../App/Feutures/Auth/authSlice";
 import useAppDispatch from "./useAppDispatch";
 
 const UseAxiosApi = () => {

@@ -1,3 +1,5 @@
+import RoomForSubjectModel from "../Room/RoomForSubjectModel";
+
 export interface SubjectModel {
     id: number;
     department: string;
@@ -8,4 +10,5 @@ export interface SubjectModel {
     doctorId: string;
     doctorUsername: string;
     doctorProfilePhoto: string,
+    rooms: RoomForSubjectModel[]
 }
