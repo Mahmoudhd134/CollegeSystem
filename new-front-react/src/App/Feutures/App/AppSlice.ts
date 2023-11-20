@@ -5,6 +5,8 @@ import {SERVER_HOST_NAME} from "../../Api/axiosApi";
 import NewMessageNotificationModel from "../../Models/App/NewMessageNotificationModel";
 import {AxiosInstance} from "axios";
 import DelayedSubjectMessageInfoModel from "../../Models/App/DelayedSubjectMessageInfoModel";
+import {store} from "../../store";
+import {act} from "react-dom/test-utils";
 
 const initialState: AppState = {
     connection: null,
@@ -41,7 +43,8 @@ const appSlice = createSlice({
             state.messageNotifications = state.messageNotifications.filter(n => n.roomId != action.payload)
         },
         resetAppState: () => initialState
-    }, extraReducers: builder => {
+    },
+    extraReducers: builder => {
         builder.addCase(getDelayedMessagesInfo.fulfilled, (state, action: PayloadAction<DelayedSubjectMessageInfoModel[]>) => {
             state.delayedSubjectMessage = action.payload
         })

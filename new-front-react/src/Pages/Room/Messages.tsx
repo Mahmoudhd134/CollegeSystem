@@ -7,13 +7,18 @@ import {MyButton} from "../../Components/Form/MyButton";
 import TimeAgo from "../../Components/Global/TimeAgo";
 import {Avatar, Typography} from "@material-tailwind/react";
 import {PROFILE_IMAGES_URL} from "../../App/Api/axiosApi";
+import useScreenDimensions from "../../Hookes/useScreenDimensions";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
 const Messages = ({roomId, doctorId}: { roomId: string, doctorId: string }) => {
-    const screenHeight = window.innerHeight
-    const height = `${screenHeight - 48 - 48 - 64 - 16 * 2}px`
+    const screenDimensions = useScreenDimensions()
+    const height = `${screenDimensions.height - 48 - 48 - 64 - 16 * 2}px`
     const messageRef = useRef<HTMLDivElement>(null)
     const myId = useAppSelector(s => s.auth.id)
-    const messages = useAppSelector(s => s.room.rooms[roomId])
+    const {roomsMessages, loadCountAtOnce, connection} = useAppSelector(s => s.room)
+    const messages = roomsMessages[roomId]?.messages
+    const hasMore = roomsMessages[roomId]?.hasMore
     const api = useAxiosApi()
     const dispatch = useAppDispatch()
 
@@ -23,29 +28,22 @@ const Messages = ({roomId, doctorId}: { roomId: string, doctorId: string }) => {
     }, [messages?.length])
 
     useEffect(() => {
-        if (!messages)
+        if (!messages || !messageRef.current)
             return
-
-        const {scrollHeight, clientHeight, scrollTop} = messageRef.current!
-        const threshold = 150
-
-        if (messages[messages.length - 1]?.sender.id != myId || (clientHeight - scrollTop - threshold) > scrollHeight)
-            return
-
-        messageRef.current?.scroll({
-            top: scrollHeight - clientHeight,
-            behavior: 'smooth'
-        })
     }, [messages])
 
+    //todo implement infinite scrolling
     const loadMore = () => {
         dispatch(loadMoreMessages({
             api,
             roomId,
-            messagesCount: 150,
+            messagesCount: loadCountAtOnce,
             date: (messages && messages[0])?.date as unknown as Date ?? new Date().toUTCString() as unknown as Date
         }))
     }
+
+    const deleteMessage = (messageId: string) => () => connection?.invoke('DeleteMessage', roomId, messageId)
+
 
     return <div className={`flex flex-col items-end gap-3 w-full overflow-y-scroll`} style={{height}} ref={messageRef}>
         <MyButton type={'button'} onClick={_ => loadMore()}>load more</MyButton>
@@ -59,7 +57,7 @@ const Messages = ({roomId, doctorId}: { roomId: string, doctorId: string }) => {
             </div>
             <Typography variant={'paragraph'}>{m.text}</Typography>
             <div className={'text-end'}>
-                {(m.sender.id != myId || (m.serverReached || m.isRead || m.isDelivered)) ?
+                {(m.sender.id != myId || m.serverReached || m.isRead || m.isDelivered) ?
                     <TimeAgo timestamp={m.date} className={'mx-3'}/> :
                     <span>after seconds</span>}
                 {m.sender.id == myId && <span>
@@ -69,6 +67,12 @@ const Messages = ({roomId, doctorId}: { roomId: string, doctorId: string }) => {
                             'waiting'}
             </span>}
             </div>
+            {m.sender.id == myId &&
+                <FontAwesomeIcon icon={faTrash}
+                                 className={'hover:cursor-pointer'}
+                                 color={'red'}
+                                 onClick={deleteMessage(m.id)}
+                />}
         </div>)}
     </div>
 };

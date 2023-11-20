@@ -20,6 +20,8 @@ public class UserRoomConfiguration : IEntityTypeConfiguration<UserRoom>
             .WithMany(x => x.UserRooms)
             .HasForeignKey(x => x.UserId);
 
+        builder.HasIndex(x => x.RoomId);
+        builder.HasIndex(x => x.UserId);
         builder.HasIndex(x => new { x.RoomId, x.UserId }).IsUnique();
     }
 }

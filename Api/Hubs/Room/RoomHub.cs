@@ -1,4 +1,5 @@
-﻿using Application.Dtos.Message;
+﻿using Api.Hubs.App;
+using Application.Dtos.Message;
 using Application.Dtos.RealTimeConnection;
 using Application.MediatR.Commands.Message;
 using Microsoft.AspNetCore.SignalR;
@@ -8,11 +9,17 @@ namespace Api.Hubs.Room;
 
 public class RoomHub : BaseHub<IRoomHubClient>
 {
-    private readonly Dictionary<string, UserRoomConnection> _connections;
+    private readonly Dictionary<string, UserRoomConnection> _roomConnections;
+    private readonly Dictionary<string, UserAppConnection> _appConnections;
+    private readonly IHubContext<AppHub, IAppHubClient> _appHubContext;
 
-    public RoomHub(Dictionary<string, UserRoomConnection> connections)
+    public RoomHub(Dictionary<string, UserRoomConnection> roomConnections,
+        Dictionary<string, UserAppConnection> appConnections,
+        IHubContext<AppHub, IAppHubClient> appHubContext)
     {
-        _connections = connections;
+        _roomConnections = roomConnections;
+        _appConnections = appConnections;
+        _appHubContext = appHubContext;
     }
 
     public override async Task OnConnectedAsync()
@@ -23,7 +30,7 @@ public class RoomHub : BaseHub<IRoomHubClient>
         if (!(foundRoomId ?? false))
             return;
         await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-        _connections.Add(Context.ConnectionId, new UserRoomConnection()
+        _roomConnections.Add(Context.ConnectionId, new UserRoomConnection()
         {
             UserId = UserId,
             RoomId = Guid.Parse(roomId)
@@ -33,7 +40,7 @@ public class RoomHub : BaseHub<IRoomHubClient>
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-        _connections.Remove(Context.ConnectionId);
+        _roomConnections.Remove(Context.ConnectionId);
         await base.OnDisconnectedAsync(exception);
     }
 
@@ -45,5 +52,16 @@ public class RoomHub : BaseHub<IRoomHubClient>
 
         await Clients.Caller.MessageSendSuccessfully(addMessageDto.TempId, response.Data);
         await Clients.OthersInGroup(addMessageDto.RoomId.ToString()).ReceiveMessage(response.Data);
+    }
+
+    public async Task DeleteMessage(Guid roomId, Guid messageId)
+    {
+        var response = await Mediator.Send(new DeleteMessageCommand(messageId, UserId));
+        if (response.IsSuccess == false)
+            return;
+        var connections = _appConnections.Where(kvp =>
+                kvp.Value.UserRooms.Any(x => x.RoomId == roomId))
+            .Select(kvp => kvp.Key);
+        await _appHubContext.Clients.Clients(connections).DeleteMessage(roomId, messageId);
     }
 }

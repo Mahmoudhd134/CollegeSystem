@@ -22,5 +22,7 @@ public class MessageConfiguration:IEntityTypeConfiguration<Message>
             .HasOne(x => x.Room)
             .WithMany(x => x.Messages)
             .HasForeignKey(x => x.RoomId);
+
+        builder.HasIndex(x => x.Date);
     }
 }

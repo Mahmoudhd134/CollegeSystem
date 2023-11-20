@@ -27,5 +27,8 @@ public class UserMessageStateConfiguration:IEntityTypeConfiguration<UserMessageS
             .WithMany()
             .HasForeignKey(x => x.RoomId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasIndex(x => x.IsRead);
+        builder.HasIndex(x => x.IsDelivered);
     }
 }

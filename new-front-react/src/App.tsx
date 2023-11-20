@@ -48,6 +48,7 @@ import useAppSelector from "./Hookes/useAppSelector";
 import Notifications from "./Pages/Notifications";
 import useAxiosApi from "./Hookes/useAxiosApi";
 import NewMessageNotificationModel from "./App/Models/App/NewMessageNotificationModel";
+import {deleteMessage} from "./App/Feutures/Room/roomSlice";
 
 function App() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -97,6 +98,10 @@ function App() {
 
         connection.on("ReceiveNewMessageNotification", (newMessageNotification: NewMessageNotificationModel) => {
             dispatch(addNewMessageNotification(newMessageNotification))
+        })
+
+        connection.on('DeleteMessage', (roomId: string, messageId: string) => {
+            dispatch(deleteMessage({roomId, messageId}))
         })
     }, [connection])
 

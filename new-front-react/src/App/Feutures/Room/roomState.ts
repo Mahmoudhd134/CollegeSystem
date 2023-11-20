@@ -2,9 +2,12 @@
 import * as SignalR from "@microsoft/signalr";
 
 export default interface RoomState {
-    rooms: {
-        [key: string]: RoomMessageModel[]
-    }
-
+    roomsMessages: {
+        [key: string]: {
+            hasMore: boolean,
+            messages: RoomMessageModel[]
+        }
+    },
+    loadCountAtOnce: number,
     connection: SignalR.HubConnection | null
 }

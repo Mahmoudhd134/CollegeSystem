@@ -312,9 +312,6 @@ const SubjectPage = () => {
 
                 {subject.rooms.map(r => {
                     const index = roomHasUnReadMessages.findIndex(rr => rr.name.toLowerCase() === r.name)
-                    console.log(roomHasUnReadMessages)
-                    if (r.name == 'room two')
-                        console.log(index)
                     return <AppLink to={'/Room/' + r.id}
                                     key={r.id}
                                     className="h-48 border rounded-xl hover:shadow-xl transition-all hover:cursor-pointer bg-blue-100 relative flex flex-col justify-center items-center text-2xl sm:text-xl group">

@@ -34,7 +34,7 @@ const Room = () => {
     const inputRef = useRef<HTMLInputElement>(null)
     const {token, id: myId, username, profileImage} = useAppSelector(s => s.auth)
     const dispatch = useAppDispatch()
-    const {connection, rooms} = useAppSelector(s => s.room)
+    const {connection, roomsMessages} = useAppSelector(s => s.room)
     const api = useAxiosApi()
     const isMutating = roomDateFetching || joinRoomLoading
     const [openSettingsState, setOpenSettingState] = useState(false)
@@ -55,7 +55,7 @@ const Room = () => {
         dispatch(startRoomConnection())
         dispatch(removeNotificationsForRoom(room.id))
 
-        const ids = rooms[room.id]?.filter(m => m.sender.id == myId && !m.isRead).map(m => m.id) ?? []
+        const ids = roomsMessages[room.id]?.messages?.filter(m => m.sender.id == myId && !m.isRead).map(m => m.id) ?? []
         if (ids?.length > 0)
             dispatch(updateMessagesState({api, ids}))
 

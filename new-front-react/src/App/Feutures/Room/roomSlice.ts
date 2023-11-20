@@ -6,10 +6,12 @@ import {SERVER_HOST_NAME} from "../../Api/axiosApi";
 import AddMessageModel from "../../Models/Message/AddMessageModel";
 import {AxiosInstance} from "axios";
 import MessageStateModel from "../../Models/Message/MessageStateModel";
+import room from "../../../Pages/Room/Room";
 
 const initialState: RoomState = {
-    rooms: {},
-    connection: null
+    roomsMessages: {},
+    connection: null,
+    loadCountAtOnce: 100
 }
 const roomSlice = createSlice({
     name: 'room',
@@ -33,20 +35,20 @@ const roomSlice = createSlice({
         },
         addMessage: (state, {payload}: PayloadAction<RoomMessageModel>) => {
             const {roomId, id} = payload
-            if (state.rooms[roomId] == undefined)
-                state.rooms[roomId] = []
-            state.rooms[roomId].findIndex(m => m.id == id) == -1 && state.rooms[roomId].push(payload)
+            if (state.roomsMessages[roomId] == undefined)
+                state.roomsMessages[roomId] = {messages: [], hasMore: true}
+            state.roomsMessages[roomId].messages.findIndex(m => m.id == id) == -1 && state.roomsMessages[roomId].messages.push(payload)
         },
         updateTempMessage: (state, action: PayloadAction<{ tempId: string, message: RoomMessageModel }>) => {
             const {tempId, message} = action.payload
-            state.rooms[message.roomId] = state.rooms[message.roomId].map(m => m.id == tempId ? ({
+            state.roomsMessages[message.roomId].messages = state.roomsMessages[message.roomId].messages.map(m => m.id == tempId ? ({
                 ...message,
                 serverReached: true
             }) : m)
         },
         makeMessagesIsReadToTrue: (state, action: PayloadAction<{ ids: string[], roomId: string }>) => {
             const {ids, roomId} = action.payload
-            state.rooms[roomId] = state.rooms[roomId].map(m => ids.indexOf(m.id) === -1 ? m : ({
+            state.roomsMessages[roomId].messages = state.roomsMessages[roomId].messages.map(m => ids.indexOf(m.id) === -1 ? m : ({
                 ...m,
                 isRead: true,
                 isDelivered: true
@@ -54,26 +56,32 @@ const roomSlice = createSlice({
         },
         makeMessageIsDeliveredToTrue: (state, action: PayloadAction<{ ids: string[], roomId: string }>) => {
             const {ids, roomId} = action.payload
-            state.rooms[roomId] = state.rooms[roomId].map(m => ids.indexOf(m.id) === -1 ? m : ({
+            state.roomsMessages[roomId].messages = state.roomsMessages[roomId].messages.map(m => ids.indexOf(m.id) === -1 ? m : ({
                 ...m,
                 isDelivered: true
             }))
+        },
+        deleteMessage: (state, action: PayloadAction<{ roomId: string, messageId: string }>) => {
+            const {roomId, messageId} = action.payload
+            if (state.roomsMessages[roomId] == undefined)
+                return
+            state.roomsMessages[roomId].messages = state.roomsMessages[roomId].messages.filter(m => m.id != messageId)
         },
         resetRoomState: () => initialState
     },
     extraReducers: builder => {
         builder.addCase(getUnReadMessageForRoom.fulfilled, (state, action: PayloadAction<{ roomId: string, messages: RoomMessageModel[] }>) => {
             const {roomId, messages} = action.payload
-            if (state.rooms[roomId] == undefined)
-                state.rooms[roomId] = []
-            state.rooms[roomId].push(...messages)
+            if (state.roomsMessages[roomId] == undefined)
+                state.roomsMessages[roomId] = {messages: [], hasMore: true}
+            state.roomsMessages[roomId].messages.push(...messages)
         })
 
         builder.addCase(updateMessagesState.fulfilled, (state, action: PayloadAction<MessageStateModel[]>) => {
             const roomId = action.payload[0]?.roomId
             if (!roomId)
                 return
-            state.rooms[roomId] = state.rooms[roomId].map(m => {
+            state.roomsMessages[roomId].messages = state.roomsMessages[roomId].messages.map(m => {
                 const index = action.payload.findIndex(x => x.id == m.id)
                 if (index == -1)
                     return m
@@ -88,10 +96,15 @@ const roomSlice = createSlice({
         })
 
         builder.addCase(loadMoreMessages.fulfilled, (state, action: PayloadAction<{ messages: RoomMessageModel[], roomId: string }>) => {
-            state.rooms[action.payload.roomId]?.unshift(...action.payload.messages.map(m => ({
+            const {roomId, messages} = action.payload
+            if (state.roomsMessages[roomId] == undefined)
+                state.roomsMessages[roomId] = {messages: [], hasMore: true}
+
+            state.roomsMessages[roomId].messages.unshift(...messages.map(m => ({
                 ...m,
                 serverReached: true
             })))
+            state.roomsMessages[roomId].hasMore = messages.length == state.loadCountAtOnce
         })
     }
 })
@@ -137,5 +150,6 @@ export const {
     addMessage,
     makeMessagesIsReadToTrue,
     makeMessageIsDeliveredToTrue,
+    deleteMessage,
     resetRoomState
 } = roomSlice.actions
