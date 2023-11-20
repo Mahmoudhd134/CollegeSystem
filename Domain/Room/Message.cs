@@ -11,5 +11,5 @@ public class Message
     public User Sender { get; set; }
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
-    public IList<UserMessageState> UserMessageStates { get; set; }
+    public bool IsRead { get; set; }
 }

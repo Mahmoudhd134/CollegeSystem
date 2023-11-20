@@ -34,6 +34,8 @@ const Messages = ({roomId, doctorId}: { roomId: string, doctorId: string }) => {
 
     //todo implement infinite scrolling
     const loadMore = () => {
+        const date = (messages && messages[0])?.date as unknown as Date ?? new Date().toUTCString() as unknown as Date
+        console.log(date)
         dispatch(loadMoreMessages({
             api,
             roomId,

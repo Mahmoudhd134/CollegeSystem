@@ -21,7 +21,7 @@ public class UserRoomConfiguration : IEntityTypeConfiguration<UserRoom>
             .HasForeignKey(x => x.UserId);
 
         builder.HasIndex(x => x.RoomId);
-        builder.HasIndex(x => x.UserId);
         builder.HasIndex(x => new { x.RoomId, x.UserId }).IsUnique();
+        builder.HasIndex(x => x.LastOnlineDate);
     }
 }

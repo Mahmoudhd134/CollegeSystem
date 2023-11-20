@@ -7,5 +7,4 @@ public interface IRoomHubClient
     Task ReceiveMessage(RoomMessageDto roomMessageDto);
     Task MessageSendSuccessfully(Guid tempId, RoomMessageDto roomMessageDto);
     Task MessagesHaveBeenRead(IEnumerable<string> messagesId, Guid roomId);
-    Task MessagesHaveBeenDelivered(IEnumerable<string> messagesId, Guid roomId);
 }

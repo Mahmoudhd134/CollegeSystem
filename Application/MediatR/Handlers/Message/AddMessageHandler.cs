@@ -54,22 +54,25 @@ public class AddMessageHandler : IRequestHandler<AddMessageCommand, Response<Roo
             Date = DateTime.UtcNow,
             RoomId = addMessageDto.RoomId,
             SenderId = senderId,
-            UserMessageStates = usersJoinedTheRoom
-                .Select(ur => new UserMessageState()
-                {
-                    RoomId = addMessageDto.RoomId,
-                    UserId = ur.UserId,
-                    IsDelivered = connectedToTheApp.Contains(ur.UserId),
-                    DeliveredDate = connectedToTheApp.Contains(ur.UserId) ? DateTime.UtcNow : null,
-                    IsRead = connectedToTheRoom.Contains(ur.UserId),
-                    ReadDate = connectedToTheRoom.Contains(ur.UserId) ? DateTime.UtcNow : null,
-                })
-                .ToList()
+            IsRead = connectedToTheRoom.Count > 1
         };
 
         _context.Messages.Add(message);
         await _context.SaveChangesAsync(cancellationToken);
 
+        var roomMessageDto = new RoomMessageDto()
+        {
+            RoomId = addMessageDto.RoomId,
+            Date = message.Date,
+            Text = addMessageDto.Text,
+            Id = message.Id,
+            Sender = addMessageDto.Sender,
+            IsRead = connectedToTheRoom.Count > 1
+        };
+        
+        if (connectedToTheApp.Count <= connectedToTheRoom.Count)
+            return roomMessageDto;
+        
         var notificationDto = await _context.Messages
             .Include(m => m.Room)
             .ThenInclude(r => r.Subject)
@@ -91,15 +94,6 @@ public class AddMessageHandler : IRequestHandler<AddMessageCommand, Response<Roo
                 .Where(x => connectedToTheRoom.Contains(x) == false),
             notificationDto);
 
-        return new RoomMessageDto()
-        {
-            RoomId = addMessageDto.RoomId,
-            Date = DateTime.UtcNow,
-            Text = addMessageDto.Text,
-            Id = message.Id,
-            Sender = addMessageDto.Sender,
-            IsDelivered = connectedToTheApp.Count > 1,
-            IsRead = connectedToTheRoom.Count > 1
-        };
+        return roomMessageDto;
     }
 }

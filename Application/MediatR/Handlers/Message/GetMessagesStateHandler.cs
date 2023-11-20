@@ -19,15 +19,13 @@ public class GetMessagesStateHandler : IRequestHandler<GetMessagesStateQuery, Re
     public async Task<Response<IList<MessageStateDto>>> Handle(GetMessagesStateQuery request,
         CancellationToken cancellationToken)
     {
-        return await _context.UserMessageStates
-            .Where(ums => request.MessagesId.Contains(ums.MessageId))
-            .GroupBy(ums => new { ums.MessageId, ums.RoomId })
-            .Select(g => new MessageStateDto()
+        return await _context.Messages
+            .Where(m => request.MessagesId.Contains(m.Id))
+            .Select(m => new MessageStateDto()
             {
-                Id = g.Key.MessageId,
-                RoomId = g.Key.RoomId,
-                IsDelivered = g.Count(x => x.IsDelivered) > 1,
-                IsRead = g.Count(x => x.IsRead) > 1
+                Id = m.Id,
+                RoomId = m.RoomId,
+                IsRead = m.IsRead
             })
             .ToListAsync(cancellationToken);
     }

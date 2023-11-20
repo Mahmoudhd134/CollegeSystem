@@ -23,64 +23,36 @@ public class GetDelayedMessagesInfoHandler : IRequestHandler<GetDelayedMessagesI
     {
         var userId = request.UserId;
 
-        var subjectGrouping = await _context.UserMessageStates
-            .Include(ums => ums.Room)
-            .ThenInclude(r => r.Subject)
-            .Where(ums => ums.UserId == userId && ums.IsRead == false)
-            .Select(ums => new
-            {
-                SubjectName = ums.Room.Subject.Name,
-                SubjectCode = ums.Room.Subject.Code,
-                ums.RoomId,
-                RoomName = ums.Room.Name,
-                ums.MessageId
-            })
-            .GroupBy(x => new
-            {
-                x.SubjectCode,
-                x.SubjectName
-            })
-            .ToListAsync(cancellationToken);
-        var subjectGroupingWithRooms = subjectGrouping.Select(x => new
-            {
-                x.Key.SubjectCode,
-                x.Key.SubjectName,
-                Rooms = x.GroupBy(y => new { y.RoomId, y.RoomName })
-            })
-            .ToList();
-
-        var roomMessagesId = subjectGroupingWithRooms.SelectMany(x => x.Rooms)
+        var delayedSubjectMessageInfoDtos = await _context.Rooms
+            .Where(r => r.UserRooms.Where(ur => ur.UserId == userId).Select(ur => ur.RoomId).Contains(r.Id))
             .Select(r => new
             {
-                r.Key.RoomId,
-                MessagesId = r.Select(x => x.MessageId)
+                SC = r.Subject.Code,
+                SN = r.Subject.Name,
+                RN = r.Name,
+                RID = r.Id,
+                RMC = r.Messages.Count(m => m.Date > r.UserRooms
+                    .Where(ur => ur.UserId == userId)
+                    .Select(ur => ur.LastOnlineDate)
+                    .FirstOrDefault())
             })
-            .ToList();
-        var tasks = roomMessagesId.Select(r =>
-            _roomRealTimeMethods.MakeIsDeliveredToTrueForMessagesInRoom(r.MessagesId,
-                r.RoomId));
+            .Where(r => r.RMC > 0)
+            .GroupBy(r => new { r.SC, r.SN })
+            .Select(g => new DelayedSubjectMessageInfoDto()
+            {
+                SubjectCode = g.Key.SC,
+                SubjectName = g.Key.SN,
+                DelayedRooms = g.GroupBy(r => new { r.RN, r.RID, r.RMC })
+                    .Select(gg => new DelayedRoomMessageInfoDto()
+                    {
+                        RoomId = gg.Key.RID,
+                        RoomName = gg.Key.RN,
+                        MessagesCount = gg.Key.RMC
+                    })
+                    .ToList()
+            })
+            .ToListAsync(cancellationToken);
 
-        var delayedSubjectMessageInfoDtos = subjectGroupingWithRooms.Select(x => new DelayedSubjectMessageInfoDto()
-        {
-            SubjectCode = x.SubjectCode,
-            SubjectName = x.SubjectName,
-            DelayedRooms = x.Rooms.Select(y => new DelayedRoomMessageInfoDto()
-                {
-                    RoomName = y.Key.RoomName,
-                    RoomId = y.Key.RoomId,
-                    MessagesCount = y.Count()
-                })
-                .ToList()
-        }).ToList();
-
-        var messagesId = roomMessagesId.SelectMany(r => r.MessagesId).ToList();
-        await _context.UserMessageStates
-            .Where(ums =>
-                ums.UserId == userId && messagesId.Contains(ums.MessageId))
-            .ExecuteUpdateAsync(caller => caller
-                .SetProperty(ums => ums.IsDelivered, true), cancellationToken);
-
-        await Task.WhenAll(tasks);
         return delayedSubjectMessageInfoDtos;
     }
 }

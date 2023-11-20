@@ -9,4 +9,5 @@ public class UserRoom
     public User User { get; set; }
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
+    public DateTime LastOnlineDate { get; set; }
 }

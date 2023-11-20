@@ -54,13 +54,13 @@ const roomSlice = createSlice({
                 isDelivered: true
             }))
         },
-        makeMessageIsDeliveredToTrue: (state, action: PayloadAction<{ ids: string[], roomId: string }>) => {
-            const {ids, roomId} = action.payload
-            state.roomsMessages[roomId].messages = state.roomsMessages[roomId].messages.map(m => ids.indexOf(m.id) === -1 ? m : ({
-                ...m,
-                isDelivered: true
-            }))
-        },
+        // makeMessageIsDeliveredToTrue: (state, action: PayloadAction<{ ids: string[], roomId: string }>) => {
+        //     const {ids, roomId} = action.payload
+        //     state.roomsMessages[roomId].messages = state.roomsMessages[roomId].messages.map(m => ids.indexOf(m.id) === -1 ? m : ({
+        //         ...m,
+        //         isDelivered: true
+        //     }))
+        // },
         deleteMessage: (state, action: PayloadAction<{ roomId: string, messageId: string }>) => {
             const {roomId, messageId} = action.payload
             if (state.roomsMessages[roomId] == undefined)
@@ -149,7 +149,7 @@ export const {
     updateTempMessage,
     addMessage,
     makeMessagesIsReadToTrue,
-    makeMessageIsDeliveredToTrue,
+    // makeMessageIsDeliveredToTrue,
     deleteMessage,
     resetRoomState
 } = roomSlice.actions

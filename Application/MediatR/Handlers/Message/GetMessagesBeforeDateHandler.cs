@@ -49,7 +49,6 @@ public class
         {
             if (m.Sender.Id != userId)
                 return;
-            m.IsDelivered = messagesState[m.Id].IsDelivered;
             m.IsRead = messagesState[m.Id].IsRead;
         });
         return roomMessageDtos;

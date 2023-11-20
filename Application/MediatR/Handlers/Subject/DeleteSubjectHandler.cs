@@ -17,14 +17,7 @@ public class DeleteSubjectHandler : IRequestHandler<DeleteSubjectCommand, Respon
     public async Task<Response<bool>> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
     {
         var id = request.Id;
-
-        await _context.UserMessageStates
-            .Where(ums => _context.Rooms
-                .Where(x => x.SubjectId == id)
-                .Select(x => x.Id)
-                .Contains(ums.RoomId))
-            .ExecuteDeleteAsync(cancellationToken);
-
+        
         await _context.Rooms
             .Where(r => r.SubjectId == id)
             .ExecuteDeleteAsync(cancellationToken);

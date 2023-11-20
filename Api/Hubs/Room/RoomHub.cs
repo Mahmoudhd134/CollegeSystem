@@ -2,6 +2,7 @@
 using Application.Dtos.Message;
 using Application.Dtos.RealTimeConnection;
 using Application.MediatR.Commands.Message;
+using Application.MediatR.Commands.Room;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
 
@@ -40,7 +41,13 @@ public class RoomHub : BaseHub<IRoomHubClient>
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
+        var roomId = _roomConnections
+            .FirstOrDefault(x => x.Value.UserId == UserId)
+            .Value.RoomId;
         _roomConnections.Remove(Context.ConnectionId);
+
+        await Mediator.Send(new OutFromRoomCommand(roomId, UserId));
+
         await base.OnDisconnectedAsync(exception);
     }
 

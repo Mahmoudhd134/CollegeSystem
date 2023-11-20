@@ -27,20 +27,23 @@ public class
         CancellationToken cancellationToken)
     {
         var (userId, roomId) = request;
-        var unReadMessages = await _context.UserMessageStates
-            .Include(ums => ums.Message)
-            .Where(ums => ums.RoomId == roomId && ums.UserId == userId && ums.IsRead == false)
-            .OrderBy(ums => ums.Message.Date)
+        var unReadMessages = await _context.Messages
+            .Where(m => m.RoomId == roomId &&
+                        m.Date > _context.UserRooms
+                            .Where(ur => ur.UserId == userId && ur.RoomId == roomId)
+                            .Select(ur => ur.LastOnlineDate)
+                            .FirstOrDefault())
+            .OrderBy(m => m.Date)
             .ProjectTo<RoomMessageDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        await _roomRealTimeMethods.MakeIsReadToTrueForMessagesInRoom(unReadMessages.Select(m => m.Id), roomId);
+        var ids = unReadMessages.Select(m => m.Id).ToList();
+        await _roomRealTimeMethods.MakeIsReadToTrueForMessagesInRoom(ids, roomId);
 
-        await _context.UserMessageStates
-            .Where(ums => ums.UserId == userId && unReadMessages.Select(m => m.Id).Contains(ums.MessageId))
+        await _context.Messages
+            .Where(m => ids.Contains(m.Id))
             .ExecuteUpdateAsync(calls => calls
-                .SetProperty(ums => ums.IsRead, true)
-                .SetProperty(ums => ums.IsDelivered, true), cancellationToken);
+                .SetProperty(ums => ums.IsRead, true), cancellationToken);
 
         return unReadMessages;
     }

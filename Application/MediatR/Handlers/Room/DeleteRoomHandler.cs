@@ -30,10 +30,6 @@ public class DeleteRoomHandler : IRequestHandler<DeleteRoomCommand, Response<boo
         if (!isRoomSubjectAssignedToDoctor)
             return Response<bool>.Failure(RoomErrors.UnAuthorizeDelete);
         
-        await _context.UserMessageStates
-            .Where(ums => ums.RoomId == roomId)
-            .ExecuteDeleteAsync(cancellationToken);
-            
         var r = await _context.Rooms
             .Where(r => r.Id == roomId)
             .ExecuteDeleteAsync(cancellationToken);

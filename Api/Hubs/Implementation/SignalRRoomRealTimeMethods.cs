@@ -18,10 +18,4 @@ public class SignalRRoomRealTimeMethods : IRoomRealTimeMethods
         await _roomHub.Clients.Group(roomId.ToString())
             .MessagesHaveBeenRead(messagesId.Select(x => x.ToString()), roomId);
     }
-
-    public async Task MakeIsDeliveredToTrueForMessagesInRoom(IEnumerable<Guid> messagesId, Guid roomId)
-    {
-        await _roomHub.Clients.Group(roomId.ToString())
-            .MessagesHaveBeenDelivered(messagesId.Select(x => x.ToString()), roomId);
-    }
 }

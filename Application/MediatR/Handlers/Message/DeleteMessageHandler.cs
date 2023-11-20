@@ -26,9 +26,6 @@ public class DeleteMessageHandler : IRequestHandler<DeleteMessageCommand, Respon
         if (messageSenderId != userId)
             return Response<bool>.Failure(MessageErrors.UnAuthorizeDelete);
 
-        await _context.UserMessageStates
-            .Where(ums => ums.MessageId == messageId)
-            .ExecuteDeleteAsync(cancellationToken);
         await _context.Messages
             .Where(m => m.Id == messageId)
             .ExecuteDeleteAsync(cancellationToken);

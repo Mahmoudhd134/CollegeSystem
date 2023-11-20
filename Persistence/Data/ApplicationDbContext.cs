@@ -25,7 +25,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
     public DbSet<Message> Messages { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<UserRoom> UserRooms { get; set; }
-    public DbSet<UserMessageState> UserMessageStates { get; set; }
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
@@ -46,7 +45,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>
         builder.ApplyConfiguration(new MessageConfiguration());
         builder.ApplyConfiguration(new RoomConfiguration());
         builder.ApplyConfiguration(new UserRoomConfiguration());
-        builder.ApplyConfiguration(new UserMessageStateConfiguration());
         builder.ApplyUtcDateTimeConverter();
     }
 }

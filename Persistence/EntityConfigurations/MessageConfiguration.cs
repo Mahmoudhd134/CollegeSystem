@@ -12,6 +12,7 @@ public class MessageConfiguration:IEntityTypeConfiguration<Message>
 
         builder.Property(x => x.Text).HasMaxLength(4095).IsRequired();
         builder.Property(x => x.Date).IsRequired();
+        builder.Property(x => x.IsRead).IsRequired().HasDefaultValue(false);
 
         builder
             .HasOne(x => x.Sender)

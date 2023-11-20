@@ -19,7 +19,6 @@ import {
     stopRoomConnection,
     getUnReadMessageForRoom,
     makeMessagesIsReadToTrue,
-    makeMessageIsDeliveredToTrue,
     updateMessagesState
 } from "../../App/Feutures/Room/roomSlice";
 import {removeNotificationsForRoom} from "../../App/Feutures/App/AppSlice";
@@ -80,9 +79,9 @@ const Room = () => {
             dispatch(makeMessagesIsReadToTrue({roomId, ids}))
         })
 
-        connection.on("MessagesHaveBeenDelivered", (ids: string[], roomId: string) => {
-            dispatch(makeMessageIsDeliveredToTrue({ids, roomId}))
-        })
+        // connection.on("MessagesHaveBeenDelivered", (ids: string[], roomId: string) => {
+        //     dispatch(makeMessageIsDeliveredToTrue({ids, roomId}))
+        // })
     }, [connection])
 
     const addMessageHandler = (e: React.FormEvent) => {
