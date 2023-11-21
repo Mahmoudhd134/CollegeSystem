@@ -34,8 +34,8 @@ public class
         subjectWithStudentsDto.NumberOfStudents = subjectWithStudentsDto
             .NumberOfStudentsForEachDepartment
             .Select(x => x.Count)
-            .Aggregate((x, y) => x + y);
-
+            .Sum();
+        
         return subjectWithStudentsDto;
     }
 }

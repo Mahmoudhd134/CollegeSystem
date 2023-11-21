@@ -316,7 +316,7 @@ const SubjectPage = () => {
                                     key={r.id}
                                     className="h-48 border rounded-xl hover:shadow-xl transition-all hover:cursor-pointer bg-blue-100 relative flex flex-col justify-center items-center text-2xl sm:text-xl group">
                         <img src={ROOM_IMAGES_URL + r.image} alt="room_picture"
-                             className={'absolute top-0 left-0 rounded-xl opacity-50 w-full h-full object-fit group-hover:opacity-0 transition-all'}/>
+                             className={'absolute top-0 left-0 rounded-xl opacity-50 w-full h-full object-cover object-center group-hover:object-top group-hover:opacity-10 transition-all'}/>
                         <b>{r.name}</b>
                         {index !== -1 && <p>Has {roomHasUnReadMessages[index].count} un read messages!</p>}
                     </AppLink>

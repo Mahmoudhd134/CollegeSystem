@@ -29,6 +29,11 @@ public class RoomController : BaseController
     public async Task<ActionResult<bool>> Edit(EditRoomDto editRoomDto) =>
         Return(await Mediator.Send(new EditRoomCommand(editRoomDto, Id)));
 
+    [HttpPut("{roomId:guid}")]
+    [Authorize(Roles = "Doctor")]
+    public async Task<ActionResult<bool>> Edit(Guid roomId, [FromForm] IFormFile file) =>
+        Return(await Mediator.Send(new ChangeRoomPhotoCommand(roomId, Id, file.FileName, file.OpenReadStream())));
+
     [HttpDelete("{roomId:guid}")]
     [Authorize(Roles = "Doctor")]
     public async Task<ActionResult<bool>> Delete(Guid roomId) =>

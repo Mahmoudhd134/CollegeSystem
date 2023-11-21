@@ -114,7 +114,6 @@ const Room = () => {
                 userName: username!
             },
             isRead: false,
-            isDelivered: false,
             serverReached: false
         }
         dispatch(addMessage(roomMessageModel))

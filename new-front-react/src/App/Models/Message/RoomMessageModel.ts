@@ -8,6 +8,5 @@ export default interface RoomMessageModel {
     roomId: string;
     
     serverReached:boolean;
-    isDelivered: boolean;
     isRead: boolean;
 }

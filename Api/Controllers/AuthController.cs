@@ -23,14 +23,12 @@ public class AuthController : BaseController
 
     [Route("Register")]
     [HttpPost]
-    public async Task<ActionResult> Register([FromBody] RegisterUserDto registerUserDto)
-    {
-        return Return(await Mediator.Send(new RegisterUserCommand(registerUserDto)));
-    }
+    public async Task<ActionResult<bool>> Register([FromBody] RegisterUserDto registerUserDto) =>
+        Return(await Mediator.Send(new RegisterUserCommand(registerUserDto)));
 
     [Route("Login")]
     [HttpPost]
-    public async Task<ActionResult> Login([FromBody] LoginUserDto loginUserDto)
+    public async Task<ActionResult<TokenDto>> Login([FromBody] LoginUserDto loginUserDto)
     {
         var response = await Mediator.Send(new LoginUserCommand(loginUserDto, Useragent));
         if (response.IsSuccess == false)
@@ -43,7 +41,7 @@ public class AuthController : BaseController
 
     [Route("RefreshToken")]
     [HttpGet]
-    public async Task<ActionResult> RefreshToken()
+    public async Task<ActionResult<TokenDto>> RefreshToken()
     {
         if (Request.Cookies.TryGetValue("id", out var id) == false)
             return BadRequest(new { message = "Can not get id, Login Again" });
@@ -67,18 +65,14 @@ public class AuthController : BaseController
 
     [HttpGet]
     [Route("isValidUsername/{username}")]
-    public async Task<ActionResult> IsValidUsername(string username)
-    {
-        return Ok(await Mediator.Send(new IsValidUsernameQuery(username)));
-    }
+    public async Task<ActionResult> IsValidUsername(string username) =>
+        Ok(await Mediator.Send(new IsValidUsernameQuery(username)));
 
     [HttpPost]
     [Authorize]
     [Route("ChangePassword")]
-    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
-    {
-        return Return(await Mediator.Send(new ChangePasswordCommand(Id, changePasswordDto)));
-    }
+    public async Task<ActionResult<bool>> ChangePassword([FromBody] ChangePasswordDto changePasswordDto) =>
+        Return(await Mediator.Send(new ChangePasswordCommand(Id, changePasswordDto)));
 
     private void SetToHttpCookie(RefreshTokenDto refreshTokenDto)
     {

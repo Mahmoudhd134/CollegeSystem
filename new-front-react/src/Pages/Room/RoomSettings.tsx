@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, {useRef} from 'react';
 import {
     Drawer,
     IconButton,
@@ -11,6 +11,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
 import EditRoom from "./EditRoom";
 import DeleteRoom from "./DeleteRoom";
+import {useChangeRoomImageMutation} from "../../App/Api/RoomApi";
 
 type Props = {
     room: RoomModel
@@ -20,10 +21,24 @@ const RoomSettings = (props: Props) => {
     const [openDeleteRoomDialog, setOpenDeleteRoomDialog] = React.useState(false);
     const switchOpenEditRoomDialog = () => setOpenEditRoomDialog(p => !p);
     const switchOpenDeleteRoomDialog = () => setOpenDeleteRoomDialog(p => !p);
+    const [changeImage, changeImageResult] = useChangeRoomImageMutation()
+    const fileRef = useRef<HTMLInputElement>(null)
 
+    const handleChangeImage = async () => {
+        const file = fileRef.current?.files?.item(0)
+        if (!file)
+            return
+
+        const formData = new FormData()
+        formData.append('file', file)
+        await changeImage({
+            id: props.room.id,
+            body: formData
+        })
+    }
     return <>
         {/*// @ts-ignore*/}
-        <Drawer placement={'right'} {...props}>
+        <Drawer placement={'right'} {...props} color={'blue'} className={'bg-blue-300'}>
             <div className="flex items-center justify-between px-4 pb-2">
                 <Typography variant="h5" color="blue-gray">
                     {props.room.name}
@@ -59,7 +74,9 @@ const RoomSettings = (props: Props) => {
             </div>
             <div className="mb-5 px-4">
                 <img src={ROOM_IMAGES_URL + props.room.image} alt="room_image"
-                     className="h-96 w-full object-contain object-center"/>
+                     className="h-96 w-full rounded-xl object-contain object-center hover:cursor-pointer"
+                     onClick={_ => fileRef.current?.click()}/>
+                <input type="file" className="hidden" ref={fileRef} onChange={handleChangeImage}/>
             </div>
         </Drawer>
         <DeleteRoom

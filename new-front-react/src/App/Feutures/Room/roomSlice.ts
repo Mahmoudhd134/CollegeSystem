@@ -1,6 +1,6 @@
 ﻿import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import RoomMessageModel from "../../Models/Message/RoomMessageModel";
-import RoomState from "./roomState";
+import RoomState, {RoomInstance} from "./roomState";
 import * as SignalR from "@microsoft/signalr";
 import {SERVER_HOST_NAME} from "../../Api/axiosApi";
 import AddMessageModel from "../../Models/Message/AddMessageModel";
@@ -11,7 +11,13 @@ import room from "../../../Pages/Room/Room";
 const initialState: RoomState = {
     roomsMessages: {},
     connection: null,
-    loadCountAtOnce: 100
+    loadCountAtOnce: 99
+}
+const emptyRoomInstance: RoomInstance = {
+    messages: [],
+    hasMore: true,
+    isLoading: false,
+    isLoadedMore: false
 }
 const roomSlice = createSlice({
     name: 'room',
@@ -36,7 +42,7 @@ const roomSlice = createSlice({
         addMessage: (state, {payload}: PayloadAction<RoomMessageModel>) => {
             const {roomId, id} = payload
             if (state.roomsMessages[roomId] == undefined)
-                state.roomsMessages[roomId] = {messages: [], hasMore: true}
+                state.roomsMessages[roomId] = emptyRoomInstance
             state.roomsMessages[roomId].messages.findIndex(m => m.id == id) == -1 && state.roomsMessages[roomId].messages.push(payload)
         },
         updateTempMessage: (state, action: PayloadAction<{ tempId: string, message: RoomMessageModel }>) => {
@@ -70,11 +76,19 @@ const roomSlice = createSlice({
         resetRoomState: () => initialState
     },
     extraReducers: builder => {
+        // builder.addCase(getUnReadMessageForRoom.pending, (state, action: PayloadAction<undefined, string, { arg: { api: AxiosInstance, roomId: string } }>) => {
+        //     const roomId = action.meta.arg.roomId
+        //     if (state.roomsMessages[roomId] == undefined)
+        //         state.roomsMessages[roomId] = emptyRoomInstance
+        //
+        //     state.roomsMessages[roomId].isLoading = true
+        // })
         builder.addCase(getUnReadMessageForRoom.fulfilled, (state, action: PayloadAction<{ roomId: string, messages: RoomMessageModel[] }>) => {
             const {roomId, messages} = action.payload
             if (state.roomsMessages[roomId] == undefined)
-                state.roomsMessages[roomId] = {messages: [], hasMore: true}
+                state.roomsMessages[roomId] = emptyRoomInstance
             state.roomsMessages[roomId].messages.push(...messages)
+            state.roomsMessages[roomId].isLoading = false
         })
 
         builder.addCase(updateMessagesState.fulfilled, (state, action: PayloadAction<MessageStateModel[]>) => {
@@ -89,22 +103,27 @@ const roomSlice = createSlice({
                 const newMessage = action.payload[index]
                 return {
                     ...m,
-                    isDelivered: newMessage.isDelivered,
                     isRead: newMessage.isRead
                 }
             })
         })
 
+        builder.addCase(loadMoreMessages.pending, (state, action: PayloadAction<undefined, string, { arg: { api: AxiosInstance, messagesCount: number, date: Date, roomId: string } }>) => {
+            const roomId = action.meta.arg.roomId
+            state.roomsMessages[roomId].isLoading = true
+        })
         builder.addCase(loadMoreMessages.fulfilled, (state, action: PayloadAction<{ messages: RoomMessageModel[], roomId: string }>) => {
             const {roomId, messages} = action.payload
             if (state.roomsMessages[roomId] == undefined)
-                state.roomsMessages[roomId] = {messages: [], hasMore: true}
+                state.roomsMessages[roomId] = emptyRoomInstance
 
             state.roomsMessages[roomId].messages.unshift(...messages.map(m => ({
                 ...m,
                 serverReached: true
             })))
             state.roomsMessages[roomId].hasMore = messages.length == state.loadCountAtOnce
+            state.roomsMessages[roomId].isLoading = false
+            state.roomsMessages[roomId].isLoadedMore = true
         })
     }
 })

@@ -45,6 +45,18 @@ export const RoomApi = baseApi.injectEndpoints({
                 {type: 'room', id: arg.id}
             ]
         }),
+        changeRoomImage: builder.mutation<boolean, { body: FormData, id: string }>({
+            query: ({id, body}) => ({
+                url: 'room/' + id,
+                method: 'put',
+                body
+            }),
+            invalidatesTags: (result, error, {id}) => [
+                'room',
+                'subject',
+                {type: 'room', id}
+            ]
+        }),
         deleteRoom: builder.mutation<boolean, string>({
             query: arg => ({
                 url: 'room/' + arg,
@@ -64,5 +76,6 @@ export const {
     useAddRoomMutation,
     useJoinRoomMutation,
     useEditRoomMutation,
+    useChangeRoomImageMutation,
     useDeleteRoomMutation
 } = RoomApi

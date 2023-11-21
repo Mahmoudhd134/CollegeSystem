@@ -72,7 +72,7 @@ public class SubjectFileController : BaseController
     [HttpPost]
     [Authorize(Roles = "Admin")]
     [Route("Template")]
-    public async Task<ActionResult> AddTemplate([FromForm] IFormFile file, [FromForm] SubjectFileTypes type)
+    public async Task<ActionResult<bool>> AddTemplate([FromForm] IFormFile file, [FromForm] SubjectFileTypes type)
     {
         return Return(await Mediator.Send(new AddFileTypeTemplateCommand(type, file.OpenReadStream(), file.FileName)));
     }
@@ -80,22 +80,18 @@ public class SubjectFileController : BaseController
 //todo upload file in chunks
     [HttpPost]
     [Authorize(Roles = "Doctor")]
-    public async Task<ActionResult> Add([FromForm] IFormFile file,
-        [FromForm] AddSubjectMaterialDto addSubjectMaterialDto)
-    {
-        return Return(await Mediator.Send(new AddSubjectMaterialCommand(
+    public async Task<ActionResult<bool>> Add([FromForm] IFormFile file,
+        [FromForm] AddSubjectMaterialDto addSubjectMaterialDto) =>
+        Return(await Mediator.Send(new AddSubjectMaterialCommand(
             addSubjectMaterialDto, file.OpenReadStream(), file.FileName, Id)));
-    }
 
     [HttpDelete]
     [Authorize(Roles = "Doctor")]
     [Route("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        return Return(await Mediator.Send(new DeleteSubjectMaterialCommand(id, Id)));
-    }
-    
-    protected ClaimsPrincipal ValidateToken(string authToken)
+    public async Task<ActionResult<bool>> Delete(int id) =>
+        Return(await Mediator.Send(new DeleteSubjectMaterialCommand(id, Id)));
+
+    private ClaimsPrincipal ValidateToken(string authToken)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var validationParameters = Constants.GetValidationParameters(_jwt.SecurityKey);
@@ -104,8 +100,6 @@ public class SubjectFileController : BaseController
         return principal;
     }
 
-    protected bool IsInAnyRole(ClaimsPrincipal claims, params string[] roles)
-    {
-        return claims.Claims.Any(c => c.Type == ClaimTypes.Role && roles.Contains(c.Value));
-    }
+    private bool IsInAnyRole(ClaimsPrincipal claims, params string[] roles) =>
+        claims.Claims.Any(c => c.Type == ClaimTypes.Role && roles.Contains(c.Value));
 }
